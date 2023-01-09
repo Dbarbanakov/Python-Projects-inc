@@ -1,6 +1,5 @@
 {% extends 'create/layout.html' %} {% block body %}
 <h1 style="text-align: center">Status Page</h1>
-<h1 style="text-align: end; margin: 5rem">Level</h1>
 <div
     style="
         max-width: 100%;
@@ -23,13 +22,22 @@
         <h3>Experience - {{ value }}</h3>
         {% endfor %}
         <h5>Adventure Began - {{ key.created }}</h5>
-        <h4>Equipment - {{ key.equipment.weapon }}, {{ key.equipment.armor }}, {{ key.equipment.misc }}</h4>
+        <h4>
+            Equipment - {{ key.equipment.weapon }}, {{ key.equipment.armor }},
+            {{ key.equipment.misc }}
+        </h4>
         <h6>Contacts - {{ key.email }}</h6>
     </div>
     {% empty %}
     <h1>No Heroes</h1>
     {% endfor %}
 </div>
-<a href="{% url 'create:index' %}" style="font-size: 3rem">Go to Index page</a>
+<h1 style="text-align: end; margin: 1rem;">
+    <a
+        href="{% url 'create:saveandexit' %}"
+        style="color: brown; text-align: center"
+        >Save and Exit</a
+    >
+</h1>
 
 {% endblock %}

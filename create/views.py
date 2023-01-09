@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django import forms
 from .models import Hero
-import time, datetime
+from django.http import HttpResponseRedirect
 
 
 class NewForm(forms.Form):
@@ -17,11 +17,15 @@ def index(request):
             hp = form.cleaned_data["health"]
             request.session["stats"] += [hp]
             return render(
-                request, "create/status.html", {"stats": request.session["stats"]}
+                request, "create/stats.html", {"stats": request.session["stats"]}
             )
         else:
             return render(request, "create/index.html", {"form": form})
     return render(request, "create/index.html", {"form": NewForm()})
+
+
+def stats(request):
+    return render(request, "create/stats.html")
 
 
 def status(request):
@@ -38,3 +42,7 @@ def status(request):
         "create/status.html",
         {"experience": exp_dict},
     )
+
+
+def save_and_exit(request):
+    return render(request, "create/saveandexit.html")

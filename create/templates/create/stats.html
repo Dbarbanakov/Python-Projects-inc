@@ -1,0 +1,20 @@
+{% extends 'create/layout.html' %} {% block body %}
+<h1 style="text-align: center; color: blueviolet">
+    Those are the stats from the index page.
+</h1>
+<ul>
+    {% for stat in stats %}
+    <li>{{ stat }}</li>
+    {% empty %}
+    <h1>
+        Go to index<a href="{% url 'create:index' %}" style="color: brown">
+            -->></a
+        >
+    </h1>
+    {% endfor %}
+</ul>
+{% if stats %}
+<a href="{% url 'create:status' %}" style="color: green"
+    >Continue to the Status Page --></a
+>
+{% endif %} {% endblock %}
