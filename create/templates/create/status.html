@@ -1,0 +1,35 @@
+{% extends 'create/layout.html' %} {% block body %}
+<h1 style="text-align: center">Status Page</h1>
+<h1 style="text-align: end; margin: 5rem">Level</h1>
+<div
+    style="
+        max-width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    "
+>
+    {% for key, value in experience.items %}
+    <div style="max-width: max-content; margin: 2rem">
+        <h1>Name - {{ key.name }}</h1>
+        <h2>Class - {{ key.character_type }}</h2>
+        <img
+            style="height: 200px"
+            src="{{ key.avatar.avatar.url }}"
+            alt="loading"
+        />
+        {% for key, value in value.items %}
+        <h3>Level - {{ key }}</h3>
+        <h3>Experience - {{ value }}</h3>
+        {% endfor %}
+        <h5>Adventure Began - {{ key.created }}</h5>
+        <h4>Equipment - {{ key.equipment.weapon }}, {{ key.equipment.armor }}, {{ key.equipment.misc }}</h4>
+        <h6>Contacts - {{ key.email }}</h6>
+    </div>
+    {% empty %}
+    <h1>No Heroes</h1>
+    {% endfor %}
+</div>
+<a href="{% url 'create:index' %}" style="font-size: 3rem">Go to Index page</a>
+
+{% endblock %}
