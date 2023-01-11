@@ -3,8 +3,8 @@
     Those are the stats from the index page.
 </h1>
 <ul>
-    {% for stat in stats %}
-    <li>{{ stat }}</li>
+    {% for hero in heroes %}
+    <li>{{ hero.name }}</li>
     {% empty %}
     <h1>
         Go to index<a href="{% url 'create:index' %}" style="color: brown">
@@ -13,7 +13,7 @@
     </h1>
     {% endfor %}
 </ul>
-{% if stats %}
+{% if heroes %}
 <a href="{% url 'create:status' %}" style="color: green"
     >Continue to the Status Page --></a
 >

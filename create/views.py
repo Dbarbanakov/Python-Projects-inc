@@ -1,31 +1,15 @@
 from django.shortcuts import render
-from django import forms
 from .models import Hero
-from django.http import HttpResponseRedirect
+from django import forms
 
 
-class NewForm(forms.Form):
-    health = forms.IntegerField(label="Health Points")
+class HeroForm(forms.Form):
+    name = forms.CharField(max_length=32)
 
 
 def index(request):
-    if "stats" not in request.session:
-        request.session["stats"] = []
-    if request.method == "POST":
-        form = NewForm(request.POST)
-        if form.is_valid():
-            hp = form.cleaned_data["health"]
-            request.session["stats"] += [hp]
-            return render(
-                request, "create/stats.html", {"stats": request.session["stats"]}
-            )
-        else:
-            return render(request, "create/index.html", {"form": form})
-    return render(request, "create/index.html", {"form": NewForm()})
-
-
-def stats(request):
-    return render(request, "create/stats.html")
+    form = HeroForm()
+    return render(request, "create/index.html", {"form": form})
 
 
 def status(request):
@@ -46,3 +30,12 @@ def status(request):
 
 def save_and_exit(request):
     return render(request, "create/saveandexit.html")
+
+
+def added(request):
+    if request.method == "POST":
+        name = request.POST["name"]
+        new_hero = Hero(name=name)
+        new_hero.save()
+    heroes = Hero.objects.all()
+    return render(request, "create/added.html", {"heroes": heroes})

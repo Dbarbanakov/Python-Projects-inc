@@ -1,9 +1,9 @@
 {% extends 'create/layout.html' %} {% block body %}
 <h1>Index Page</h1>
-<h2>Add Attributes</h2>
-<form action="{% url 'create:index' %}" method="post">
-    {% csrf_token %} {{ form }}
-    <input type="submit" />
+<form action="{% url 'create:added' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Create Hero">
 </form>
 <a href="{% url 'create:status' %}">Go to Status page</a>
 {% endblock %}

@@ -21,7 +21,7 @@ class Gear(models.Model):
 
 
 class Avatar(models.Model):
-    avatar = models.ImageField(upload_to="avatars")
+    avatar = models.ImageField(upload_to="avatars", default="avatars/")
     name = models.CharField(max_length=32)
 
     def __str__(self):
@@ -31,11 +31,8 @@ class Avatar(models.Model):
 class Hero(models.Model):
 
     name = models.CharField(max_length=32)
-    email = models.EmailField(max_length=64, default="email@email.com")
+    avatar = models.ForeignKey(Avatar, on_delete=models.CASCADE, blank=True, null=True)
     created = models.DateTimeField(default=datetime.datetime.now())
-    avatar = models.ForeignKey(Avatar, on_delete=models.CASCADE)
-    character_type = models.ForeignKey(CharacterClass, on_delete=models.CASCADE)
-    equipment = models.ForeignKey(Gear, on_delete=models.CASCADE)
 
     def exp(self):
         return int(time.mktime(datetime.datetime.now().timetuple())) - int(
@@ -44,13 +41,6 @@ class Hero(models.Model):
 
     def current_level(self):
         return Hero.exp(self) // 10000
-
-    # def next_level(self):
-    #     exp = Hero.exp(self)
-    #     level = Hero.current_level(self)
-
-    #     while exp /
-    #     pass
 
     def __str__(self):
         return f"{self.name}"
