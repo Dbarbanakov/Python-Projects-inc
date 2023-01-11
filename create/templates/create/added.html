@@ -4,7 +4,15 @@
 </h1>
 <ul>
     {% for hero in heroes %}
-    <li>{{ hero.name }}</li>
+    <li><h1>{{ hero.name }}</h1></li>
+    <form action="{% url 'create:updated' hero.id %}" method="post">
+        {% csrf_token %} {{ form }}
+        <input type="submit" value="Update" />
+    </form>
+    <form action="{% url 'create:deleted' hero.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Delete" />
+    </form>
     {% empty %}
     <h1>
         Go to index<a href="{% url 'create:index' %}" style="color: brown">

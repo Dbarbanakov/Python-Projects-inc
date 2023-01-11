@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Hero
 from django import forms
 
@@ -33,9 +33,25 @@ def save_and_exit(request):
 
 
 def added(request):
+    form = HeroForm()
     if request.method == "POST":
         name = request.POST["name"]
         new_hero = Hero(name=name)
         new_hero.save()
     heroes = Hero.objects.all()
-    return render(request, "create/added.html", {"heroes": heroes})
+    return render(request, "create/added.html", {"heroes": heroes, "form": form})
+
+
+def updated(request, hero_id):
+    name = request.POST["name"]
+    hero = get_object_or_404(Hero, pk=hero_id)
+    hero.name = name
+    hero.save()
+    return render(request, "create/updated.html", {"hero": hero})
+
+
+def deleted(request, hero_id):
+    hero = get_object_or_404(Hero, pk=hero_id)
+    name = hero.name
+    hero.delete()
+    return render(request, 'create/deleted.html', {'name': name})
