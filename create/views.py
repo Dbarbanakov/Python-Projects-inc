@@ -12,6 +12,17 @@ def index(request):
     return render(request, "create/index.html", {"form": form})
 
 
+def hero(request, hero_id):
+    form = HeroForm()
+    if request.method == "POST":
+        name = request.POST["name"]
+        hero = get_object_or_404(Hero, pk=hero_id)
+        hero.name = name
+        hero.save()
+    hero = get_object_or_404(Hero.objects.filter(pk=hero_id))
+    return render(request, "create/hero.html", {"hero": hero, "form": form})
+
+
 def status(request):
     exp_dict = {}
     exp_pack = {}
@@ -33,25 +44,15 @@ def save_and_exit(request):
 
 
 def added(request):
-    form = HeroForm()
     if request.method == "POST":
         name = request.POST["name"]
         new_hero = Hero(name=name)
         new_hero.save()
     heroes = Hero.objects.all()
-    return render(request, "create/added.html", {"heroes": heroes, "form": form})
-
-
-def updated(request, hero_id):
-    name = request.POST["name"]
-    hero = get_object_or_404(Hero, pk=hero_id)
-    hero.name = name
-    hero.save()
-    return render(request, "create/updated.html", {"hero": hero})
-
+    return render(request, "create/added.html", {"heroes": heroes})
 
 def deleted(request, hero_id):
     hero = get_object_or_404(Hero, pk=hero_id)
     name = hero.name
     hero.delete()
-    return render(request, 'create/deleted.html', {'name': name})
+    return render(request, "create/deleted.html", {"name": name})

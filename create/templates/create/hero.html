@@ -1,0 +1,18 @@
+{% extends 'create/layout.html' %} {% block body %}
+<div class="container">
+    <h1>Name - {{ hero.name }}</h1>
+    <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
+    <form action="{% url 'create:hero' hero.id %}" method="post">
+        {% csrf_token %} {{ form }}
+        <input class="button" type="submit" value="Update" />
+    </form>
+    <form action="{% url 'create:deleted' hero.id %}" method="post">
+        {% csrf_token %}
+        <input class="button" type="submit" value="Delete" />
+    </form>
+    <h5>Adventure Began - {{ hero.created }}</h5>
+</div>
+<h1>
+    <a href="{% url 'create:added' %}">Go to added heroes.</a>
+</h1>
+{% endblock %}

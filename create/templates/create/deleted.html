@@ -1,5 +1,7 @@
 {% extends 'create/layout.html' %} {% block body %}
 <h1>Successfully deleted {{ name }}</h1>
-<a href="{% url 'create:added' %}">-- Go back</a>
+<h1>
+    <a href="{% url 'create:added' %}">Go to added heroes</a>
+</h1>
 
 {% endblock %}

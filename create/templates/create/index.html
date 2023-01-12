@@ -1,9 +1,13 @@
 {% extends 'create/layout.html' %} {% block body %}
-<h1>Index Page</h1>
-<form action="{% url 'create:added' %}" method="post">
-    {% csrf_token %} {{ form }}
-    <input type="submit" value="Create Hero" />
-</form>
-<h1><a href="{% url 'create:added' %}">Check current heroes</a></h1>
-<a href="{% url 'create:status' %}">Go to Status page</a>
+<div class="container_index">
+    <h1>
+        <a href="{% url 'create:added' %}">Check current heroes</a> or Create a
+        new one.
+    </h1>
+    <form class="form_index" action="{% url 'create:added' %}" method="post">
+        {% csrf_token %} {{ form }}
+        <input class="button" type="submit" value="Create Hero" />
+    </form>
+</div>
+
 {% endblock %}

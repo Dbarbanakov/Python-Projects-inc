@@ -1,28 +1,15 @@
 {% extends 'create/layout.html' %} {% block body %}
-<h1 style="text-align: center; color: blueviolet">
-    Those are the stats from the index page.
-</h1>
-<ul>
+<h1>Heroes</h1>
+<div class="container">
     {% for hero in heroes %}
-    <li><h1>{{ hero.name }}</h1></li>
-    <form action="{% url 'create:updated' hero.id %}" method="post">
-        {% csrf_token %} {{ form }}
-        <input type="submit" value="Update" />
-    </form>
-    <form action="{% url 'create:deleted' hero.id %}" method="post">
-        {% csrf_token %}
-        <input type="submit" value="Delete" />
-    </form>
+    <div class="container_form">
+        <h1><a href="{% url 'create:hero' hero.id %}">{{ hero.name }}</a></h1>
+    </div>
     {% empty %}
-    <h1>
-        Go to index<a href="{% url 'create:index' %}" style="color: brown">
-            -->></a
-        >
-    </h1>
-    {% endfor %}
-</ul>
-{% if heroes %}
-<a href="{% url 'create:status' %}" style="color: green"
-    >Continue to the Status Page --></a
->
+    <h1>Go to index<a href="{% url 'create:index' %}"> -->></a></h1>
+    {% endfor %} {% if heroes %}
+</div>
+<h1>
+    <a href="{% url 'create:status' %}">Continue to the Status Page --></a>
+</h1>
 {% endif %} {% endblock %}

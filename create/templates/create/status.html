@@ -1,21 +1,11 @@
 {% extends 'create/layout.html' %} {% block body %}
-<h1 style="text-align: center">Status Page</h1>
-<div
-    style="
-        max-width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-    "
->
+<h1>Status Page</h1>
+<div class="container_status">
     {% for key, value in experience.items %}
-    <div style="max-width: max-content; margin: 2rem">
+    <div class="container_form">
         <h1>Name - {{ key.name }}</h1>
-        <img
-            style="height: 200px"
-            src="{{ key.avatar.avatar.url }}"
-            alt="loading"
-        />
+        <h1><a href="{% url 'create:hero' key.id %}">{{ key.name }}</a></h1>
+        <img src="{{ key.avatar.avatar.url }}" alt="loading" />
         {% for key, value in value.items %}
         <h3>Level - {{ key }}</h3>
         <h3>Experience - {{ value }}</h3>
@@ -26,12 +16,8 @@
     <h1>No Heroes</h1>
     {% endfor %}
 </div>
-<h1 style="text-align: end; margin: 1rem">
-    <a
-        href="{% url 'create:saveandexit' %}"
-        style="color: brown; text-align: center"
-        >Save and Exit</a
-    >
+<h1>
+    <a href="{% url 'create:saveandexit' %}">Save and Exit</a>
 </h1>
 
 {% endblock %}
