@@ -1,10 +1,10 @@
 {% extends 'create/layout.html' %} {% block body %}
 <div class="container_index">
     <h1>
-        <a href="{% url 'create:added' %}">Check current heroes</a> or Create a
-        new one.
+        <a href="{% url 'create:status' %}">Check Heroes</a> or Create a new
+        one.
     </h1>
-    <form class="form_index" action="{% url 'create:added' %}" method="post">
+    <form action="{% url 'create:status' %}" method="post">
         {% csrf_token %} {{ form }}
         <input class="button" type="submit" value="Create Hero" />
     </form>

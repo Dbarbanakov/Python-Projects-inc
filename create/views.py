@@ -4,7 +4,9 @@ from django import forms
 
 
 class HeroForm(forms.Form):
-    name = forms.CharField(max_length=32)
+    name = forms.CharField(
+        label="name", widget=forms.TextInput(attrs={"placeholder": "Choose a new name"})
+    )
 
 
 def index(request):
@@ -24,32 +26,17 @@ def hero(request, hero_id):
 
 
 def status(request):
-    exp_dict = {}
-    exp_pack = {}
-    for hero in Hero.objects.all():
-        exp = hero.exp()
-        level = hero.current_level()
-        exp_pack[level] = exp
-        exp_dict[hero] = exp_pack
-        exp_pack = {}
-    return render(
-        request,
-        "create/status.html",
-        {"experience": exp_dict},
-    )
-
-
-def save_and_exit(request):
-    return render(request, "create/saveandexit.html")
-
-
-def added(request):
     if request.method == "POST":
         name = request.POST["name"]
         new_hero = Hero(name=name)
         new_hero.save()
     heroes = Hero.objects.all()
-    return render(request, "create/added.html", {"heroes": heroes})
+    return render(request, "create/status.html", {"heroes": heroes})
+
+
+def save_and_exit(request):
+    return render(request, "create/saveandexit.html")
+
 
 def deleted(request, hero_id):
     hero = get_object_or_404(Hero, pk=hero_id)

@@ -1,18 +1,31 @@
 {% extends 'create/layout.html' %} {% block body %}
-<div class="container">
-    <h1>Name - {{ hero.name }}</h1>
-    <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
-    <form action="{% url 'create:hero' hero.id %}" method="post">
-        {% csrf_token %} {{ form }}
-        <input class="button" type="submit" value="Update" />
-    </form>
-    <form action="{% url 'create:deleted' hero.id %}" method="post">
-        {% csrf_token %}
-        <input class="button" type="submit" value="Delete" />
-    </form>
-    <h5>Adventure Began - {{ hero.created }}</h5>
+<h1>Name - {{ hero.name }}</h1>
+<div class="container_hero">
+    <picture class="hero_picture">
+        <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
+    </picture>
+    <div class="container_hero__details">
+        {% for level, exp in hero.current_next_level.items %}
+        <h4>Level - {{ level }}</h4>
+        <h4>Experience gained - {{ hero.exp }}</h4>
+        <h4>Level up in - {{ exp }}</h4>
+        {% endfor %}
+
+        <h5>Adventure Began - {{ hero.created }}</h5>
+    </div>
+    <div class="container_hero__form">
+        <form action="{% url 'create:hero' hero.id %}" method="post">
+            {% csrf_token %} {{ form }}
+            <input class="button" type="submit" value="Update" />
+        </form>
+        <form action="{% url 'create:deleted' hero.id %}" method="post">
+            {% csrf_token %}
+            <input class="button" type="submit" value="Delete" />
+        </form>
+    </div>
 </div>
+
 <h1>
-    <a href="{% url 'create:added' %}">Go to added heroes.</a>
+    <a href="{% url 'create:status' %}">Go to Heroes section.</a>
 </h1>
 {% endblock %}
