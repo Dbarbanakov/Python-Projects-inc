@@ -4,9 +4,7 @@
     {% for hero in heroes %}
     <div class="container_status__hero">
         <h1><a href="{% url 'create:hero' hero.id %}">{{ hero.name }}</a></h1>
-        <picture class="status_picture">
-            <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
-        </picture>
+        <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
     </div>
     {% empty %}
     <h1>No Heroes</h1>

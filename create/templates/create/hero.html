@@ -1,9 +1,9 @@
 {% extends 'create/layout.html' %} {% block body %}
 <h1>Name - {{ hero.name }}</h1>
 <div class="container_hero">
-    <picture class="hero_picture">
+    <div class="container_hero__picture">
         <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
-    </picture>
+    </div>
     <div class="container_hero__details">
         {% for level, exp in hero.current_next_level.items %}
         <h4>Level - {{ level }}</h4>
@@ -23,6 +23,33 @@
             <input class="button" type="submit" value="Delete" />
         </form>
     </div>
+</div>
+
+<div>
+    <h1>Pick an Avatar.</h1>
+    <form action="{% url 'create:hero' hero.id %}" method="post">
+        {% csrf_token %}
+        <div class="container_hero__avatar">
+            {% for avatar in avatars %}
+            <div>
+                <label for="avatar_pick"
+                    ><img src="{{ avatar.avatar.url }}" alt="loading"
+                /></label>
+                <input
+                    type="radio"
+                    id="avatar_pick"
+                    name="new_avatar"
+                    value="{{ avatar.id }}"
+                />
+            </div>
+
+            {% empty %}
+            <h1>No avatars.</h1>
+            {% endfor %}
+        </div>
+
+        <input type="submit" />
+    </form>
 </div>
 
 <h1>
