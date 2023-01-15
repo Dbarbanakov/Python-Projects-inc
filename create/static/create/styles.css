@@ -133,6 +133,35 @@ input:focus {
     justify-content: space-evenly;
 }
 
+.container_exp_bar {
+    border: 2px solid black;
+    border-radius: 1rem;
+    width: 20rem;
+    height: 2rem;
+}
+
+#exp_bar {
+    background-color: black;
+    border-radius: 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    animation: exp_bar 1.5s ease;
+}
+
+:root {
+    --end-width: 0;
+}
+
+@keyframes exp_bar {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: var(--end-width);
+    }
+}
+
 .container_hero__form {
     display: flex;
     flex-direction: column;

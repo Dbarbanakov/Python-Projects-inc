@@ -1,0 +1,19 @@
+:root {
+    --change: 280px;
+  }
+  #progressBar{
+     background-color: #247BA0;
+     width: 150px;
+     padding: 10px;
+     border-radius: 5px;
+     animation: progressBar 3s ease;
+     animation-fill-mode:both; 
+     text-align: center;
+     box-sizing: content-box;
+  } 
+  
+  
+  @keyframes progressBar {
+   0% { width: 0; }
+  100% { width: var(--change); }
+  }

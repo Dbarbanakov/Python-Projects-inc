@@ -1,15 +1,23 @@
-{% extends 'create/layout.html' %} {% block body %}
-<h1>Name - {{ hero.name }}</h1>
+{% extends 'create/layout.html' %} {% block body %} {% load static %}
+<script src="{% static 'create/exp_bar.js' %}?{% now 'U' %}" defer></script>
+<h1>{{ hero.name }}</h1>
 <div class="container_hero">
     <div class="container_hero__picture">
         <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
     </div>
     <div class="container_hero__details">
-        {% for level, exp in hero.current_next_level.items %}
-        <h4>Level - {{ level }}</h4>
+        <h4>Level - {{ hero.current_level }}</h4>
+        <div class="container_exp_bar">
+            <input
+                type="hidden"
+                id="exp_percentage"
+                name="exp"
+                value="{{ hero.current_level_exp_percentage }}"
+            />
+            <div id="exp_bar">{{ hero.current_level_exp_percentage }}</div>
+        </div>
         <h4>Experience gained - {{ hero.exp }}</h4>
-        <h4>Level up in - {{ exp }}</h4>
-        {% endfor %}
+        <h4>Next level will be on the {{ hero.next_level_date }}</h4>
 
         <h5>Adventure Began - {{ hero.created }}</h5>
     </div>
@@ -26,7 +34,7 @@
 </div>
 
 <div>
-    <h1>Pick an Avatar.</h1>
+    <h1>Avatar.</h1>
     <form action="{% url 'create:hero' hero.id %}" method="post">
         {% csrf_token %}
         <div class="container_hero__avatar">
@@ -48,7 +56,7 @@
             {% endfor %}
         </div>
 
-        <input type="submit" />
+        <input type="submit" value="Change Avatar"/>
     </form>
 </div>
 
