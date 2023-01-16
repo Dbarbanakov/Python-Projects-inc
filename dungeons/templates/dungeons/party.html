@@ -1,0 +1,37 @@
+{% extends 'dungeons/layout.html' %} {% block body %}
+<h1>
+    Create a party or
+    <a href="{% url 'dungeons:index' %}">return to the Index page.</a>
+</h1>
+<div class="container_party__forms">
+    <form action="{% url 'dungeons:party' %}" method="post">
+        {% csrf_token %} {{ form }}
+        <input type="submit" value="Add Party"/>
+    </form>
+    <form action="{% url 'dungeons:party' %}" method="post">
+        {% csrf_token %} {{ form2 }}
+        <input type="submit" value="Add Heroes"/>
+    </form>
+</div>
+
+<div class="container_party__heroes">
+    <h1>Heroes</h1>
+    {% for hero in heroes %}
+    <div class="container_party__hero">
+        <p class="container_party__hero_name">{{ hero.name }}</p>
+        <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
+    </div>
+    {% endfor %}
+</div>
+<div class="container_party__heroes">
+    <h1>Parties</h1>
+    {% for party in parties %}
+    <div class="container_party__hero">
+        <p class="container_party__hero_name">{{ party.member.name }}</p>
+        <img src="{{ party.member.avatar.avatar.url }}" alt="loading" />
+    </div>
+    {% empty %}
+    <h1>No Heroes</h1>
+    {% endfor %}
+</div>
+{% endblock %}

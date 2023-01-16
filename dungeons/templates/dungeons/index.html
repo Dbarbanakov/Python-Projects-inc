@@ -1,0 +1,20 @@
+{% extends 'dungeons/layout.html' %} {% block body %}
+
+<h1>Index page --> <a href="{% url 'dungeons:party' %}">Create a party.</a></h1>
+<div class="container_index__heroes">
+    {% for hero in heroes %}
+
+    <div class="container_index__hero">
+        <h1>{{ hero.name }}</h1>
+        <img
+            src="    {{  hero.avatar.avatar.url }}
+        "
+            alt="loading"
+        />
+    </div>
+
+    {% empty %}
+    <h1>No Heroes</h1>
+    {% endfor %}
+</div>
+{% endblock %}

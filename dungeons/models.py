@@ -3,7 +3,7 @@ from create.models import Hero
 
 
 class Party(models.Model):
-    member = models.CharField(max_length=32)
+    member = models.ForeignKey(Hero, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.member}"

@@ -1,19 +1,25 @@
-:root {
-    --change: 280px;
-  }
-  #progressBar{
-     background-color: #247BA0;
-     width: 150px;
-     padding: 10px;
-     border-radius: 5px;
-     animation: progressBar 3s ease;
-     animation-fill-mode:both; 
-     text-align: center;
-     box-sizing: content-box;
-  } 
-  
-  
-  @keyframes progressBar {
-   0% { width: 0; }
-  100% { width: var(--change); }
-  }
+img {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    border: 2px solid black;
+    border-radius: 1rem;
+}
+
+.container_heroes {
+   display: flex;
+   flex-direction: row;
+}
+
+.container_hero {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin: 0.5rem;
+}
+
+.hero_name {
+   width: 5rem;
+   margin: 0.2rem;
+   text-align: center;
+}

@@ -14,6 +14,11 @@ class NewFormMultiple(forms.Form):
 
 
 def index(request):
+    heroes = Hero.objects.all()
+    return render(request, "dungeons/index.html", {"heroes": heroes})
+
+
+def party(request):
     form = NewForm()
     form2 = NewFormMultiple()
     parties = Party.objects.all()
@@ -33,11 +38,11 @@ def index(request):
                 heroes.append(hero)
             return render(
                 request,
-                "testing/index.html",
+                "dungeons/party.html",
                 {"form": form, "form2": form2, "parties": parties, "heroes": heroes},
             )
     return render(
         request,
-        "testing/index.html",
+        "dungeons/party.html",
         {"form": form, "form2": form2, "parties": parties},
     )

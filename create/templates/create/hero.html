@@ -40,12 +40,12 @@
         <div class="container_hero__avatar">
             {% for avatar in avatars %}
             <div>
-                <label for="avatar_pick"
-                    ><img src="{{ avatar.avatar.url }}" alt="loading"
-                /></label>
+                <label for="{{ avatar.id }}"
+                    ><img src="{{ avatar.avatar.url }}" alt="loading" />
+                </label>
                 <input
                     type="radio"
-                    id="avatar_pick"
+                    id="{{ avatar.id }}"
                     name="new_avatar"
                     value="{{ avatar.id }}"
                 />
@@ -56,7 +56,7 @@
             {% endfor %}
         </div>
 
-        <input type="submit" value="Change Avatar"/>
+        <input type="submit" value="Change Avatar" />
     </form>
 </div>
 

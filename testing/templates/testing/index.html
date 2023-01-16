@@ -13,8 +13,33 @@
         <title>Testing</title>
     </head>
     <body>
-        <div class="container">
-            <div id="progressBar"></div>
+        <form action="{% url 'testing:index' %}" method="post">
+            {% csrf_token %} {{ form }}
+            <input type="submit" />
+        </form>
+        <form action="{% url 'testing:index' %}" method="post">
+            {% csrf_token %} {{ form2 }}
+            <input type="submit" />
+        </form>
+        <div class="container_heroes">
+            <h1>Parties</h1>
+            {% for party in parties %}
+            <div class="container_hero">
+                <p class="hero_name">{{ party.member }}</p>
+                <img src="{{ party.member.avatar.avatar.url }}" alt="loading" />
+            </div>
+            {% empty %}
+            <h1>No Heroes</h1>
+            {% endfor %}
+        </div>
+        <div class="container_heroes">
+            <h1>Heroes</h1>
+            {% for hero in heroes %}
+            <div class="container_hero">
+                <p class="hero_name">{{ hero.name }}</p>
+                <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
+            </div>
+            {% endfor %}
         </div>
     </body>
 </html>
