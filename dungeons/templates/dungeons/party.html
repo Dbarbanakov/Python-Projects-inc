@@ -10,18 +10,19 @@
     </form>
 </div>
 
-<div class="container_party__heroes">
-    <h1>Heroes</h1>
-    {% for hero in heroes %}
-    <div class="container_party__hero">
-        <p class="container_party__hero_name">{{ hero.name }}</p>
-        <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
-    </div>
-    {% endfor %}
-</div>
 <form action="{% url 'dungeons:party' %}" method="post">
     {% csrf_token %}
-    <input type="hidden" name="add_to_party" />
+    <div class="container_party__heroes">
+        <h1>Heroes</h1>
+        {% for hero in heroes %}
+
+        <input type="hidden" name="add_to_party" value="{{ hero.id }}" />
+        <div class="container_party__hero">
+            <p class="container_party__hero_name">{{ hero.name }}</p>
+            <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
+        </div>
+        {% endfor %}
+    </div>
     <input class="button" type="submit" value="Add to Party" />
 </form>
 <div class="container_party__heroes">
@@ -29,8 +30,12 @@
     {% for party in parties %}
     <div class="container_party__hero">
         <p>{{ party.name }}</p>
-        <p class="container_party__hero_name">{{ party.member.name }}</p>
-        <img src="{{ party.member.avatar.avatar.url }}" alt="loading" />
+        {% for hero in party.hero_set.all %}
+        <p>{{ hero.name }}</p>
+        <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
+        {% empty %}
+        <h3>Empty Party</h3>
+        {% endfor %}
     </div>
     {% empty %}
     <h1>Add a party</h1>

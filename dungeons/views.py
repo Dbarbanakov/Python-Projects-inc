@@ -40,7 +40,13 @@ def party(request):
                 {"form": form, "parties": parties, "heroes": heroes},
             )
         if "add_to_party" in request.POST:
-            Party.objects.create()
+            party = Party.objects.create()
+            hero_ids = request.POST.getlist("add_to_party")
+            for i in hero_ids:
+                hero = get_object_or_404(Hero, pk=i)
+                hero.party = party
+                hero.save()
+
     return render(
         request,
         "dungeons/party.html",

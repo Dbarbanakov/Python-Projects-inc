@@ -1,4 +1,5 @@
 from django.db import models
+from dungeons.models import Party
 
 import datetime, time
 
@@ -14,8 +15,9 @@ class Avatar(models.Model):
 class Hero(models.Model):
 
     name = models.CharField(max_length=32)
-    avatar = models.ForeignKey(Avatar, on_delete=models.CASCADE, blank=True, null=True)
     created = models.DateTimeField(default=datetime.datetime.now())
+    avatar = models.ForeignKey(Avatar, on_delete=models.CASCADE, blank=True, null=True)
+    party = models.ForeignKey(Party, on_delete=models.SET_NULL, blank=True, null=True)
 
     def exp(self):
         """Returns experience gained so far since time created."""

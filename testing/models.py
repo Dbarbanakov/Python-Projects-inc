@@ -1,9 +1,16 @@
 from django.db import models
-from create.models import Hero
 
 
-class Party(models.Model):
-    member = models.CharField(max_length=32)
+class Director(models.Model):
+    name = models.CharField(max_length=32)
 
     def __str__(self):
-        return f"{self.member}"
+        return f"{self.name}"
+
+
+class Movie(models.Model):
+    name = models.CharField(max_length=32)
+    director = models.ForeignKey(Director, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name}"
