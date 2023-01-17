@@ -5,12 +5,8 @@ from create.models import Hero
 from .models import Party
 
 
-class NewForm(forms.Form):
-    choice = forms.ModelChoiceField(queryset=Hero.objects.all())
-
-
 class NewFormMultiple(forms.Form):
-    choices = forms.ModelMultipleChoiceField(queryset=Hero.objects.all())
+    add_hero = forms.ModelMultipleChoiceField(queryset=Hero.objects.all())
 
 
 def index(request):
@@ -19,30 +15,34 @@ def index(request):
 
 
 def party(request):
-    form = NewForm()
-    form2 = NewFormMultiple()
+
+    form = NewFormMultiple()
     parties = Party.objects.all()
 
     if request.method == "POST":
-        if "choice" in request.POST:
-            choice = request.POST["choice"]
+        if "delete" in request.POST:
+            Party.objects.all().delete()
+        if "create_party" in request.POST:
+            party_id = request.POST["create_party"]
             party = Party()
-            party.member = get_object_or_404(Hero, pk=choice)
+            party.member = get_object_or_404(Hero, pk=party_id)
             party.save()
 
-        if "choices" in request.POST:
-            choices = request.POST.getlist("choices")
+        if "add_hero" in request.POST:
+            hero_ids = request.POST.getlist("add_hero")
             heroes = []
-            for i in choices:
+            for i in hero_ids:
                 hero = get_object_or_404(Hero, pk=i)
                 heroes.append(hero)
             return render(
                 request,
                 "dungeons/party.html",
-                {"form": form, "form2": form2, "parties": parties, "heroes": heroes},
+                {"form": form, "parties": parties, "heroes": heroes},
             )
+        if "add_to_party" in request.POST:
+            Party.objects.create()
     return render(
         request,
         "dungeons/party.html",
-        {"form": form, "form2": form2, "parties": parties},
+        {"form": form, "parties": parties},
     )

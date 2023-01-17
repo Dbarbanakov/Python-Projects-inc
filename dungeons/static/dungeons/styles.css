@@ -11,6 +11,22 @@ img {
     border-radius: 1rem;
 }
 
+.button {
+    width: 7rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border: 2px solid black;
+    background-color: green;
+    color: white;
+}
+
+.button:focus,
+.button:active,
+.button:hover {
+    background-color: white;
+    color: green;
+}
+
 .container_index__heroes {
     display: flex;
     flex-direction: row;
