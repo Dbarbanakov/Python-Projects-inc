@@ -18,6 +18,7 @@ class Hero(models.Model):
     created = models.DateTimeField(default=datetime.datetime.now())
     avatar = models.ForeignKey(Avatar, on_delete=models.CASCADE, blank=True, null=True)
     party = models.ForeignKey(Party, on_delete=models.SET_NULL, blank=True, null=True)
+    party_member = models.BooleanField(default=False)
 
     def exp(self):
         """Returns experience gained so far since time created."""
