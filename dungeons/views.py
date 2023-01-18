@@ -36,19 +36,22 @@ def party(request):
             )
 
         if "add_to_party" in request.POST:
-            party = Party.objects.create()
+            if not Party.objects.all():
+                party = Party.objects.create()
+
+            party = Party.objects.last()
+
             hero_ids = request.POST.getlist("add_to_party")
+
             for i in hero_ids:
                 hero = get_object_or_404(Hero, pk=i)
+                if party.hero_set.all().count() < 4:
+                    party = Party.objects.last()
+                else:
+                    party = Party.objects.create()
                 hero.party = party
                 hero.party_member = True
                 hero.save()
-
-        if "create_party" in request.POST:
-            party_id = request.POST["create_party"]
-            party = Party()
-            party.member = get_object_or_404(Hero, pk=party_id)
-            party.save()
 
         if "delete" in request.POST:
             Party.objects.all().delete()
