@@ -19,18 +19,14 @@ def index(request):
 def party(request):
 
     form = NewFormMultiple()
-    parties = Party.objects.all()
 
     if request.method == "POST":
 
         if "hero_selection" in request.POST:
-            if not Party.objects.all():
+            if not Party.objects.exists():
                 party = Party.objects.create()
-
             party = Party.objects.last()
-
             hero_ids = request.POST.getlist("hero_selection")
-
             for i in hero_ids:
                 hero = get_object_or_404(Hero, pk=i)
                 if party.hero_set.all().count() < 4:
@@ -42,14 +38,18 @@ def party(request):
                 hero.save()
 
         if "delete" in request.POST:
-            if Party.objects.last():
-                last_party = Party.objects.last()
-
-                for hero in last_party.hero_set.all():
+            if Party.objects.exists():
+                party_id = request.POST["delete"]
+                party = Party.objects.get(pk=party_id)
+                for hero in party.hero_set.all():
                     hero.party_member = False
                     hero.save()
+                party.delete()
 
-                last_party.delete()
+    if Party.objects.exists():
+        parties = Party.objects.all()
+    else:
+        parties = []
 
     return render(
         request,

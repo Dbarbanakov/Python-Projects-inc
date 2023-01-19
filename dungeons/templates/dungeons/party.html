@@ -5,26 +5,33 @@
 </h1>
 <div class="container_party">
     <div class="container_party__forms">
-        <form class="container_party__forms" action="{% url 'dungeons:party' %}" method="post">
+        <form
+            class="container_party__forms"
+            action="{% url 'dungeons:party' %}"
+            method="post"
+        >
             {% csrf_token %} {{ form }}
             <input class="button" type="submit" value="Join Party" />
         </form>
-        <form action="{% url 'dungeons:party' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="delete" />
-            <input class="button" type="submit" value="Delete Party" />
-        </form>
     </div>
-    
-    <div class="container_party__hero">
-        <h1>Parties:</h1>
-        <div class="container_party__heroes">
+
+    <div class="container_party__parties">
+        <div class="container_party__party">
             {% for party in parties %}
-            <div class="container_party__hero">
-                <p>{{ party.name }}{{ party.id }}</p>
+            <div class="coontainer_party__navigation">
+                <h4 id="party_name">{{ party.name }}{{ party.id }}</h4>
+                <form action="{% url 'dungeons:party' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="delete" value="{{ party.id }}" />
+                    <input class="button" type="submit" value="Delete Party" />
+                </form>
+            </div>
+            <div class="container_party__heroes">
                 {% for hero in party.hero_set.all %}
-                <p>{{ hero.name }}</p>
-                <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
+                <div class="container_party__hero">
+                    <p id="hero_name">{{ hero.name }}</p>
+                    <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
+                </div>
                 {% empty %}
                 <h3>Empty Party</h3>
                 {% endfor %}
@@ -35,6 +42,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}

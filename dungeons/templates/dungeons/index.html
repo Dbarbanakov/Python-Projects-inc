@@ -5,12 +5,8 @@
     {% for hero in heroes %}
 
     <div class="container_index__hero">
-        <h1>{{ hero.name }}</h1>
-        <img
-            src="    {{  hero.avatar.avatar.url }}
-        "
-            alt="loading"
-        />
+        <p id="hero_name">{{ hero.name }}</p>
+        <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
     </div>
 
     {% empty %}
