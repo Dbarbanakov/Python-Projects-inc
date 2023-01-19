@@ -54,10 +54,14 @@ def party(request):
                 hero.save()
 
         if "delete" in request.POST:
-            Party.objects.all().delete()
-            for hero in Hero.objects.filter(party_member=True):
-                hero.party_member = False
-                hero.save()
+            if Party.objects.last():
+                last_party = Party.objects.last()
+
+                for hero in last_party.hero_set.all():
+                    hero.party_member = False
+                    hero.save()
+
+                last_party.delete()
 
     return render(
         request,
