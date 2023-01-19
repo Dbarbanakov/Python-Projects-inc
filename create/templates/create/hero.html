@@ -21,25 +21,36 @@
 
         <h5>Adventure Began - {{ hero.created }}</h5>
     </div>
-    <div class="container_hero__form">
-        <form action="{% url 'create:hero' hero.id %}" method="post">
+    <div class="container_hero__forms">
+        <form
+            class="container_hero__forms_update"
+            action="{% url 'create:hero' hero.id %}"
+            method="post"
+        >
             {% csrf_token %} {{ form }}
             <input class="button" type="submit" value="Update" />
         </form>
-        <form action="{% url 'create:deleted' hero.id %}" method="post">
+        <form
+            class="container_hero__forms_delete"
+            action="{% url 'create:deleted' hero.id %}"
+            method="post"
+        >
             {% csrf_token %}
             <input class="button" type="submit" value="Delete" />
         </form>
     </div>
 </div>
 
-<div>
+<div class="container_hero__avatars">
     <h1>Avatar.</h1>
-    <form action="{% url 'create:hero' hero.id %}" method="post">
-        {% csrf_token %}
+    <form
+        class="container_hero__avatars_form"
+        action="{% url 'create:hero' hero.id %}"
+        method="post"
+    >
         <div class="container_hero__avatar">
-            {% for avatar in avatars %}
-            <div>
+            {% csrf_token %} {% for avatar in avatars %}
+            <div class="container_hero__avatar_details">
                 <label for="{{ avatar.id }}"
                     ><img src="{{ avatar.avatar.url }}" alt="loading" />
                 </label>
@@ -61,6 +72,6 @@
 </div>
 
 <h1>
-    <a href="{% url 'create:status' %}">Go to Heroes section.</a>
+    <a href="{% url 'create:index' %}">Go to Heroes section.</a>
 </h1>
 {% endblock %}

@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "create",
-    "dungeons",
     "testing",
     "django.contrib.admin",
     "django.contrib.auth",

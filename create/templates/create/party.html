@@ -1,13 +1,13 @@
-{% extends 'dungeons/layout.html' %} {% block body %}
+{% extends 'create/layout.html' %} {% block body %}
 <h1>
     Create a party or
-    <a href="{% url 'dungeons:index' %}">return to the Index page.</a>
+    <a href="{% url 'create:index' %}">return to the Index page.</a>
 </h1>
 <div class="container_party">
     <div class="container_party__forms">
         <form
             class="container_party__forms"
-            action="{% url 'dungeons:party' %}"
+            action="{% url 'create:party' %}"
             method="post"
         >
             {% csrf_token %} {{ form }}
@@ -20,7 +20,7 @@
             {% for party in parties %}
             <div class="coontainer_party__navigation">
                 <h4 id="party_name">{{ party.name }}{{ party.id }}</h4>
-                <form action="{% url 'dungeons:party' %}" method="post">
+                <form action="{% url 'create:party' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="delete" value="{{ party.id }}" />
                     <input class="button" type="submit" value="Delete Party" />

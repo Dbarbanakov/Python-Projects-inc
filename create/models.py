@@ -1,5 +1,4 @@
 from django.db import models
-from dungeons.models import Party
 
 import datetime, time
 
@@ -7,6 +6,13 @@ import datetime, time
 class Avatar(models.Model):
     avatar = models.ImageField(upload_to="avatars")
     name = models.CharField(max_length=32)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Party(models.Model):
+    name = models.CharField(max_length=32, default="Party")
 
     def __str__(self):
         return f"{self.name}"
