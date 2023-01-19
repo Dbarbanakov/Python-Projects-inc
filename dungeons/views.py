@@ -6,7 +6,7 @@ from .models import Party
 
 
 class NewFormMultiple(forms.Form):
-    add_hero = forms.ModelMultipleChoiceField(
+    hero_selection = forms.ModelMultipleChoiceField(
         queryset=Hero.objects.filter(party_member=False)
     )
 
@@ -23,25 +23,13 @@ def party(request):
 
     if request.method == "POST":
 
-        if "add_hero" in request.POST:
-            hero_ids = request.POST.getlist("add_hero")
-            heroes = []
-            for i in hero_ids:
-                hero = get_object_or_404(Hero, pk=i)
-                heroes.append(hero)
-            return render(
-                request,
-                "dungeons/party.html",
-                {"form": form, "parties": parties, "heroes": heroes},
-            )
-
-        if "add_to_party" in request.POST:
+        if "hero_selection" in request.POST:
             if not Party.objects.all():
                 party = Party.objects.create()
 
             party = Party.objects.last()
 
-            hero_ids = request.POST.getlist("add_to_party")
+            hero_ids = request.POST.getlist("hero_selection")
 
             for i in hero_ids:
                 hero = get_object_or_404(Hero, pk=i)
