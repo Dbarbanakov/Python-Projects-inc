@@ -2,9 +2,7 @@
 <script src="{% static 'create/exp_bar.js' %}?{% now 'U' %}" defer></script>
 <h1>{{ hero.name }}</h1>
 <div class="container_hero">
-    <div class="container_hero__picture">
-        <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
-    </div>
+    <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
     <div class="container_hero__details">
         <h4>Level - {{ hero.current_level }}</h4>
         <div class="container_exp_bar">
@@ -72,6 +70,6 @@
 </div>
 
 <h1>
-    <a href="{% url 'create:index' %}">Go to Heroes section.</a>
+    <a href="{% url 'create:heroes' %}">Go to Heroes section.</a>
 </h1>
 {% endblock %}

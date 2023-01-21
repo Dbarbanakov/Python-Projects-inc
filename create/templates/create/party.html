@@ -1,14 +1,9 @@
 {% extends 'create/layout.html' %} {% block body %}
-<h1>
-    Create a party or
-    <a href="{% url 'create:index' %}">return to the Index page.</a>
-</h1>
 <div class="container_party">
     <form class="party__form" action="{% url 'create:party' %}" method="post">
         {% csrf_token %} {{ form }}
         <input class="button" type="submit" value="Join Party" />
     </form>
-
     <div class="container_party__parties">
         <div class="container_party__party">
             {% for party in parties %}

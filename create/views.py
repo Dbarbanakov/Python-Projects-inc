@@ -18,6 +18,10 @@ class PartyForm(forms.Form):
 
 
 def index(request):
+    return render(request, "create/index.html")
+
+
+def heroes(request):
     form = HeroForm()
 
     if request.method == "POST":
@@ -26,7 +30,7 @@ def index(request):
             new_hero = Hero(name=name)
         new_hero.save()
     heroes = Hero.objects.all()
-    return render(request, "create/index.html", {"heroes": heroes, "form": form})
+    return render(request, "create/heroes.html", {"heroes": heroes, "form": form})
 
 
 def hero(request, hero_id):
@@ -40,6 +44,8 @@ def hero(request, hero_id):
         if "name" in request.POST:
             name = request.POST["name"]
             hero.name = name
+        if "detele" in request.POST:
+            pass
 
     hero.save()
     hero = get_object_or_404(Hero.objects.filter(pk=hero_id))
@@ -81,7 +87,7 @@ def party(request):
         if "delete" in request.POST:
             if Party.objects.exists():
                 party_id = request.POST["delete"]
-                party = Party.objects.get(pk=party_id)
+                party = get_object_or_404(Party, pk=party_id)
                 for hero in party.hero_set.all():
                     hero.party_member = False
                     hero.save()
