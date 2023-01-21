@@ -4,6 +4,14 @@ body {
     overflow: auto;
 }
 
+div {
+    display: flex;
+}
+
+form {
+    display: flex;
+}
+
 h1 {
     text-align: center;
 }
@@ -59,26 +67,22 @@ input:focus {
 /* Index page styling */
 
 .container_index {
-    display: flex;
     flex-direction: column;
     justify-content: center;
     margin-top: 2rem;
 }
 
 .container_index__form {
-    display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .container_index__heroes {
-    display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
 .container_index__hero {
-    display: flex;
     flex-direction: column;
     margin: 1rem;
 }
@@ -87,7 +91,6 @@ input:focus {
 
 .container_hero {
     height: 80%;
-    display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     color: khaki;
@@ -95,7 +98,6 @@ input:focus {
 }
 
 .container_hero__picture {
-    display: flex;
     align-items: center;
 }
 
@@ -106,7 +108,6 @@ input:focus {
 
 .container_hero__details {
     margin: 2rem;
-    display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
@@ -122,7 +123,6 @@ input:focus {
     background-color: black;
     border-radius: 1rem;
     height: 100%;
-    display: flex;
     align-items: center;
     animation: exp_bar 1.5s ease;
 }
@@ -141,13 +141,11 @@ input:focus {
 }
 
 .container_hero__forms {
-    display: flex;
     flex-direction: column;
     justify-content: space-around;
 }
 
 .container_hero__forms_update {
-    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -157,24 +155,20 @@ input:focus {
 }
 
 .container_hero__avatars {
-    display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .container_hero__avatars_form {
-    display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .container_hero__avatar {
-    display: flex;
     flex-direction: row;
 }
 
 .container_hero__avatar_details {
-    display: flex;
     flex-direction: column;
     margin: 0.25rem;
 }
@@ -191,4 +185,30 @@ input:focus {
     text-align: center;
     padding: 0.5rem;
     margin: 0;
+}
+
+/* Party page styling */
+
+.container_party {
+    justify-content: space-evenly;
+    margin-top: 5rem;
+}
+
+.party__form {
+    flex-direction: column;
+    align-items: center;
+}
+
+.container_party__party {
+    flex-direction: column;
+}
+
+.coontainer_party__navigation {
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.container_party__hero {
+    flex-direction: column;
+    margin: 0.25rem;
 }

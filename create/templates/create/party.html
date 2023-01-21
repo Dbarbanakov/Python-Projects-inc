@@ -4,16 +4,10 @@
     <a href="{% url 'create:index' %}">return to the Index page.</a>
 </h1>
 <div class="container_party">
-    <div class="container_party__forms">
-        <form
-            class="container_party__forms"
-            action="{% url 'create:party' %}"
-            method="post"
-        >
-            {% csrf_token %} {{ form }}
-            <input class="button" type="submit" value="Join Party" />
-        </form>
-    </div>
+    <form class="party__form" action="{% url 'create:party' %}" method="post">
+        {% csrf_token %} {{ form }}
+        <input class="button" type="submit" value="Join Party" />
+    </form>
 
     <div class="container_party__parties">
         <div class="container_party__party">
@@ -29,7 +23,7 @@
             <div class="container_party__heroes">
                 {% for hero in party.hero_set.all %}
                 <div class="container_party__hero">
-                    <p id="hero_name">{{ hero.name }}</p>
+                    <p class="hero_name">{{ hero.name }}</p>
                     <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
                 </div>
                 {% empty %}
