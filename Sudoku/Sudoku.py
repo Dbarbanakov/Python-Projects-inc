@@ -16,11 +16,12 @@ class Board:
     def __init__(self, size=9):
         self.size = size
         self.board = [Row(self.size).row for x in range(self.size)]
-        self.null_board = copy.deepcopy(self.board)
+        self.progress_board = copy.deepcopy(self.board)
         self.empty_position = list()
         self.random_positions = list()
         self.is_solution = False
         self.difficulty = ""
+        self.initial_positions = 0
 
     def print_board(self):
         """Prints the Sudoku board."""
@@ -44,12 +45,17 @@ class Board:
 
             if coords in t:
                 print(self.board[row][col], end=" ")
+                self.progress_board[row][col] = self.board[row][col]
             else:
                 print("*", end=" ")
 
             counter += 1
 
         print()
+
+    def create_progress_board(self):
+        """Creates a 2d list containing the numbers discovered by the player while the solution is running."""
+        pass
 
     def get_random_positions(self, n):
         """Takes n(int) as an input and returns a list of unique coords as a tuple from (0,0) to (8,8) -
@@ -157,7 +163,7 @@ class Board:
 
         while not self.is_solution:
             if not self.solution():
-                self.board = copy.deepcopy(self.null_board)
+                self.board = copy.deepcopy(self.progress_board)
                 self.generate_random_numbers()
 
     def generate_sudoku(self, difficulty):
@@ -177,3 +183,4 @@ class Board:
         numbers = self.get_random_positions(n)
         self.print_partial_board(numbers)
         self.difficulty = difficulty
+        self.initial_positions = n
