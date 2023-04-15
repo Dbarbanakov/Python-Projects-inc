@@ -18,7 +18,9 @@ class Board:
         self.board = [Row(self.size).row for x in range(self.size)]
         self.null_board = copy.deepcopy(self.board)
         self.empty_position = list()
+        self.random_positions = list()
         self.is_solution = False
+        self.difficulty = ""
 
     def print_board(self):
         """Prints the Sudoku board."""
@@ -28,19 +30,19 @@ class Board:
             print()
         print()
 
-    def print_partial_board(self, l=[]):
-        """Takes a list with numbers from 0 to 80 included as an input
+    def print_partial_board(self, t=list()):
+        """Takes a list with coordinates as a tuple from (0,0) to (8,8) included as an input
         and prints only those elements from the solution(serves as a hint.)
         """
         counter = 0
         while counter < 81:
             row = counter // 9
             col = counter % 9
-
+            coords = (counter // 9, counter % 9)
             if counter % 9 == 0:
                 print()
 
-            if counter in l:
+            if coords in t:
                 print(self.board[row][col], end=" ")
             else:
                 print("*", end=" ")
@@ -50,7 +52,7 @@ class Board:
         print()
 
     def get_random_positions(self, n):
-        """Takes n(int) as an input and returns a list of n random numbers from 0 to 80
+        """Takes n(int) as an input and returns a list of unique coords as a tuple from (0,0) to (8,8) -
         (positions in the sudpku board) included."""
         choices = [x for x in range(81)]
         numbers = []
@@ -58,9 +60,13 @@ class Board:
         for i in range(n):
             num = random.choice(choices)
             choices.remove(num)
-            numbers.append(num)
+            numbers.append((num // 9, num % 9))
 
         numbers.sort()
+        if self.random_positions:
+            self.random_positions.clear()
+            self.random_positions = numbers
+        self.random_positions = numbers
         return numbers
 
     def generate_random_numbers(self, n=15):
@@ -73,8 +79,7 @@ class Board:
         positions = self.get_random_positions(n)
 
         for x in positions:
-            row = x // 9
-            col = x % 9
+            row, col = x
             num = random.choice(numbers)
 
             while True:
@@ -160,23 +165,15 @@ class Board:
         easy - 25, medium-20, hard - 15.
         """
         self.get_solution()
-        if difficulty == "easy":
+        if difficulty == "Easy":
             n = 25
-        elif difficulty == "medium":
+        elif difficulty == "Medium":
             n = 20
-        elif difficulty == "hard":
+        elif difficulty == "Hard":
             n = 15
         else:
             raise IOError("Choose between - easy, medium or hard difficulties please.")
 
         numbers = self.get_random_positions(n)
         self.print_partial_board(numbers)
-
-
-difficulty = input("Please choose a difficulty - easy, medium or hard.")
-
-if difficulty:
-    sudoku = Board()
-    sudoku.generate_sudoku(difficulty)
-    print()
-    sudoku.print_board()
+        self.difficulty = difficulty
