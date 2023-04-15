@@ -13,8 +13,20 @@ def get_sudoku(event):
     squares -= sudoku.initial_positions
 
 
+# menu_def
+# fix progress_board - print_partial_board
+
+
 def generate_button(i, j):
-    return sg.B(button_text=" ", size=(4, 2), key=(i, j), pad=(0, 0))
+    return sg.B(
+        button_text=" ",
+        size=(4, 2),
+        key=(i, j),
+        pad=(0, 0),
+        border_width=2,
+        font=("Helvetica", 10, "bold"),
+        auto_size_button=False,
+    )
 
 
 def toggle_panel_visibility(window, boolean, *keys):
@@ -22,15 +34,23 @@ def toggle_panel_visibility(window, boolean, *keys):
         window[key].update(visible=boolean)
 
 
+def get_available_choices(board, row, col):
+    available_choices = []
+    for i in range(1, 10):
+        if sudoku.check_position(board, row, col, i):
+            available_choices.append(i)
+
+    return available_choices
+
+
 MAX_ROWS = MAX_COLS = 9
 is_sudoku_generated = False
-available_choices = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 difficulty = ""
 
 sg.theme("DarkBlack")
 
 squares = 81
-
+mistakes = 0
 
 layout_main = [
     [
@@ -42,7 +62,10 @@ layout_main = [
         ]
     ],
     [[generate_button(i, j) for j in range(MAX_COLS)] for i in range(MAX_ROWS)],
-    [sg.T("Squares left - {}".format(squares), key="-SQUARES-")],
+    [
+        sg.T("Squares left - {}".format(squares), key="-SQUARES-"),
+        sg.T("Mistakes - {}".format(mistakes), key="-MISTAKES-"),
+    ],
     [sg.B("Exit")],
 ]
 
@@ -62,7 +85,6 @@ while True:
         get_sudoku(event)
         window_main["-SQUARES-"].update(f"Squares left - {squares}")
 
-        # print(sudoku.progress_board)
         for x in sudoku.random_positions:
             row, col = x
             window_main[x].update(
@@ -77,7 +99,9 @@ while True:
                     [
                         [
                             sg.Listbox(
-                                values=available_choices,
+                                values=get_available_choices(
+                                    sudoku.progress_board, event[0], event[1]
+                                ),
                                 size=(20, 10),
                                 enable_events=True,
                             )
@@ -94,8 +118,14 @@ while True:
                 window_main[event].update(
                     sudoku.board[event[0]][event[1]], button_color=("white", "black")
                 )
+                sudoku.progress_board[event[0]][event[1]] = sudoku.board[event[0]][
+                    event[1]
+                ]
+
             else:
-                sg.popup_no_wait("This is not the right number.")
+                sg.popup_no_wait("This is not the right number.", "Mistakes += 1.")
+                mistakes += 1
+                window_main["-MISTAKES-"].update("Mistakes - {}".format(mistakes))
 
 
 window_main.close()

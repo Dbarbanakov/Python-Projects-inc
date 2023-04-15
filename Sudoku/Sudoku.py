@@ -89,45 +89,45 @@ class Board:
             num = random.choice(numbers)
 
             while True:
-                if self.check_position(row, col, num):
+                if self.check_position(self.board, row, col, num):
                     self.board[row][col] = num
                     break
                 num = random.choice(numbers)
 
-    def check_row(self, row, n):
+    def check_row(self, board, row, n):
         """Returns True if n is not present in the current row."""
-        for x in self.board[row]:
+        for x in board[row]:
             if n == x:
                 return False
         return True
 
-    def check_column(self, col, n):
+    def check_column(self, board, col, n):
         """Returns True if n is not present in the current column."""
         for i in range(self.size):
-            if n == self.board[i][col]:
+            if n == board[i][col]:
                 return False
         return True
 
-    def check_square(self, row, col, n):
+    def check_square(self, board, row, col, n):
         """Returns True if n is not present in the current 3x3 square."""
         row_range = row - row % 3
         col_range = col - col % 3
 
         for i in range(3):
             for j in range(3):
-                if n == self.board[i + row_range][j + col_range]:
+                if n == board[i + row_range][j + col_range]:
                     return False
         return True
 
-    def check_position(self, row, col, n):
+    def check_position(self, board, row, col, n):
         """
         Returns True if the current position on the board is suitable for n.
         n is not in the current - row, column and square.
         """
         return (
-            self.check_column(col, n)
-            and self.check_row(row, n)
-            and self.check_square(row, col, n)
+            self.check_column(board, col, n)
+            and self.check_row(board, row, n)
+            and self.check_square(board, row, col, n)
         )
 
     def get_free_position(self):
@@ -149,7 +149,7 @@ class Board:
         current_col = self.empty_position[1]
 
         for i in range(1, 10):
-            if self.check_position(current_row, current_col, i) == True:
+            if self.check_position(self.board, current_row, current_col, i) == True:
                 self.board[current_row][current_col] = i
                 if self.solution():
                     return True
