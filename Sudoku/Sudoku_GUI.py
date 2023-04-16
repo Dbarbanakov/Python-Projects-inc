@@ -15,6 +15,10 @@ def get_sudoku(event):
 
 # menu_def
 # fix progress_board - print_partial_board
+# high scores
+# game modes - complete solution and partial as it is.
+# timer
+# get_solution - timeout
 
 
 def generate_button(i, j):
@@ -55,22 +59,33 @@ mistakes = 0
 layout_main = [
     [
         [
+            sg.T("", key="-PROGRESS-TEXT-", visible=False),
+            sg.T("{}".format(mistakes), key="-MISTAKES-", visible=False),
+            sg.ProgressBar(
+                81,
+                orientation="h",
+                key="-PROGRESS-",
+                bar_color=("green", "red"),
+                expand_y=True,
+                visible=False,
+            ),
             sg.T("Choose a difficulty - ", key="-MAIN-TEXT-"),
             sg.B("Easy"),
             sg.B("Medium"),
             sg.B("Hard"),
         ]
     ],
-    [[generate_button(i, j) for j in range(MAX_COLS)] for i in range(MAX_ROWS)],
     [
-        sg.T("Squares left - {}".format(squares), key="-SQUARES-"),
-        sg.T("Mistakes - {}".format(mistakes), key="-MISTAKES-"),
+        [[generate_button(i, j) for j in range(MAX_COLS)] for i in range(MAX_ROWS)],
     ],
     [sg.B("Exit")],
+    # [
+    # sg.T("Squares left - {}".format(squares), key="-SQUARES-"),
+    # ],
 ]
 
 
-window_main = sg.Window("Choose a difficulty", layout_main)
+window_main = sg.Window("Sudoku", layout_main, element_justification="c")
 
 while True:
     event, values = window_main.read()
@@ -79,11 +94,18 @@ while True:
         break
 
     if event in ("Easy", "Medium", "Hard"):
-        toggle_panel_visibility(window_main, False, "Easy", "Medium", "Hard")
-        window_main["-MAIN-TEXT-"].update("Current Difficulty - {}".format(event))
+        toggle_panel_visibility(
+            window_main, False, "Easy", "Medium", "Hard", "-MAIN-TEXT-"
+        )
+        toggle_panel_visibility(
+            window_main, True, "-PROGRESS-", "-PROGRESS-TEXT-", "-MISTAKES-"
+        )
+        # window_main["-MAIN-TEXT-"].update("Current Difficulty - {}".format(event))
+        window_main["-PROGRESS-TEXT-"].update("{}".format(event[0]))
 
         get_sudoku(event)
-        window_main["-SQUARES-"].update(f"Squares left - {squares}")
+        # window_main["-SQUARES-"].update(f"Squares left - {squares}")
+        window_main["-PROGRESS-"].update(squares)
 
         for x in sudoku.random_positions:
             row, col = x
@@ -113,7 +135,8 @@ while True:
                 sudoku.random_positions.append(event)
 
                 squares -= 1
-                window_main["-SQUARES-"].update(f"Squares left - {squares}")
+                # window_main["-SQUARES-"].update(f"Squares left - {squares}")
+                window_main["-PROGRESS-"].update(squares)
 
                 window_main[event].update(
                     sudoku.board[event[0]][event[1]], button_color=("white", "black")
@@ -125,7 +148,7 @@ while True:
             else:
                 sg.popup_no_wait("This is not the right number.", "Mistakes += 1.")
                 mistakes += 1
-                window_main["-MISTAKES-"].update("Mistakes - {}".format(mistakes))
+                window_main["-MISTAKES-"].update("{}".format(mistakes))
 
 
 window_main.close()
