@@ -38,9 +38,15 @@ def get_event(event):
 
         toggle_panel_visibility(False, "Easy", "Medium", "Hard", "-MAIN-TEXT-")
         window_main.set_title(f"Sudoku@{event}")
-        window_main["-PROGRESS-"].update(squares)
+        window_main["-HEALTH-SUDOKU-"].update(squares)
+        window_main["-BUTTON-FRAME-"].update(f"{event}", visible=True)
 
-        toggle_panel_visibility(True, "-TIMER-", "-PROGRESS-", "-MISTAKES-")
+        toggle_panel_visibility(
+            True,
+            "-HEALTH-PLAYER-",
+            "-TIMER-",
+            "-HEALTH-SUDOKU-",
+        )
 
         for coords in sudoku.opened_positions:
             row, col = coords
@@ -61,7 +67,7 @@ def get_event(event):
                 sudoku.opened_positions.append(event)
 
                 squares -= 1
-                window_main["-PROGRESS-"].update(squares)
+                window_main["-HEALTH-SUDOKU-"].update(squares)
 
                 window_main[event].update(
                     sudoku.board[event[0]][event[1]], button_color=("white", "black")
@@ -71,6 +77,6 @@ def get_event(event):
                 ]
 
             else:
-                sg.popup_no_wait("This is not the right number.", "Mistakes += 1.")
+                sg.popup_no_wait("This is not the right number.", "Health -= 1.")
                 mistakes += 1
-                window_main["-MISTAKES-"].update(f"{mistakes}")
+                window_main["-HEALTH-PLAYER-"].update(f"{mistakes}")

@@ -2,10 +2,11 @@ import PySimpleGUI as sg
 from layouts import *
 from gui_events import *
 
-# menu_def
 # high scores
 # game modes
 # get_solution - timeout
+# loading
+# rate 5 stars
 
 
 while True:

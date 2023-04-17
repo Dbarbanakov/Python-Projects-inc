@@ -36,32 +36,47 @@ def generate_listbox(numbers):
     )
 
 
-layout_menu = []
 layout_main = [
     [
         [
-            sg.T(
-                "{}".format(mistakes),
-                key="-MISTAKES-",
+            sg.T("Player"),
+            sg.T("VS"),
+            sg.T("Sudoku"),
+        ],
+        [
+            sg.ProgressBar(
+                10,
+                orientation="h",
+                key="-HEALTH-PLAYER-",
+                bar_color=("red", "green"),
+                expand_y=True,
                 visible=False,
+                size=(21),
             ),
+            sg.T("VS", key="-TIMER-", visible=False),
             sg.ProgressBar(
                 81,
                 orientation="h",
-                key="-PROGRESS-",
+                key="-HEALTH-SUDOKU-",
                 bar_color=("green", "red"),
                 expand_y=True,
                 visible=False,
+                size=(21),
             ),
-            sg.T("{}".format(timer), key="-TIMER-", visible=False),
-            sg.T("Choose a difficulty - ", key="-MAIN-TEXT-"),
-            sg.B("Easy"),
-            sg.B("Medium"),
-            sg.B("Hard"),
-        ]
+        ],
     ],
     [
-        [[generate_button(i, j) for j in range(9)] for i in range(9)],
+        sg.T("Choose a difficulty - ", key="-MAIN-TEXT-"),
+        sg.B("Easy", bind_return_key=True),
+        sg.B("Medium", bind_return_key=True),
+        sg.B("Hard", bind_return_key=True),
+        sg.Frame(
+            "",
+            [[generate_button(i, j) for j in range(9)] for i in range(9)],
+            key="-BUTTON-FRAME-",
+            visible=False,
+            title_location="n",
+        ),
     ],
     [
         [generate_button(11, 11) for i in range(5)],
