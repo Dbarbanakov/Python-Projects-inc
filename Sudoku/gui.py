@@ -5,9 +5,8 @@ from gui_events import *
 # high scores
 # game modes
 # get_solution - timeout
-# loading
-# rate 5 stars
 
+# loading
 
 while True:
     event, values = window_main.read(timeout=1000, timeout_key="-TIMEOUT-")
