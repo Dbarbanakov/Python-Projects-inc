@@ -2,13 +2,14 @@ import PySimpleGUI as sg
 from main import *
 from layouts import *
 
+sudoku = None
+
 
 def get_sudoku(event):
-    global sudoku, is_sudoku_generated, squares
+    global sudoku, squares
 
     sudoku = Board()
     sudoku.generate_sudoku(event)
-    is_sudoku_generated = True
     squares -= sudoku.initial_positions
 
 
@@ -33,19 +34,23 @@ def get_event(event):
         window_main["-TIMER-"].update(f"{timer}")
         timer += 1
 
+    if timer == 10:
+        ev, val = window_modal.read()
+        if ev:
+            window_main["-STARS-"].update(ev)
+            window_modal.close()
+
     if event in ("Easy", "Medium", "Hard"):
         get_sudoku(event)
 
-        toggle_panel_visibility(False, "Easy", "Medium", "Hard", "-MAIN-TEXT-")
-        window_main.set_title(f"Sudoku@{event}")
+        window_main.ding()
         window_main["-HEALTH-SUDOKU-"].update(squares)
-        window_main["-BUTTON-FRAME-"].update(f"{event}", visible=True)
+        window_main["FRAME-BUTTONS-"].update(f"{event}")
+
+        toggle_panel_visibility(False, "-FRAME-DIFFICULTY-")
 
         toggle_panel_visibility(
-            True,
-            "-HEALTH-PLAYER-",
-            "-TIMER-",
-            "-HEALTH-SUDOKU-",
+            True, "-HEALTH-PLAYER-", "-TIMER-", "-HEALTH-SUDOKU-", "FRAME-BUTTONS-"
         )
 
         for coords in sudoku.opened_positions:
@@ -54,7 +59,7 @@ def get_event(event):
                 sudoku.board[row][col], button_color=("white", "black")
             )
 
-    if type(event) == tuple and is_sudoku_generated:
+    if type(event) == tuple and sudoku:
         if event not in sudoku.opened_positions:
             ev, val = sg.Window(
                 "Available Numbers:",
