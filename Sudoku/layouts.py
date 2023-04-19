@@ -2,8 +2,8 @@ import PySimpleGUI as sg
 
 sg.theme("DarkBlack")
 
-squares = 81
-mistakes = 0
+hp_sudoku = 81
+hp_player = 0
 timer = 0
 
 

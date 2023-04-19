@@ -5,12 +5,10 @@ from layouts import *
 sudoku = None
 
 
-def get_sudoku(event):
-    global sudoku, squares
-
+def main():
+    global sudoku
     sudoku = Board()
-    sudoku.generate_sudoku(event)
-    squares -= len(sudoku.opened_positions)
+    sudoku.get_solution()
 
 
 def toggle_panel_visibility(boolean, *keys, window=window_main):
@@ -28,23 +26,25 @@ def get_available_choices(board, row, col):
 
 
 def get_event(event):
-    global mistakes, squares, timer
+    global hp_player, hp_sudoku, timer
 
     if event == "-TIMEOUT-":
         window_main["-TIMER-"].update(f"{timer}")
         timer += 1
 
-    if timer == 10:
+    if timer == 100:
         ev, val = window_modal.read()
         if ev:
             window_main["-STARS-"].update(ev)
             window_modal.close()
 
     if event in ("Easy", "Medium", "Hard"):
-        get_sudoku(event)
+        sudoku.generate_sudoku(event)
+
+        hp_sudoku -= len(sudoku.opened_positions)
 
         window_main.ding()
-        window_main["-HEALTH-SUDOKU-"].update(squares)
+        window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
         window_main["FRAME-BUTTONS-"].update(f"{event}")
 
         toggle_panel_visibility(False, "-FRAME-DIFFICULTY-")
@@ -71,8 +71,8 @@ def get_event(event):
             if val[0][0] == sudoku.board[event[0]][event[1]]:
                 sudoku.opened_positions.append(event)
 
-                squares -= 1
-                window_main["-HEALTH-SUDOKU-"].update(squares)
+                hp_sudoku -= 1
+                window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
 
                 window_main[event].update(
                     sudoku.board[event[0]][event[1]], button_color=("white", "black")
@@ -83,5 +83,5 @@ def get_event(event):
 
             else:
                 sg.popup_no_wait("This is not the right number.", "Health -= 1.")
-                mistakes += 1
-                window_main["-HEALTH-PLAYER-"].update(f"{mistakes}")
+                hp_player += 1
+                window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
