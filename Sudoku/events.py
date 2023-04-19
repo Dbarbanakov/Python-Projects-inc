@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from main import *
+from solution import *
 from layouts import *
 
 sudoku = None
@@ -10,7 +10,7 @@ def get_sudoku(event):
 
     sudoku = Board()
     sudoku.generate_sudoku(event)
-    squares -= sudoku.initial_positions
+    squares -= len(sudoku.opened_positions)
 
 
 def toggle_panel_visibility(boolean, *keys, window=window_main):
