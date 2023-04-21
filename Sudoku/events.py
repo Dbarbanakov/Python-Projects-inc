@@ -8,7 +8,7 @@ sudoku = None
 def main():
     global sudoku
     sudoku = Board()
-    sudoku.get_solution()
+    sudoku.get_solution(5)
 
 
 def toggle_panel_visibility(boolean, *keys, window=window_main):

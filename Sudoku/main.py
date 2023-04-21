@@ -2,29 +2,20 @@ import PySimpleGUI as sg
 from layouts import *
 from events import *
 
-from multiprocessing import Process
-import time
 
 # high scores
 # game modes
-# get_solution - timeout
 # bug - input - enter
 
-# loading - processess
 
-# random number generation
-
-
-for i in range(500):
-    if i == 1:
-        start = time.time()
+for i in range(100):
+    if i == 50:
         main()
-        print(f"finished - {time.time() - start}")
 
     sg.one_line_progress_meter(
         "My Meter",
         i + 1,
-        500,
+        100,
         "key",
         "Optional message",
         orientation="h",
