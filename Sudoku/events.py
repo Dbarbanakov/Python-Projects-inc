@@ -1,28 +1,12 @@
 import PySimpleGUI as sg
-from solution import *
 from layouts import *
+from events_utils import *
 
-sudoku = None
+# more more
 
-
-def main():
-    global sudoku
-    sudoku = Board()
-    sudoku.get_solution(5)
-
-
-def toggle_panel_visibility(boolean, *keys, window=window_main):
-    for key in keys:
-        window[key].update(visible=boolean)
-
-
-def get_available_choices(board, row, col):
-    available_choices = []
-    for i in range(1, 10):
-        if sudoku.check_position(board, row, col, i):
-            available_choices.append(i)
-
-    return available_choices
+hp_sudoku = 81
+hp_player = 0
+timer = 0
 
 
 def get_event(event):
@@ -39,18 +23,22 @@ def get_event(event):
             window_modal.close()
 
     if event in ("Easy", "Medium", "Hard"):
-        sudoku.generate_sudoku(event)
-
+        sudoku.apply_difficulty(event)
         hp_sudoku -= len(sudoku.opened_positions)
 
         window_main.ding()
         window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
         window_main["FRAME-BUTTONS-"].update(f"{event}")
 
-        toggle_panel_visibility(False, "-FRAME-DIFFICULTY-")
+        toggle_panel_visibility(False, window_main, "-FRAME-DIFFICULTY-")
 
         toggle_panel_visibility(
-            True, "-HEALTH-PLAYER-", "-TIMER-", "-HEALTH-SUDOKU-", "FRAME-BUTTONS-"
+            True,
+            window_main,
+            "-HEALTH-PLAYER-",
+            "-TIMER-",
+            "-HEALTH-SUDOKU-",
+            "FRAME-BUTTONS-",
         )
 
         for coords in sudoku.opened_positions:

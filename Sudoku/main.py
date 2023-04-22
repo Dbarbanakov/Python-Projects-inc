@@ -1,7 +1,5 @@
 import PySimpleGUI as sg
-from layouts import *
 from events import *
-
 
 # high scores
 # game modes
@@ -10,7 +8,7 @@ from events import *
 
 for i in range(100):
     if i == 50:
-        main()
+        sudoku.generate_board()
 
     sg.one_line_progress_meter(
         "My Meter",
@@ -22,6 +20,7 @@ for i in range(100):
         no_button=True,
         no_titlebar=True,
     )
+
 while True:
     event, values = window_main.read(timeout=1000, timeout_key="-TIMEOUT-")
     if event in (sg.WIN_CLOSED, "Exit"):

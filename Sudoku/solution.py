@@ -126,7 +126,7 @@ class Board:
         if time.time() > endtime:
             print("Timeout")
             self.board = copy.deepcopy(self.progress_board)
-            self.get_solution(5)
+            self.generate_board()
 
         if self.get_free_position() == False:
             return True
@@ -142,15 +142,13 @@ class Board:
 
         return False
 
-    def get_solution(self, timeout):
-        """Generates random numbers on the empty board and calls a solution based on the RNG.
-        Passes a timeout for the recursion process.
-        """
+    def generate_board(self):
+        """Generates random numbers then goes for a solution with a timeout of 5 seconds on it."""
 
         self.generate_random_numbers()
-        self.solution(time.time() + timeout)
+        self.solution(time.time() + 5)
 
-    def generate_sudoku(self, difficulty):
+    def apply_difficulty(self, difficulty):
         """Takes difficulty as an input and reveals a random number of positions on the board,
         easy - 30, medium-25, hard - 20.
         """

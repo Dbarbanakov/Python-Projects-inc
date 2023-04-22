@@ -2,10 +2,6 @@ import PySimpleGUI as sg
 
 sg.theme("DarkBlack")
 
-hp_sudoku = 81
-hp_player = 0
-timer = 0
-
 
 def generate_button(i, j):
     return sg.B(
