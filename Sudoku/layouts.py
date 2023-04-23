@@ -1,32 +1,7 @@
 import PySimpleGUI as sg
+from layouts_utils import *
 
 sg.theme("DarkBlack")
-
-
-def generate_button(i, j):
-    return sg.B(
-        button_text=" ",
-        size=(4, 2),
-        key=(i, j),
-        pad=(0, 0),
-        border_width=2,
-        font=("Helvetica", 10, "bold"),
-        auto_size_button=False,
-    )
-
-
-def generate_listbox(numbers):
-    return (
-        [
-            [
-                sg.Listbox(
-                    values=numbers,
-                    size=(20, 10),
-                    enable_events=True,
-                )
-            ],
-        ],
-    )
 
 
 layout_main = [
@@ -74,15 +49,13 @@ layout_main = [
         sg.Frame(
             "",
             [[generate_button(i, j) for j in range(9)] for i in range(9)],
-            key="FRAME-BUTTONS-",
+            key="-FRAME-BUTTONS-",
             title_location="n",
             visible=False,
         ),
     ],
-    [
-        [generate_button(11, 11) for i in range(5)],
-    ],
-    [sg.B("Save"), sg.T("", key="-STARS-")],
+    [sg.T("", key="-STARS-")],
+    # [sg.B("Save", image_source="nums.png")],
     [sg.B("Exit")],
 ]
 

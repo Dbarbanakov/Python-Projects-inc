@@ -4,7 +4,7 @@ from events import *
 # high scores
 # game modes
 # bug - input - enter
-
+# numbers pics - path
 
 for i in range(100):
     if i == 50:

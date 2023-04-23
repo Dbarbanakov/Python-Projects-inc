@@ -101,7 +101,6 @@ class Board:
             if len(choices) == 0:
                 print(n, "fail")
                 print(row, col)
-                self.print_board()
 
             num = random.choice(choices)
             self.board[row][col] = num

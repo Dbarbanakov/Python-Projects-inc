@@ -2,7 +2,6 @@ import PySimpleGUI as sg
 from layouts import *
 from events_utils import *
 
-# more more
 
 hp_sudoku = 81
 hp_player = 0
@@ -28,7 +27,7 @@ def get_event(event):
 
         window_main.ding()
         window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
-        window_main["FRAME-BUTTONS-"].update(f"{event}")
+        window_main["-FRAME-BUTTONS-"].update(f"{event}")
 
         toggle_panel_visibility(False, window_main, "-FRAME-DIFFICULTY-")
 
@@ -38,7 +37,7 @@ def get_event(event):
             "-HEALTH-PLAYER-",
             "-TIMER-",
             "-HEALTH-SUDOKU-",
-            "FRAME-BUTTONS-",
+            "-FRAME-BUTTONS-",
         )
 
         for coords in sudoku.opened_positions:
@@ -48,26 +47,27 @@ def get_event(event):
             )
 
     if type(event) == tuple and sudoku:
+        solution_number = sudoku.board[event[0]][event[1]]
+
         if event not in sudoku.opened_positions:
             ev, val = sg.Window(
                 "Available Numbers:",
-                generate_listbox(
+                generate_frame_with_buttons(
                     get_available_choices(sudoku.progress_board, event[0], event[1])
                 ),
+                no_titlebar=True,
             ).read(close=True)
 
-            if val[0][0] == sudoku.board[event[0]][event[1]]:
+            if int(ev) == solution_number:
                 sudoku.opened_positions.append(event)
 
                 hp_sudoku -= 1
                 window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
 
                 window_main[event].update(
-                    sudoku.board[event[0]][event[1]], button_color=("white", "black")
+                    solution_number, button_color=("white", "black")
                 )
-                sudoku.progress_board[event[0]][event[1]] = sudoku.board[event[0]][
-                    event[1]
-                ]
+                sudoku.progress_board[event[0]][event[1]] = solution_number
 
             else:
                 sg.popup_no_wait("This is not the right number.", "Health -= 1.")
