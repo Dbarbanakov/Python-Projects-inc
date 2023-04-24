@@ -17,3 +17,9 @@ def get_available_choices(board, row, col):
             available_choices.append(i)
 
     return available_choices
+
+
+def get_stars(values):
+    for k, v in values.items():
+        if v == True:
+            return k + 1

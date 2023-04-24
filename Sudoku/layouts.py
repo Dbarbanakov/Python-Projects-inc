@@ -54,8 +54,14 @@ layout_main = [
             visible=False,
         ),
     ],
-    [sg.T("", key="-STARS-")],
     # [sg.B("Save", image_source="nums.png")],
+    [
+        sg.Frame(
+            " ",
+            [get_frame()],
+            key="-FRAME-STARS-",
+        ),
+    ],
     [sg.B("Exit")],
 ]
 
@@ -65,13 +71,20 @@ layout_modal = [
             "Stars",
             [
                 [
-                    sg.Radio("*", "stars", key="1 STAR"),
-                    sg.Radio("**", "stars", key="2 STARS"),
-                    sg.Radio("***", "stars", key="3 STARS"),
+                    sg.Radio("1", "-RADIO-STARS-"),
+                    sg.Radio("2", "-RADIO-STARS-"),
+                    sg.Radio("3", "-RADIO-STARS-"),
+                    sg.Radio("4", "-RADIO-STARS-"),
+                    sg.Radio("5", "-RADIO-STARS-"),
                 ]
             ],
-        )
-    ]
+            key="-FRAME-RADIO-",
+            title_location="n",
+        ),
+    ],
+    [
+        sg.B("Submit"),
+    ],
 ]
 
 window_main = sg.Window(
@@ -81,9 +94,9 @@ window_main = sg.Window(
 )
 
 window_modal = sg.Window(
-    "Rate me.",
+    " ",
     layout_modal,
-    modal=True,
     element_justification="c",
+    modal=True,
     disable_close=True,
 )

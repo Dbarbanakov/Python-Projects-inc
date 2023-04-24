@@ -29,3 +29,17 @@ def generate_options(options):
 
 def generate_frame_with_buttons(options):
     return [[sg.Frame(" ----- ", [generate_options(options)], title_location="s")]]
+
+
+def get_frame(number=5):
+    stars = []
+    for i in range(number):
+        stars.append(
+            sg.Image(
+                f"{os.path.dirname(__file__)}/images/star.png",
+                key=f"star{i+1}",
+                visible=False,
+            )
+        )
+    stars.append(sg.B("Rate me", visible=False))
+    return stars

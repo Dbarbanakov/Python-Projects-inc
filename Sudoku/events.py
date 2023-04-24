@@ -15,12 +15,6 @@ def get_event(event):
         window_main["-TIMER-"].update(f"{timer}")
         timer += 1
 
-    if timer == 100:
-        ev, val = window_modal.read()
-        if ev:
-            window_main["-STARS-"].update(ev)
-            window_modal.close()
-
     if event in ("Easy", "Medium", "Hard"):
         sudoku.apply_difficulty(event)
         hp_sudoku -= len(sudoku.opened_positions)
@@ -38,6 +32,7 @@ def get_event(event):
             "-TIMER-",
             "-HEALTH-SUDOKU-",
             "-FRAME-BUTTONS-",
+            "Rate me",
         )
 
         for coords in sudoku.opened_positions:
@@ -72,3 +67,14 @@ def get_event(event):
             else:
                 hp_player += 1
                 window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
+    if event == "Rate me":
+        toggle_panel_visibility(False, window_main, "Rate me")
+
+        ev, val = window_modal.read()
+        if ev:
+            stars = get_stars(val)
+
+            for i in range(stars):
+                toggle_panel_visibility(True, window_main, f"star{i+1}")
+
+            window_modal.close()
