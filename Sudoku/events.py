@@ -70,6 +70,5 @@ def get_event(event):
                 sudoku.progress_board[event[0]][event[1]] = solution_number
 
             else:
-                sg.popup_no_wait("This is not the right number.", "Health -= 1.")
                 hp_player += 1
                 window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")

@@ -2,9 +2,7 @@ import PySimpleGUI as sg
 from events import *
 
 # high scores
-# game modes
-# bug - input - enter
-# numbers pics - path
+# keyboard controls
 
 for i in range(100):
     if i == 50:

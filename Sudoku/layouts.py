@@ -38,9 +38,9 @@ layout_main = [
             "Choose a difficulty.",
             [
                 [
-                    sg.B("Easy", bind_return_key=True),
-                    sg.B("Medium", bind_return_key=True),
-                    sg.B("Hard", bind_return_key=True),
+                    sg.B("Easy"),
+                    sg.B("Medium"),
+                    sg.B("Hard"),
                 ]
             ],
             key="-FRAME-DIFFICULTY-",
@@ -65,9 +65,9 @@ layout_modal = [
             "Stars",
             [
                 [
-                    sg.Radio("*", "stars", key="1 STAR", enable_events=True),
-                    sg.Radio("**", "stars", key="2 STARS", enable_events=True),
-                    sg.Radio("***", "stars", key="3 STARS", enable_events=True),
+                    sg.Radio("*", "stars", key="1 STAR"),
+                    sg.Radio("**", "stars", key="2 STARS"),
+                    sg.Radio("***", "stars", key="3 STARS"),
                 ]
             ],
         )
@@ -85,6 +85,5 @@ window_modal = sg.Window(
     layout_modal,
     modal=True,
     element_justification="c",
-    return_keyboard_events=True,
     disable_close=True,
 )
