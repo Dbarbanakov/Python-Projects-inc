@@ -2,6 +2,18 @@ import PySimpleGUI as sg
 import os
 
 
+def health_bar(name,max,colors):
+    return sg.ProgressBar(
+        max,
+        orientation="h",
+        key=f"-HEALTH-{name}-",
+        bar_color=colors,
+        expand_y=True,
+        visible=False,
+        size=(21),
+    )
+
+
 def generate_button(i, j, text=" "):
     return sg.B(
         text,
@@ -31,15 +43,22 @@ def generate_frame_with_buttons(options):
     return [[sg.Frame(" ----- ", [generate_options(options)], title_location="s")]]
 
 
-def get_frame(number=5):
-    stars = []
+def frame_layout_stars(number=5):
+    frame = []
     for i in range(number):
-        stars.append(
+        frame.append(
             sg.Image(
                 f"{os.path.dirname(__file__)}/images/star.png",
                 key=f"star{i+1}",
                 visible=False,
             )
         )
-    stars.append(sg.B("Rate me", visible=False))
-    return stars
+    frame.append(sg.B("Rate me",key='-RATE-', visible=False))
+    return frame
+
+
+def frame_layout_stars_radio(radios=5):
+    frame = []
+    for i in range(radios):
+        frame.append(sg.Radio(f"{i+1}", "-RADIO-STARS-",enable_events=True))
+    return frame

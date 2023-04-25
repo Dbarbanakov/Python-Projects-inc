@@ -1,27 +1,37 @@
 import PySimpleGUI as sg
 from layouts import *
 from events_utils import *
-
+from scores import *
 
 hp_sudoku = 81
 hp_player = 0
 timer = 0
+user = ""
+
+## user!
 
 
 def get_event(event):
-    global hp_player, hp_sudoku, timer
+    global hp_player, hp_sudoku, timer, user
+
+    if hp_sudoku == 0:
+        score = write_score(timer, hp_player, user)
+        write_score(score)
+        hp_sudoku -= 1
 
     if event == "-TIMEOUT-":
         window_main["-TIMER-"].update(f"{timer}")
         timer += 1
 
     if event in ("Easy", "Medium", "Hard"):
+        window_main["-FRAME-BUTTONS-"].update(event)
+
         sudoku.apply_difficulty(event)
         hp_sudoku -= len(sudoku.opened_positions)
-
-        window_main.ding()
         window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
-        window_main["-FRAME-BUTTONS-"].update(f"{event}")
+
+        user = sg.popup_get_text("Username", default_text="User ...")
+        window_main["-USER-"].update(user)
 
         toggle_panel_visibility(False, window_main, "-FRAME-DIFFICULTY-")
 
@@ -32,7 +42,7 @@ def get_event(event):
             "-TIMER-",
             "-HEALTH-SUDOKU-",
             "-FRAME-BUTTONS-",
-            "Rate me",
+            "-RATE-",
         )
 
         for coords in sudoku.opened_positions:
@@ -67,9 +77,16 @@ def get_event(event):
             else:
                 hp_player += 1
                 window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
-    if event == "Rate me":
-        toggle_panel_visibility(False, window_main, "Rate me")
 
+    if event == "Save":
+        sg.theme("PythonPlus")
+        sg.popup("Hello there")
+
+        score = get_score(timer, hp_player)
+        write_score(score, user)
+
+    if event == "-RATE-":
+        toggle_panel_visibility(False, window_main, "-RATE-")
         ev, val = window_modal.read()
         if ev:
             stars = get_stars(val)
@@ -78,3 +95,11 @@ def get_event(event):
                 toggle_panel_visibility(True, window_main, f"star{i+1}")
 
             window_modal.close()
+    if event == "-HIGH-SCORES-":
+        format_score()
+        sg.theme("PythonPlus")
+        sg.popup_ok(
+            *read_score(),
+            title="High Scores",
+            font=("Helvetica", 11, "bold"),
+        )

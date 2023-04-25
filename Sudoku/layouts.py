@@ -7,30 +7,14 @@ sg.theme("DarkBlack")
 layout_main = [
     [
         [
-            sg.T("Player"),
+            sg.T("Player", key="-USER-"),
             sg.T("VS"),
             sg.T("Sudoku"),
         ],
         [
-            sg.ProgressBar(
-                10,
-                orientation="h",
-                key="-HEALTH-PLAYER-",
-                bar_color=("red", "green"),
-                expand_y=True,
-                visible=False,
-                size=(21),
-            ),
+            health_bar("PLAYER", 10, ("red", "green")),
             sg.T("VS", key="-TIMER-", visible=False),
-            sg.ProgressBar(
-                81,
-                orientation="h",
-                key="-HEALTH-SUDOKU-",
-                bar_color=("green", "red"),
-                expand_y=True,
-                visible=False,
-                size=(21),
-            ),
+            health_bar("SUDOKU", 81, ("green", "red")),
         ],
     ],
     [
@@ -54,14 +38,15 @@ layout_main = [
             visible=False,
         ),
     ],
-    # [sg.B("Save", image_source="nums.png")],
+    [sg.B("Save")],
     [
         sg.Frame(
             " ",
-            [get_frame()],
+            [frame_layout_stars()],
             key="-FRAME-STARS-",
         ),
     ],
+    [sg.B("High Scores", key="-HIGH-SCORES-")],
     [sg.B("Exit")],
 ]
 
@@ -69,21 +54,10 @@ layout_modal = [
     [
         sg.Frame(
             "Stars",
-            [
-                [
-                    sg.Radio("1", "-RADIO-STARS-"),
-                    sg.Radio("2", "-RADIO-STARS-"),
-                    sg.Radio("3", "-RADIO-STARS-"),
-                    sg.Radio("4", "-RADIO-STARS-"),
-                    sg.Radio("5", "-RADIO-STARS-"),
-                ]
-            ],
+            [frame_layout_stars_radio()],
             key="-FRAME-RADIO-",
             title_location="n",
         ),
-    ],
-    [
-        sg.B("Submit"),
     ],
 ]
 
