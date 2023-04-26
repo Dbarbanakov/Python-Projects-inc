@@ -66,20 +66,17 @@ def frame_layout_stars_radio(radios=5):
 
 
 def frame_layout_high_scores():
+    text = [
+        "     User",
+        "   Score   ",
+        "       Date",
+    ]
     return [
         [
             sg.Frame(
                 "High Scores",
                 [
-                    [
-                        sg.Push(),
-                        sg.T("User", font=("Helvetica", 12, "roman")),
-                        sg.Push(),
-                        sg.T("Score", font=("Helvetica", 12, "roman")),
-                        sg.Push(),
-                        sg.T("Date", font=("Helvetica", 12, "roman")),
-                        sg.Push(),
-                    ],
+                    [sg.T(f"{x}", size=12, font=("Kinnari", 12, "bold")) for x in text],
                     [col_high_scores()],
                 ],
                 title_location="n",
@@ -96,7 +93,7 @@ def col_high_scores():
     return sg.Column(
         [
             [
-                sg.T(col.strip(), size=12, font=("Helvetica", 12, "italic"))
+                sg.T(col.strip(), size=12, font=("FreeMono", 12, "bold"))
                 for col in row.split()
             ]
             for row in read_score()

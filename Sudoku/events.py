@@ -104,6 +104,7 @@ def get_event(event):
         sg.Window(
             "High Scores",
             frame_layout_high_scores(),
+            font=('FreeSerif', 12,'bold'),
             element_justification="c",
             no_titlebar=True,
             margins=(1, 1),
