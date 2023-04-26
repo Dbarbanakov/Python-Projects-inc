@@ -38,13 +38,9 @@ layout_main = [
             visible=False,
         ),
     ],
-    [sg.B("Save")],
+    [sg.B("Save"), sg.B("Rate me", key="-RATE-")],
     [
-        sg.Frame(
-            " ",
-            [frame_layout_stars()],
-            key="-FRAME-STARS-",
-        ),
+        sg.Frame(" ", [frame_layout_stars()], key="-FRAME-STARS-", visible=False),
     ],
     [sg.B("High Scores", key="-HIGH-SCORES-")],
     [sg.B("Exit")],

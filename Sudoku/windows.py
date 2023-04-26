@@ -13,8 +13,18 @@ def get_user_window():
         no_titlebar=True,
         grab_anywhere=True,
         image=f"{os.path.dirname(__file__)}/images/log.png",
-        background_color="#29293d",
     )
+
+
+def get_high_scores_window():
+    return sg.Window(
+        "High Scores",
+        frame_layout_high_scores(),
+        font=("FreeSerif", 12, "bold"),
+        element_justification="c",
+        no_titlebar=True,
+        margins=(1, 1),
+    ).read(close=True)
 
 
 window_main = sg.Window(

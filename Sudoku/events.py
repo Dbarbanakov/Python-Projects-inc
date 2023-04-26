@@ -24,12 +24,15 @@ def get_event(event):
     if event in ("Easy", "Medium", "Hard"):
         window_main["-FRAME-BUTTONS-"].update(event)
 
+        window_main.set_alpha(0.5)
+
         sudoku.apply_difficulty(event)
         hp_sudoku -= len(sudoku.opened_positions)
         window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
 
         user = get_user_window()
         window_main["-USER-"].update(user)
+        window_main.set_alpha(1)
 
         toggle_panel_visibility(False, window_main, "-FRAME-DIFFICULTY-")
 
@@ -40,7 +43,6 @@ def get_event(event):
             "-TIMER-",
             "-HEALTH-SUDOKU-",
             "-FRAME-BUTTONS-",
-            "-RATE-",
         )
 
         for coords in sudoku.opened_positions:
@@ -84,6 +86,8 @@ def get_event(event):
         toggle_panel_visibility(False, window_main, "-RATE-")
         ev, val = window_modal.read()
         if ev:
+            toggle_panel_visibility(True, window_main, "-FRAME-STARS-")
+
             stars = get_stars(val)
 
             for i in range(stars):
@@ -92,12 +96,9 @@ def get_event(event):
             window_modal.close()
 
     if event == "-HIGH-SCORES-":
+        window_main.set_alpha(0.5)
+
         format_score()
-        sg.Window(
-            "High Scores",
-            frame_layout_high_scores(),
-            font=("FreeSerif", 12, "bold"),
-            element_justification="c",
-            no_titlebar=True,
-            margins=(1, 1),
-        ).read(close=True)
+
+        get_high_scores_window()
+        window_main.set_alpha(1)

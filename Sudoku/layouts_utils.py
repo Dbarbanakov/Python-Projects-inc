@@ -54,7 +54,7 @@ def frame_layout_stars(number=5):
                 visible=False,
             )
         )
-    frame.append(sg.B("Rate me", key="-RATE-", visible=False))
+    # frame.append()
     return frame
 
 
@@ -66,11 +66,12 @@ def frame_layout_stars_radio(radios=5):
 
 
 def frame_layout_high_scores():
-    text = [
+    text = (
         "     User",
-        "   Score   ",
+        " -- Score -- ",
         "       Date",
-    ]
+    )
+
     return [
         [
             sg.Frame(
@@ -79,8 +80,10 @@ def frame_layout_high_scores():
                     [sg.T(f"{x}", size=12, font=("Kinnari", 12, "bold")) for x in text],
                     [col_high_scores()],
                 ],
+                font=("Chilanka", 12, "bold"),
                 title_location="n",
                 pad=20,
+                title_color="#FF3300",
             )
         ],
         [
