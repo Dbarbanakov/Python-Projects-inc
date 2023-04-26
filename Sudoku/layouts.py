@@ -61,17 +61,15 @@ layout_modal = [
     ],
 ]
 
-
-window_main = sg.Window(
-    "Sudoku",
-    layout_main,
-    element_justification="c",
-)
-
-window_modal = sg.Window(
-    " ",
-    layout_modal,
-    element_justification="c",
-    modal=True,
-    disable_close=True,
-)
+layout_progress_bar = [
+    [sg.Text("LOADING ... ", font=("Ani", 12, "bold"))],
+    [
+        sg.ProgressBar(
+            200,
+            orientation="h",
+            size=(30, 20),
+            key="-LOADING-",
+            bar_color=("#FF3300", "#000000"),
+        )
+    ],
+]

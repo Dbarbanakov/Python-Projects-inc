@@ -1,14 +1,12 @@
 import PySimpleGUI as sg
-from layouts import *
+from windows import *
 from events_utils import *
 from scores import *
 
 hp_sudoku = 81
 hp_player = 0
 timer = 0
-user = ""
-
-## user!
+user = "Player"
 
 
 def get_event(event):
@@ -30,12 +28,7 @@ def get_event(event):
         hp_sudoku -= len(sudoku.opened_positions)
         window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
 
-        user = sg.popup_get_text(
-            "",
-            default_text="Username",
-            font=("Helvetica", 12, "italic"),
-            keep_on_top=True,
-        )
+        user = get_user_window()
         window_main["-USER-"].update(user)
 
         toggle_panel_visibility(False, window_main, "-FRAME-DIFFICULTY-")
@@ -100,11 +93,10 @@ def get_event(event):
 
     if event == "-HIGH-SCORES-":
         format_score()
-        sg.theme("LightBrown1")
         sg.Window(
             "High Scores",
             frame_layout_high_scores(),
-            font=('FreeSerif', 12,'bold'),
+            font=("FreeSerif", 12, "bold"),
             element_justification="c",
             no_titlebar=True,
             margins=(1, 1),
