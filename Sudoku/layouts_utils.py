@@ -1,8 +1,9 @@
 import PySimpleGUI as sg
 import os
+from scores import *
 
 
-def health_bar(name,max,colors):
+def health_bar(name, max, colors):
     return sg.ProgressBar(
         max,
         orientation="h",
@@ -53,12 +54,52 @@ def frame_layout_stars(number=5):
                 visible=False,
             )
         )
-    frame.append(sg.B("Rate me",key='-RATE-', visible=False))
+    frame.append(sg.B("Rate me", key="-RATE-", visible=False))
     return frame
 
 
 def frame_layout_stars_radio(radios=5):
     frame = []
     for i in range(radios):
-        frame.append(sg.Radio(f"{i+1}", "-RADIO-STARS-",enable_events=True))
+        frame.append(sg.Radio(f"{i+1}", "-RADIO-STARS-", enable_events=True))
     return frame
+
+
+def frame_layout_high_scores():
+    return [
+        [
+            sg.Frame(
+                "High Scores",
+                [
+                    [
+                        sg.Push(),
+                        sg.T("User", font=("Helvetica", 12, "roman")),
+                        sg.Push(),
+                        sg.T("Score", font=("Helvetica", 12, "roman")),
+                        sg.Push(),
+                        sg.T("Date", font=("Helvetica", 12, "roman")),
+                        sg.Push(),
+                    ],
+                    [col_high_scores()],
+                ],
+                title_location="n",
+                pad=20,
+            )
+        ],
+        [
+            sg.B("Agreed"),
+        ],
+    ]
+
+
+def col_high_scores():
+    return sg.Column(
+        [
+            [
+                sg.T(col.strip(), size=12, font=("Helvetica", 12, "italic"))
+                for col in row.split()
+            ]
+            for row in read_score()
+        ],
+        element_justification="left",
+    )

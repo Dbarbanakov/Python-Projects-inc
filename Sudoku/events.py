@@ -30,7 +30,12 @@ def get_event(event):
         hp_sudoku -= len(sudoku.opened_positions)
         window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
 
-        user = sg.popup_get_text("Username", default_text="User ...")
+        user = sg.popup_get_text(
+            "",
+            default_text="Username",
+            font=("Helvetica", 12, "italic"),
+            keep_on_top=True,
+        )
         window_main["-USER-"].update(user)
 
         toggle_panel_visibility(False, window_main, "-FRAME-DIFFICULTY-")
@@ -79,9 +84,6 @@ def get_event(event):
                 window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
 
     if event == "Save":
-        sg.theme("PythonPlus")
-        sg.popup("Hello there")
-
         score = get_score(timer, hp_player)
         write_score(score, user)
 
@@ -95,11 +97,14 @@ def get_event(event):
                 toggle_panel_visibility(True, window_main, f"star{i+1}")
 
             window_modal.close()
+
     if event == "-HIGH-SCORES-":
         format_score()
-        sg.theme("PythonPlus")
-        sg.popup_ok(
-            *read_score(),
-            title="High Scores",
-            font=("Helvetica", 11, "bold"),
-        )
+        sg.theme("LightBrown1")
+        sg.Window(
+            "High Scores",
+            frame_layout_high_scores(),
+            element_justification="c",
+            no_titlebar=True,
+            margins=(1, 1),
+        ).read(close=True)

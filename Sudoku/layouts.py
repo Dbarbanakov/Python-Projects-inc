@@ -61,6 +61,7 @@ layout_modal = [
     ],
 ]
 
+
 window_main = sg.Window(
     "Sudoku",
     layout_main,
