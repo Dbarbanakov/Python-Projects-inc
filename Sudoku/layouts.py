@@ -6,15 +6,16 @@ sg.theme("DarkBlack")
 
 layout_main = [
     [
+        [sg.Image(sg.PYTHON_COLORED_HEARTS_BASE64, key="-EMOJI-INITIAL-")],
         [
             sg.T("Player", key="-USER-"),
-            sg.T("VS"),
-            sg.T("Sudoku"),
+            sg.T("  VS  "),
+            sg.T("Board"),
         ],
         [
-            health_bar("PLAYER", 10, ("red", "green")),
-            sg.T("VS", key="-TIMER-", visible=False),
-            health_bar("SUDOKU", 81, ("green", "red")),
+            health_bar("PLAYER", 10, (color_red, color_green)),
+            sg.T("", key="-TIMER-", visible=False, size=(2)),
+            health_bar("SUDOKU", 81, (color_green, color_red)),
         ],
     ],
     [
@@ -38,34 +39,49 @@ layout_main = [
             visible=False,
         ),
     ],
-    [sg.B("Save"), sg.B("Rate me", key="-RATE-")],
     [
-        sg.Frame(" ", [frame_layout_stars()], key="-FRAME-STARS-", visible=False),
+        sg.T(
+            "Thanks for the appreciation!",
+            text_color=color_red,
+            key="-THANKS-",
+            visible=False,
+        )
     ],
-    [sg.B("High Scores", key="-HIGH-SCORES-")],
-    [sg.B("Exit")],
+    [
+        sg.B("Rate me", key="-RATE-"),
+        sg.Push(),
+        sg.pin(
+            sg.Frame("", [frame_layout_stars()], key="-FRAME-STARS-", visible=False)
+        ),
+        sg.Push(),
+        sg.B("High Scores", key="-HIGH-SCORES-"),
+    ],
+    # [sg.B("Save")],
 ]
 
-layout_modal = [
-    [
-        sg.Frame(
-            "Stars",
-            [frame_layout_stars_radio()],
-            key="-FRAME-RADIO-",
-            title_location="n",
-        ),
-    ],
-]
+
+def layout_rating():
+    return [
+        [
+            sg.Frame(
+                "Stars",
+                [frame_layout_stars_radio()],
+                key="-FRAME-RADIO-",
+                title_location="n",
+            ),
+        ],
+    ]
+
 
 layout_progress_bar = [
-    [sg.Text("LOADING ... ", font=("Ani", 12, "bold"))],
+    [sg.Text("LOADING ... ", font=font_loading)],
     [
         sg.ProgressBar(
             200,
             orientation="h",
             size=(30, 20),
             key="-LOADING-",
-            bar_color=("#FF3300", "#000000"),
+            bar_color=(color_red, "black"),
         )
     ],
 ]

@@ -2,6 +2,13 @@ import PySimpleGUI as sg
 import os
 from scores import *
 
+color_red = "#FF3300"
+color_green = "#00b300"
+
+font_loading = ("Ani", 12, "bold")
+font_main_window = ("Purisa", 12, "bold")
+font_login_scores = ("FreeMono", 12, "bold")
+
 
 def health_bar(name, max, colors):
     return sg.ProgressBar(
@@ -34,7 +41,7 @@ def generate_options(options):
             sg.B(
                 " ",
                 key=options[i],
-                image_source=f"{os.path.dirname(__file__)}/images/{options[i]}.png",
+                image_source=f"{os.path.dirname(__file__)}/files/images/{options[i]}.png",
             )
         )
     return buttons
@@ -49,19 +56,27 @@ def frame_layout_stars(number=5):
     for i in range(number):
         frame.append(
             sg.Image(
-                f"{os.path.dirname(__file__)}/images/star.png",
+                f"{os.path.dirname(__file__)}/files/images/star.png",
                 key=f"star{i+1}",
                 visible=False,
             )
         )
-    # frame.append()
     return frame
 
 
 def frame_layout_stars_radio(radios=5):
     frame = []
     for i in range(radios):
-        frame.append(sg.Radio(f"{i+1}", "-RADIO-STARS-", enable_events=True))
+        frame.append(
+            sg.Radio(
+                f"{i+1}",
+                "-RADIO-STARS-",
+                font=font_loading,
+                text_color=color_green,
+                # circle_color=color_red,
+                enable_events=True,
+            )
+        )
     return frame
 
 
@@ -75,15 +90,21 @@ def frame_layout_high_scores():
     return [
         [
             sg.Frame(
-                "High Scores",
+                "@ High Scores @",
                 [
-                    [sg.T(f"{x}", size=12, font=("Kinnari", 12, "bold")) for x in text],
+                    [
+                        sg.T(
+                            f"{x}",
+                            size=12,
+                            text_color=color_green,
+                        )
+                        for x in text
+                    ],
                     [col_high_scores()],
                 ],
-                font=("Chilanka", 12, "bold"),
                 title_location="n",
                 pad=20,
-                title_color="#FF3300",
+                title_color=color_red,
             )
         ],
         [
@@ -94,12 +115,6 @@ def frame_layout_high_scores():
 
 def col_high_scores():
     return sg.Column(
-        [
-            [
-                sg.T(col.strip(), size=12, font=("FreeMono", 12, "bold"))
-                for col in row.split()
-            ]
-            for row in read_score()
-        ],
+        [[sg.T(col.strip(), size=12) for col in row.split()] for row in read_score()],
         element_justification="left",
     )

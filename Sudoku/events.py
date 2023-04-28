@@ -83,17 +83,28 @@ def get_event(event):
         write_score(score, user)
 
     if event == "-RATE-":
-        toggle_panel_visibility(False, window_main, "-RATE-")
-        ev, val = window_modal.read()
-        if ev:
-            toggle_panel_visibility(True, window_main, "-FRAME-STARS-")
+        window_rate = window_rating()
+        window_main.set_alpha(0.5)
+
+        ev, val = window_rate.read()
+
+        if ev in (0, 1, 2, 3, 4):
+            toggle_panel_visibility(False, window_main, "-RATE-")
+            toggle_panel_visibility(
+                True,
+                window_main,
+                "-THANKS-",
+                "-FRAME-STARS-",
+            )
 
             stars = get_stars(val)
 
             for i in range(stars):
                 toggle_panel_visibility(True, window_main, f"star{i+1}")
 
-            window_modal.close()
+        window_main.set_alpha(1)
+
+        window_rate.close()
 
     if event == "-HIGH-SCORES-":
         window_main.set_alpha(0.5)
