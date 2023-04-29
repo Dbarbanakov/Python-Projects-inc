@@ -25,7 +25,7 @@ layout_main = [
                 [
                     sg.B("Easy"),
                     sg.B("Medium"),
-                    sg.B("Hard"),
+                    sg.B("Hard", enable_events=True),
                 ]
             ],
             key="-FRAME-DIFFICULTY-",

@@ -7,6 +7,7 @@ color_green = "#00b300"
 
 font_loading = ("Ani", 12, "bold")
 font_main_window = ("Purisa", 12, "bold")
+font_board = ("Helvetica", 10, "bold")
 font_login_scores = ("FreeMono", 12, "bold")
 
 
@@ -29,8 +30,7 @@ def generate_button(i, j, text=" "):
         key=(i, j),
         pad=(0, 0),
         border_width=2,
-        font=("Helvetica", 10, "bold"),
-        auto_size_button=False,
+        font=font_board,
     )
 
 
@@ -108,7 +108,7 @@ def frame_layout_high_scores():
             )
         ],
         [
-            sg.B("Agreed"),
+            sg.B("Agreed", bind_return_key=True),
         ],
     ]
 

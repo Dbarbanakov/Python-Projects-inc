@@ -1,4 +1,29 @@
 from layouts import *
+from solution import *
+
+
+sudoku = Board()
+
+
+def get_available_choices(board, row, col):
+    available_choices = []
+
+    for i in range(1, 10):
+        if sudoku.check_position(board, row, col, i):
+            available_choices.append(i)
+
+    return available_choices
+
+
+def window_choices(event):
+    return sg.Window(
+        "Available Numbers:",
+        generate_frame_with_buttons(
+            get_available_choices(sudoku.progress_board, event[0], event[1])
+        ),
+        no_titlebar=True,
+        return_keyboard_events=True,
+    ).read(close=True)
 
 
 def get_user_window():
@@ -28,7 +53,12 @@ def get_high_scores_window():
 
 
 window_main = sg.Window(
-    "Sudoku", layout_main, element_justification="c", font=font_main_window
+    "Sudoku",
+    layout_main,
+    element_justification="c",
+    font=font_main_window,
+    return_keyboard_events=True,
+    use_default_focus=False,
 )
 
 

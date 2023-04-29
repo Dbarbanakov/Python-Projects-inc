@@ -20,6 +20,7 @@ window_progress_bar.close()
 
 while True:
     event, values = window_main.read(timeout=1000, timeout_key="-TIMEOUT-")
+
     if event == sg.WIN_CLOSED:
         break
     else:
