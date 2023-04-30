@@ -1,3 +1,4 @@
+import PySimpleGUI as sg
 
 
 def toggle_panel_visibility(boolean, window, *keys):
@@ -9,3 +10,17 @@ def get_stars(values):
     for k, v in values.items():
         if v == True:
             return k + 1
+
+
+def change_prev_focus_color(element):
+    if element.get_previous_focus().get_text() in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+        element.get_previous_focus().update(button_color="black")
+    else:
+        element.get_previous_focus().update(button_color="white")
+
+
+def change_color(element, color1, color2):
+    if element.get_text() in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+        element.update(button_color=color1)
+    else:
+        element.update(button_color=color2)

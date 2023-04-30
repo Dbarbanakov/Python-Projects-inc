@@ -3,7 +3,7 @@ import sys
 from events import *
 
 
-for i in range(200):
+for i in range(60):
     if i == 50:
         sudoku.generate_board()
 
@@ -17,12 +17,18 @@ for i in range(200):
 
 window_progress_bar.close()
 
+# sg.show_debugger_window(location=(10, 10))
 
 while True:
-    event, values = window_main.read(timeout=1000, timeout_key="-TIMEOUT-")
+    event, values = window_main.read(timeout=1000)
+
+    if event == sg.TIMEOUT_KEY:
+        window_main["-TIMER-"].update(f"{timer}")
+        timer += 1
 
     if event == sg.WIN_CLOSED:
         break
+
     else:
         get_event(event)
 

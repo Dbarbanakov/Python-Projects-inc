@@ -6,17 +6,37 @@ sg.theme("DarkBlack")
 
 layout_main = [
     [
-        [sg.Image(sg.PYTHON_COLORED_HEARTS_BASE64, key="-EMOJI-INITIAL-")],
-        [
-            sg.T("Player", key="-USER-"),
-            sg.T("  VS  "),
-            sg.T("Board"),
-        ],
-        [
-            health_bar("PLAYER", 10, (color_red, color_green)),
-            sg.T("", key="-TIMER-", visible=False, size=(2)),
-            health_bar("SUDOKU", 81, (color_green, color_red)),
-        ],
+        sg.vbottom(
+            [
+                sg.Image(
+                    sg.PYTHON_COLORED_HEARTS_BASE64,
+                    key="-EMOJI-PLAYER-",
+                    visible=False,
+                    subsample=2,
+                ),
+                sg.Column(
+                    [
+                        [sg.T("Player", key="-USER-")],
+                        [health_bar("PLAYER", 10, (color_red, color_green))],
+                    ]
+                ),
+                sg.Text(
+                    "0", key="-TIMER-", visible=False, size=(2), justification="center"
+                ),
+                sg.Column(
+                    [
+                        [sg.Push(), sg.T("Board")],
+                        [health_bar("SUDOKU", 81, (color_green, color_red))],
+                    ]
+                ),
+                sg.Image(
+                    sg.PYTHON_COLORED_HEARTS_BASE64,
+                    key="-EMOJI-SUDOKU-",
+                    visible=False,
+                    subsample=2,
+                ),
+            ]
+        ),
     ],
     [
         sg.Frame(

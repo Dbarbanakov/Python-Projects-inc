@@ -17,9 +17,8 @@ def health_bar(name, max, colors):
         orientation="h",
         key=f"-HEALTH-{name}-",
         bar_color=colors,
-        expand_y=True,
         visible=False,
-        size=(21),
+        size=(20, 20),
     )
 
 
@@ -30,7 +29,7 @@ def generate_button(i, j, text=" "):
         key=(i, j),
         pad=(0, 0),
         border_width=2,
-        font=font_board,
+        font=font_login_scores,
     )
 
 
