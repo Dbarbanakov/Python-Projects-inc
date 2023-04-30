@@ -16,19 +16,54 @@ def get_event(event):
     element = window_main.find_element_with_focus()
 
     if element:
-        if element.get_previous_focus():
-            element.get_previous_focus().update(button_color="white")
-
-        element.update(button_color=color_red)
-        window_main.refresh()
         if event == "Return:36":
             element.click()
 
+        if event == "Tab:23":
+            change_prev_focus_color(element)
+
+        if type(element.Key) == tuple:
+            row, col = element.Key
+
+            if event == "Right:114":
+                col += 1 * (col < 8)
+            elif event == "Left:113":
+                col -= 1 * (col > 0)
+            elif event == "Down:116":
+                row += 1 * (row < 8)
+            elif event == "Up:111":
+                row -= 1 * (row > 0)
+
+            change_color(element, "black", "white")
+
+            coords = (row, col)
+            window_main[coords].set_focus()
+
+        change_color(window_main.find_element_with_focus(), color_green, color_red)
+        window_main.refresh()
+
     # Focus
 
-    if event == "-TIMEOUT-":
-        window_main["-TIMER-"].update(f"{timer}")
-        timer += 1
+    if type(event) == tuple:
+        solution_number = sudoku.board[event[0]][event[1]]
+
+        if event not in sudoku.opened_positions:
+            ev, val = window_choices(event)
+            if int(ev) == solution_number:
+                sudoku.opened_positions.append(event)
+
+                hp_sudoku -= 1
+                window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
+
+                window_main[event].update(
+                    solution_number, button_color=("white", "black")
+                )
+
+                sudoku.progress_board[event[0]][event[1]] = solution_number
+
+            else:
+                hp_player += 1
+                window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
 
     if event in ("Easy", "Medium", "Hard"):
         window_main["-FRAME-BUTTONS-"].update(event)
@@ -48,9 +83,11 @@ def get_event(event):
         toggle_panel_visibility(
             True,
             window_main,
+            "-EMOJI-SUDOKU-",
             "-HEALTH-PLAYER-",
             "-TIMER-",
             "-HEALTH-SUDOKU-",
+            "-EMOJI-PLAYER-",
             "-FRAME-BUTTONS-",
         )
 
@@ -59,32 +96,6 @@ def get_event(event):
             window_main[coords].update(
                 sudoku.board[row][col], button_color=("white", "black")
             )
-            window_main[coords].block_focus()
-
-    if type(event) == tuple and sudoku:
-        solution_number = sudoku.board[event[0]][event[1]]
-
-        if event not in sudoku.opened_positions:
-            ev, val = window_choices(event)
-
-            if int(ev) == solution_number:
-                sudoku.opened_positions.append(event)
-
-                hp_sudoku -= 1
-                window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
-
-                window_main[event].update(
-                    solution_number, button_color=("white", "black")
-                )
-                window_main[event].block_focus()
-
-                sudoku.progress_board[event[0]][event[1]] = solution_number
-
-                # next_element = window_main[event].get_next_focus()
-
-            else:
-                hp_player += 1
-                window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
 
     if event == "-RATE-":
         window_rate = window_rating()
