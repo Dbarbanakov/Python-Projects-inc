@@ -45,7 +45,7 @@ layout_main = [
                 [
                     sg.B("Easy"),
                     sg.B("Medium"),
-                    sg.B("Hard", enable_events=True),
+                    sg.B("Hard"),
                 ]
             ],
             key="-FRAME-DIFFICULTY-",
@@ -93,8 +93,15 @@ def layout_rating():
     ]
 
 
-layout_progress_bar = [
-    [sg.Text("LOADING ... ", font=font_loading)],
+layout_loading = [
+    [
+        sg.Text("LOADING ... ", font=font_loading,key='text'),
+    ],
+    [
+        # sg.Text(
+        #     "", size=(8, 2), font=("Helvetica", 20), justification="center", key="text"
+        # ),
+    ],
     [
         sg.ProgressBar(
             200,

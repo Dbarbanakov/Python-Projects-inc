@@ -72,9 +72,9 @@ def window_rating():
     )
 
 
-window_progress_bar = sg.Window(
+window_loading = sg.Window(
     "",
-    layout_progress_bar,
+    layout_loading,
     element_justification="c",
     modal=True,
     keep_on_top=True,
