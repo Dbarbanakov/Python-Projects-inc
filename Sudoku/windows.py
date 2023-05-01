@@ -5,32 +5,34 @@ from solution import *
 sudoku = Board()
 
 
-def get_available_choices(board, row, col):
-    available_choices = []
+def get_available_numbers(board, row, col):
+    """Helper function for get_window_available_numbers()."""
+    available_numbers = []
 
     for i in range(1, 10):
         if sudoku.check_position(board, row, col, i):
-            available_choices.append(i)
+            available_numbers.append(i)
 
-    return available_choices
+    return available_numbers
 
 
-def window_choices(event):
+def get_window_available_numbers(event):
+    """Returns the window after clicking on an empty Board coord[x,y] with the available numbers to choose from."""
     return sg.Window(
         "Available Numbers:",
-        generate_frame_with_buttons(
-            get_available_choices(sudoku.progress_board, event[0], event[1])
+        get_layout_window_available_numbers(
+            get_available_numbers(sudoku.progress_board, event[0], event[1])
         ),
         no_titlebar=True,
         return_keyboard_events=True,
     ).read(close=True)
 
 
-def get_user_window():
+def get_window_user_login():
     return sg.popup_get_text(
         "     Log In",
         default_text="user",
-        font=font_login_scores,
+        font=font_window_high_scores,
         size=(20, 10),
         text_color=color_red,
         button_color=(color_red, "black"),
@@ -41,11 +43,11 @@ def get_user_window():
     )
 
 
-def get_high_scores_window():
+def get_window_high_scores():
     return sg.Window(
         "High Scores",
-        frame_layout_high_scores(),
-        font=font_login_scores,
+        get_layout_window_high_scores(),
+        font=font_window_high_scores,
         element_justification="c",
         no_titlebar=True,
         margins=(1, 1),
@@ -54,27 +56,25 @@ def get_high_scores_window():
 
 window_main = sg.Window(
     "Sudoku",
-    layout_main,
+    layout_window_main,
     element_justification="c",
-    font=font_main_window,
+    font=font_window_main,
     return_keyboard_events=True,
     use_default_focus=False,
 )
 
 
-def window_rating():
-    return sg.Window(
-        " ",
-        layout_rating(),
-        element_justification="c",
-        modal=True,
-        keep_on_top=True,
-    )
-
+window_rating = sg.Window(
+    " ",
+    layout_window_rating,
+    element_justification="c",
+    modal=True,
+    keep_on_top=True,
+)
 
 window_loading = sg.Window(
     "",
-    layout_loading,
+    layout_window_loading,
     element_justification="c",
     modal=True,
     keep_on_top=True,

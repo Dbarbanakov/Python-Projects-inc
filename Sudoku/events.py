@@ -2,6 +2,8 @@ import PySimpleGUI as sg
 from windows import *
 from events_utils import *
 
+import psutil
+
 hp_sudoku = 81
 hp_player = 0
 timer = 0
@@ -20,7 +22,7 @@ def get_event(event):
             element.click()
 
         if event == "Tab:23":
-            change_prev_focus_color(element)
+            change_button_color(element.get_previous_focus(), "black", "white")
 
         if type(element.Key) == tuple:
             row, col = element.Key
@@ -34,12 +36,14 @@ def get_event(event):
             elif event == "Up:111":
                 row -= 1 * (row > 0)
 
-            change_color(element, "black", "white")
+            change_button_color(element, "black", "white")
 
             coords = (row, col)
             window_main[coords].set_focus()
 
-        change_color(window_main.find_element_with_focus(), color_green, color_red)
+        change_button_color(
+            window_main.find_element_with_focus(), color_green, color_red
+        )
         window_main.refresh()
 
     # Focus
@@ -48,7 +52,7 @@ def get_event(event):
         solution_number = sudoku.board[event[0]][event[1]]
 
         if event not in sudoku.opened_positions:
-            ev, val = window_choices(event)
+            ev, val = get_window_available_numbers(event)
             if int(ev) == solution_number:
                 sudoku.opened_positions.append(event)
 
@@ -66,6 +70,7 @@ def get_event(event):
                 window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
 
     if event in ("Easy", "Medium", "Hard"):
+        window_main[event].block_focus()
         window_main["-FRAME-BUTTONS-"].update(event)
 
         window_main.set_alpha(0.5)
@@ -74,13 +79,13 @@ def get_event(event):
         hp_sudoku -= len(sudoku.opened_positions)
         window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
 
-        user = get_user_window()
+        user = get_window_user_login()
         window_main["-USER-"].update(user)
         window_main.set_alpha(1)
 
-        toggle_panel_visibility(False, window_main, "-FRAME-DIFFICULTY-")
+        toggle_element_visibility(False, window_main, "-FRAME-DIFFICULTY-")
 
-        toggle_panel_visibility(
+        toggle_element_visibility(
             True,
             window_main,
             "-EMOJI-SUDOKU-",
@@ -98,28 +103,27 @@ def get_event(event):
             )
 
     if event == "-RATE-":
-        window_rate = window_rating()
         window_main.set_alpha(0.5)
 
-        ev, val = window_rate.read()
+        ev, val = window_rating.read()
 
         if ev in (0, 1, 2, 3, 4):
-            toggle_panel_visibility(False, window_main, "-RATE-")
-            toggle_panel_visibility(
+            toggle_element_visibility(False, window_main, "-RATE-")
+            toggle_element_visibility(
                 True,
                 window_main,
                 "-THANKS-",
                 "-FRAME-STARS-",
             )
 
-            stars = get_stars(val)
+            stars = get_number_of_stars(val)
 
             for i in range(stars):
-                toggle_panel_visibility(True, window_main, f"star{i+1}")
+                toggle_element_visibility(True, window_main, f"star{i}")
 
         window_main.set_alpha(1)
 
-        window_rate.close()
+        window_rating.close()
 
         sg.SystemTray.notify(
             f"{'@'*5}{' '*5}{'@'*5}",
@@ -134,7 +138,8 @@ def get_event(event):
 
         format_score()
 
-        get_high_scores_window()
+        get_window_high_scores()
+
         window_main.set_alpha(1)
 
     if event == "Save":

@@ -4,7 +4,7 @@ from layouts_utils import *
 sg.theme("DarkBlack")
 
 
-layout_main = [
+layout_window_main = [
     [
         sg.vbottom(
             [
@@ -17,7 +17,7 @@ layout_main = [
                 sg.Column(
                     [
                         [sg.T("Player", key="-USER-")],
-                        [health_bar("PLAYER", 10, (color_red, color_green))],
+                        [get_health_bar("PLAYER", 10, (color_red, color_green))],
                     ]
                 ),
                 sg.Text(
@@ -26,7 +26,7 @@ layout_main = [
                 sg.Column(
                     [
                         [sg.Push(), sg.T("Board")],
-                        [health_bar("SUDOKU", 81, (color_green, color_red))],
+                        [get_health_bar("SUDOKU", 81, (color_green, color_red))],
                     ]
                 ),
                 sg.Image(
@@ -53,7 +53,7 @@ layout_main = [
         ),
         sg.Frame(
             "",
-            [[generate_button(i, j) for j in range(9)] for i in range(9)],
+            [[get_button(i, j) for j in range(9)] for i in range(9)],
             key="-FRAME-BUTTONS-",
             title_location="n",
             visible=False,
@@ -71,7 +71,21 @@ layout_main = [
         sg.B("Rate me", key="-RATE-"),
         sg.Push(),
         sg.pin(
-            sg.Frame("", [frame_layout_stars()], key="-FRAME-STARS-", visible=False)
+            sg.Frame(
+                "",
+                [
+                    [
+                        sg.Image(
+                            f"{os.path.dirname(__file__)}/files/images/star.png",
+                            key=f"star{x}",
+                            visible=False,
+                        )
+                        for x in range(5)
+                    ]
+                ],
+                key="-FRAME-STARS-",
+                visible=False,
+            )
         ),
         sg.Push(),
         sg.B("High Scores", key="-HIGH-SCORES-"),
@@ -79,36 +93,37 @@ layout_main = [
     # [sg.B("Save")],
 ]
 
-
-def layout_rating():
-    return [
-        [
-            sg.Frame(
-                "Stars",
-                [frame_layout_stars_radio()],
-                key="-FRAME-RADIO-",
-                title_location="n",
-            ),
-        ],
-    ]
-
-
-layout_loading = [
+layout_window_rating = (
     [
-        sg.Text("LOADING ... ", font=font_loading,key='text'),
+        sg.Frame(
+            "Stars",
+            [
+                [
+                    sg.Radio(
+                        f"{i+1}",
+                        "-RADIO-STARS-",
+                        font=font_window_loading,
+                        text_color=color_green,
+                        enable_events=True,
+                    )
+                    for i in range(5)
+                ]
+            ],
+            key="-FRAME-RADIO-",
+            title_location="n",
+        ),
     ],
-    [
-        # sg.Text(
-        #     "", size=(8, 2), font=("Helvetica", 20), justification="center", key="text"
-        # ),
-    ],
+)
+
+layout_window_loading = [
+    [sg.Text("LOADING ... ", font=font_window_loading, key="-LOADING-")],
     [
         sg.ProgressBar(
             200,
             orientation="h",
             size=(30, 20),
-            key="-LOADING-",
-            bar_color=(color_red, "black"),
+            key="-LOADING-BAR-",
+            bar_color=(color_green, "black"),
         )
     ],
 ]
