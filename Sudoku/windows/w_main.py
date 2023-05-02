@@ -10,7 +10,7 @@ def get_health_bar(name, max, colors):
         key=f"-HEALTH-{name}-",
         bar_color=colors,
         visible=False,
-        size=(20, 20),
+        size=(15, 20),
     )
 
 
@@ -31,7 +31,7 @@ layout_main = [
                     ]
                 ),
                 sg.Text(
-                    "0", key="-TIMER-", visible=False, size=(2), justification="center"
+                    "0", key="-TIMER-", visible=False, size=(6), justification="left"
                 ),
                 sg.Column(
                     [
@@ -113,7 +113,7 @@ layout_main = [
         sg.Push(),
         sg.B("High Scores", key="-HIGH-SCORES-"),
     ],
-    # [sg.B("Save")],
+    [sg.B("Save")],
 ]
 
 window_main = sg.Window(

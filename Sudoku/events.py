@@ -5,12 +5,11 @@ from events_utils import *
 
 hp_sudoku = 81
 hp_player = 0
-timer = 0
 user = "Player"
 
 
-def get_event(event):
-    global hp_player, hp_sudoku, timer, user
+def get_event(event, timer):
+    global hp_player, hp_sudoku, user
 
     # Focus Logic starts
 
@@ -173,6 +172,6 @@ def get_event(event):
         write_score(score, user)
 
     if hp_sudoku == 0:
-        score = write_score(timer, hp_player, user)
-        write_score(score)
+        score = get_score(timer, hp_player)
+        write_score(score, user)
         hp_sudoku -= 1

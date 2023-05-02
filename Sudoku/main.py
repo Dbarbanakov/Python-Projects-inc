@@ -4,6 +4,7 @@ import sys
 from events import *
 from windows.w_loading import *
 
+
 for i in range(200):
     ev, val = window_loading.read(timeout=10)
 
@@ -29,18 +30,23 @@ for i in range(200):
 window_loading.close()
 
 # sg.show_debugger_window(location=(10, 10))
+current_time = 0
+start_time = int(round(time.time() * 100))
 
 while True:
     event, values = window_main.read(timeout=1000)
 
-    if event == sg.TIMEOUT_KEY:
-        window_main["-TIMER-"].update(f"{timer}")
-        timer += 1
+    current_time = int(round(time.time() * 100)) - start_time
+    timer = current_time / 100
+
+    window_main["-TIMER-"].update(
+        "{:0d}:{:02d}".format((current_time // 100) // 60, (current_time // 100) % 60)
+    )
 
     if event == sg.WIN_CLOSED:
         break
 
     else:
-        get_event(event)
+        get_event(event, timer)
 
 window_main.close()
