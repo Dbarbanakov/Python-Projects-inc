@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from .uts import *
+from .utils import *
 
 
 def get_health_bar(name, max, colors):
@@ -11,18 +11,6 @@ def get_health_bar(name, max, colors):
         bar_color=colors,
         visible=False,
         size=(20, 20),
-    )
-
-
-def get_button(i, j, text=" "):
-    """Used to place a button for each coord[x,y] on the Board."""
-    return sg.B(
-        text,
-        size=(4, 2),
-        key=(i, j),
-        pad=(0, 0),
-        border_width=2,
-        font=font_window_high_scores,
     )
 
 
@@ -75,7 +63,20 @@ layout_main = [
         ),
         sg.Frame(
             "",
-            [[get_button(i, j) for j in range(9)] for i in range(9)],
+            [
+                [
+                    sg.B(
+                        " ",
+                        size=(4, 2),
+                        key=(i, j),
+                        pad=(0, 0),
+                        border_width=2,
+                        font=font_window_high_scores,
+                    )
+                    for j in range(9)
+                ]
+                for i in range(9)
+            ],
             key="-FRAME-BUTTONS-",
             title_location="n",
             visible=False,

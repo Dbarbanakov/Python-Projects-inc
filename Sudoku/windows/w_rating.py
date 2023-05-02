@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from .uts import *
+from .utils import *
 
 layout_window_rating = (
     [

@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from .uts import *
+from .utils import *
 
 
 def get_layout_window_high_scores():

@@ -1,11 +1,6 @@
 import PySimpleGUI as sg
 
-from wins.w_rating import *
-from wins.w_main import *
-from wins.w_high_scores import *
-from wins.w_user_login import *
-from wins.w_available_numbers import *
-
+from windows import *
 from events_utils import *
 
 hp_sudoku = 81
