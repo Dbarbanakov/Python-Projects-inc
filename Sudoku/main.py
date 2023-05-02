@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 import sys
 from events import *
-
+from wins.w_loading import *
 
 for i in range(200):
     ev, val = window_loading.read(timeout=10)

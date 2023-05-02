@@ -1,10 +1,32 @@
 import PySimpleGUI as sg
-from layouts_utils import *
-
-sg.theme("DarkBlack")
+from .uts import *
 
 
-layout_window_main = [
+def get_health_bar(name, max, colors):
+    """Used for both Player's and Board's health bars."""
+    return sg.ProgressBar(
+        max,
+        orientation="h",
+        key=f"-HEALTH-{name}-",
+        bar_color=colors,
+        visible=False,
+        size=(20, 20),
+    )
+
+
+def get_button(i, j, text=" "):
+    """Used to place a button for each coord[x,y] on the Board."""
+    return sg.B(
+        text,
+        size=(4, 2),
+        key=(i, j),
+        pad=(0, 0),
+        border_width=2,
+        font=font_window_high_scores,
+    )
+
+
+layout_main = [
     [
         sg.vbottom(
             [
@@ -76,7 +98,7 @@ layout_window_main = [
                 [
                     [
                         sg.Image(
-                            f"{os.path.dirname(__file__)}/files/images/star.png",
+                            f"{os.path.dirname(__file__)}/../files/images/star.png",
                             key=f"star{x}",
                             visible=False,
                         )
@@ -93,37 +115,11 @@ layout_window_main = [
     # [sg.B("Save")],
 ]
 
-layout_window_rating = (
-    [
-        sg.Frame(
-            "Stars",
-            [
-                [
-                    sg.Radio(
-                        f"{i+1}",
-                        "-RADIO-STARS-",
-                        font=font_window_loading,
-                        text_color=color_green,
-                        enable_events=True,
-                    )
-                    for i in range(5)
-                ]
-            ],
-            key="-FRAME-RADIO-",
-            title_location="n",
-        ),
-    ],
+window_main = sg.Window(
+    "Sudoku",
+    layout_main,
+    element_justification="c",
+    font=font_window_main,
+    return_keyboard_events=True,
+    use_default_focus=False,
 )
-
-layout_window_loading = [
-    [sg.Text("LOADING ... ", font=font_window_loading, key="-LOADING-")],
-    [
-        sg.ProgressBar(
-            200,
-            orientation="h",
-            size=(30, 20),
-            key="-LOADING-BAR-",
-            bar_color=(color_green, "black"),
-        )
-    ],
-]

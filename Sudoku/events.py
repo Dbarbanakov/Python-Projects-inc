@@ -1,8 +1,12 @@
 import PySimpleGUI as sg
-from windows import *
-from events_utils import *
 
-import psutil
+from wins.w_rating import *
+from wins.w_main import *
+from wins.w_high_scores import *
+from wins.w_user_login import *
+from wins.w_available_numbers import *
+
+from events_utils import *
 
 hp_sudoku = 81
 hp_player = 0
@@ -52,22 +56,39 @@ def get_event(event):
         solution_number = sudoku.board[event[0]][event[1]]
 
         if event not in sudoku.opened_positions:
-            ev, val = get_window_available_numbers(event)
-            if int(ev) == solution_number:
-                sudoku.opened_positions.append(event)
+            while True:
+                nums = get_available_numbers(sudoku.progress_board, event[0], event[1])
 
-                hp_sudoku -= 1
-                window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
+                ev, val = get_window_available_numbers(nums)
 
-                window_main[event].update(
-                    solution_number, button_color=("white", "black")
-                )
+                if type(ev) is str and ev[0].isdigit():
+                    if ev[0] == "0":
+                        sg.popup_notify("Do not press the zero please!")
+                    if int(ev[0]) in nums:
+                        ev = int(ev[0])
 
-                sudoku.progress_board[event[0]][event[1]] = solution_number
+                if ev == solution_number:
+                    sudoku.opened_positions.append(event)
 
-            else:
-                hp_player += 1
-                window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
+                    hp_sudoku -= 1
+                    window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
+
+                    window_main[event].update(
+                        solution_number, button_color=("white", "black")
+                    )
+
+                    sudoku.progress_board[event[0]][event[1]] = solution_number
+                    break
+
+                else:
+                    hp_player += 1
+                    window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
+                    sg.popup_auto_close(
+                        "Not the right number.",
+                        auto_close_duration=1,
+                        no_titlebar=True,
+                        background_color=color_red,
+                    )
 
     if event in ("Easy", "Medium", "Hard"):
         window_main[event].block_focus()
