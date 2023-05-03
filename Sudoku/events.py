@@ -60,8 +60,8 @@ def get_event(event, timer):
 
                 window_available_numbers = get_window_available_numbers(nums)
                 ev, val = window_available_numbers.read(close=True)
-
-                if ev == "q:24":
+                
+                if ev in ("q:24", sg.WIN_CLOSED):
                     break
 
                 if type(ev) is str and ev[0].isdigit():
@@ -70,28 +70,28 @@ def get_event(event, timer):
                     if int(ev[0]) in nums:
                         ev = int(ev[0])
 
-                        if ev == solution_number:
-                            sudoku.opened_positions.append(event)
+                if ev == solution_number:
+                    sudoku.opened_positions.append(event)
 
-                            hp_sudoku -= 1
-                            window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
+                    hp_sudoku -= 1
+                    window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
 
-                            window_main[event].update(
-                                solution_number, button_color=("white", "black")
-                            )
+                    window_main[event].update(
+                        solution_number, button_color=("white", "black")
+                    )
 
-                            sudoku.progress_board[row][col] = solution_number
-                            break
+                    sudoku.progress_board[row][col] = solution_number
+                    break
 
-                        else:
-                            hp_player += 1
-                            window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
-                            sg.popup_auto_close(
-                                "Not the right number.",
-                                auto_close_duration=1,
-                                no_titlebar=True,
-                                background_color=color_red,
-                            )
+                else:
+                    hp_player += 1
+                    window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
+                    sg.popup_auto_close(
+                        "Not the right number.",
+                        auto_close_duration=1,
+                        no_titlebar=True,
+                        background_color=color_red,
+                    )
 
     if event in ("Easy", "Medium", "Hard"):
         window_main[event].block_focus()
@@ -112,11 +112,11 @@ def get_event(event, timer):
         toggle_element_visibility(
             True,
             window_main,
-            "-EMOJI-SUDOKU-",
+            "-AVATAR-SUDOKU-",
             "-HEALTH-PLAYER-",
             "-TIMER-",
             "-HEALTH-SUDOKU-",
-            "-EMOJI-PLAYER-",
+            "-AVATAR-PLAYER-",
             "-FRAME-BUTTONS-",
         )
 

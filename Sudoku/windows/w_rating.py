@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 from .utils import *
 
+
 layout_window_rating = (
     [
         sg.Frame(

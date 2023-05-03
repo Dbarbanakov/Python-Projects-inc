@@ -1,7 +1,6 @@
 import PySimpleGUI as sg
 import sys
 
-from solution import *
 from .utils import *
 
 
@@ -29,10 +28,6 @@ def get_loading_screen():
 
     window_loading.close()
 
-
-# sudoku init
-sudoku = Board()
-# sudoku init
 
 layout_window_loading = [
     [sg.Text("LOADING ... ", font=font_window_loading, key="-LOADING-")],

@@ -20,7 +20,7 @@ layout_main = [
             [
                 sg.Image(
                     f"{os.path.dirname(__file__)}/../files/images/avatar_player.png",
-                    key="-EMOJI-PLAYER-",
+                    key="-AVATAR-PLAYER-",
                     visible=False,
                 ),
                 sg.Column(
@@ -40,7 +40,7 @@ layout_main = [
                 ),
                 sg.Image(
                     f"{os.path.dirname(__file__)}/../files/images/avatar_board.png",
-                    key="-EMOJI-SUDOKU-",
+                    key="-AVATAR-SUDOKU-",
                     visible=False,
                 ),
             ]
