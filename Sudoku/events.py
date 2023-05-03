@@ -5,11 +5,10 @@ from events_utils import *
 
 hp_sudoku = 81
 hp_player = 0
-user = "Player"
 
 
 def get_event(event, timer):
-    global hp_player, hp_sudoku, user
+    global hp_player, hp_sudoku
 
     # Focus Logic starts
 
@@ -167,11 +166,8 @@ def get_event(event, timer):
 
         window_main.set_alpha(1)
 
-    if event == "Save":
-        score = get_score(timer, hp_player)
-        write_score(score, user)
-
     if hp_sudoku == 0:
+        username = window_main["-USER-"].get()
         score = get_score(timer, hp_player)
-        write_score(score, user)
+        write_score(score, username)
         hp_sudoku -= 1

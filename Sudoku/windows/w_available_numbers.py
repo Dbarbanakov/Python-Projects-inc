@@ -2,8 +2,6 @@ import PySimpleGUI as sg
 from .utils import *
 from solution import *
 
-sudoku = Board()
-
 
 def get_window_available_numbers(nums):
     return sg.Window(

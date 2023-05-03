@@ -19,10 +19,9 @@ layout_main = [
         sg.vbottom(
             [
                 sg.Image(
-                    sg.PYTHON_COLORED_HEARTS_BASE64,
+                    f"{os.path.dirname(__file__)}/../files/images/avatar_player.png",
                     key="-EMOJI-PLAYER-",
                     visible=False,
-                    subsample=2,
                 ),
                 sg.Column(
                     [
@@ -31,7 +30,7 @@ layout_main = [
                     ]
                 ),
                 sg.Text(
-                    "0", key="-TIMER-", visible=False, size=(6), justification="left"
+                    "0", key="-TIMER-", visible=False, size=(6), justification="center"
                 ),
                 sg.Column(
                     [
@@ -40,10 +39,9 @@ layout_main = [
                     ]
                 ),
                 sg.Image(
-                    sg.PYTHON_COLORED_HEARTS_BASE64,
+                    f"{os.path.dirname(__file__)}/../files/images/avatar_board.png",
                     key="-EMOJI-SUDOKU-",
                     visible=False,
-                    subsample=2,
                 ),
             ]
         ),
@@ -113,7 +111,6 @@ layout_main = [
         sg.Push(),
         sg.B("High Scores", key="-HIGH-SCORES-"),
     ],
-    [sg.B("Save")],
 ]
 
 window_main = sg.Window(
