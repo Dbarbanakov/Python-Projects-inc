@@ -51,18 +51,40 @@ def get_event(event, timer):
         solution_number = sudoku.board[row][col]
 
         if event not in sudoku.opened_positions:
-            while True:
-                nums = [
-                    x
-                    for x in range(1, 10)
-                    if sudoku.check_position(sudoku.progress_board, row, col, x)
-                ]
+            nums = [
+                x
+                for x in range(1, 10)
+                if sudoku.check_position(sudoku.progress_board, row, col, x)
+            ]
 
-                window_available_numbers = get_window_available_numbers(nums)
-                ev, val = window_available_numbers.read(close=True)
-                
+            window_available_numbers = get_window_available_numbers(nums)
+
+            tabs = 0
+            is_ele_clicked = {num: False for num in nums}
+
+            while True:
+                ev, val = window_available_numbers.read()
+
+                focus_ele = window_available_numbers.find_element_with_focus()
+                if focus_ele:
+                    prev_focus_ele = focus_ele.get_previous_focus()
+
                 if ev in ("q:24", sg.WIN_CLOSED):
                     break
+
+                if ev == "Return:36":
+                    is_ele_clicked[focus_ele.Key] = True
+                    focus_ele.click()
+
+                if ev == ("Tab:23"):
+                    change_button_color(focus_ele, color2=color_red)
+
+                    if tabs != 0:
+                        change_button_color(prev_focus_ele, color2=color_blue)
+                    tabs += 1
+
+                    if is_ele_clicked[prev_focus_ele.Key]:
+                        change_button_color(prev_focus_ele, color2=color_yellow)
 
                 if type(ev) is str and ev[0].isdigit():
                     if ev[0] == "0":
@@ -70,28 +92,30 @@ def get_event(event, timer):
                     if int(ev[0]) in nums:
                         ev = int(ev[0])
 
-                if ev == solution_number:
-                    sudoku.opened_positions.append(event)
+                if type(ev) == int:
+                    if ev == solution_number:
+                        sudoku.opened_positions.append(event)
 
-                    hp_sudoku -= 1
-                    window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
+                        hp_sudoku -= 1
+                        window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
 
-                    window_main[event].update(
-                        solution_number, button_color=("white", "black")
-                    )
+                        window_main[event].update(
+                            solution_number, button_color=("white", "black")
+                        )
 
-                    sudoku.progress_board[row][col] = solution_number
-                    break
+                        sudoku.progress_board[row][col] = solution_number
+                        break
 
-                else:
-                    hp_player += 1
-                    window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
-                    sg.popup_auto_close(
-                        "Not the right number.",
-                        auto_close_duration=1,
-                        no_titlebar=True,
-                        background_color=color_red,
-                    )
+                    else:
+                        hp_player += 1
+                        window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
+                    #     sg.popup_auto_close(
+                    #         "Not the right number.",
+                    #         auto_close_duration=1,
+                    #         no_titlebar=True,
+                    #         background_color=color_red,
+                    #     )
+            window_available_numbers.close()
 
     if event in ("Easy", "Medium", "Hard"):
         window_main[event].block_focus()

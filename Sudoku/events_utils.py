@@ -12,7 +12,7 @@ def get_number_of_stars(values):
             return k + 1
 
 
-def change_button_color(element, color1, color2):
+def change_button_color(element, color1="purple", color2="purple"):
     if element.get_text() in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
         element.update(button_color=color1)
     else:

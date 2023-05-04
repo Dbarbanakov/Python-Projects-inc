@@ -29,7 +29,7 @@ def get_window_available_numbers(nums):
         relative_location=(100, 0),
         grab_anywhere=True,
         keep_on_top=True,
-        modal=True,
+        # modal=True,
         use_custom_titlebar=True,
         titlebar_background_color=color_orange,
     )
