@@ -1,6 +1,8 @@
 from windows import *
 from events_utils import *
 
+from time import sleep
+
 
 def get_event(event, timer):
     global hp_player, hp_sudoku
@@ -157,18 +159,29 @@ def get_event(event, timer):
     if event == "-INSTRUCTIONS-":
         window_main.set_alpha(0.5)
 
+        window_instructions = get_window_instructions()
+
+        str_print(window_instructions, "." * 3, 1)
+        str_print(window_instructions, "." * 20, 0.04)
+        str_print(window_instructions, "Press Space to continue ..", 0.1)
+        str_print(window_instructions, ".", 0.1, "\n")
+
+        was_space_pressed = False
+
         while True:
             ev, val = window_instructions.read()
 
-            if ev in (sg.WIN_CLOSED, "Exit"):
+            if ev == sg.WIN_CLOSED:
                 break
 
-            if ev == "Go":
-                with open(instructions, "r") as lines:
-                    for line in lines.readlines():
-                        window_instructions["-ML1-" + sg.WRITE_ONLY_KEY].print(
-                            line.strip(), text_color="red"
-                        )
+            if ev == "space:65" and not was_space_pressed:
+                for x in instructions:
+                    window_instructions["-ML1-" + sg.WRITE_ONLY_KEY].print(
+                        x, text_color="red"
+                    )
+                    window_instructions.refresh()
+                    sleep(1)
+                was_space_pressed = True
 
         window_instructions.close()
         window_main.set_alpha(1)
