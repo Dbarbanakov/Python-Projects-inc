@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from scores import *
+import os
 from solution import *
 
 

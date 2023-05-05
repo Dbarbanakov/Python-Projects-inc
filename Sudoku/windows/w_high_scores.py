@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+from scores import *
 from .utils import *
 
 

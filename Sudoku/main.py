@@ -6,7 +6,6 @@ from events import *
 get_loading_screen()
 
 
-# sg.show_debugger_window(location=(10, 10))
 current_time = 0
 start_time = int(round(time.time() * 100))
 

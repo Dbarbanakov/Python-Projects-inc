@@ -16,6 +16,8 @@ def get_loading_screen():
 
             if i == 50:
                 sudoku.generate_board()
+                if 0 in sudoku.board:
+                    sys.exit()
 
             i += 50
 

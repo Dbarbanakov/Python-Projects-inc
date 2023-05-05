@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+import os
 from .utils import *
 
 
@@ -15,6 +16,7 @@ def get_health_bar(name, max, colors):
 
 
 layout_main = [
+    [sg.B("Instructions", key="-INSTRUCTIONS-", button_color=color_yellow)],
     [
         sg.vbottom(
             [

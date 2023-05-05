@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 
 from windows import *
 from events_utils import *
+from scores import *
 
 hp_sudoku = 81
 hp_player = 0
@@ -19,7 +20,12 @@ def get_event(event, timer):
             element.click()
 
         if event == "Tab:23":
-            change_button_color(element.get_previous_focus(), "black", "white")
+            prev_element = element.get_previous_focus()
+
+            change_button_color(prev_element, "black", "white")
+
+            if prev_element.Key == "-INSTRUCTIONS-":
+                change_button_color(prev_element, "black", color_yellow)
 
         if type(element.Key) == tuple:
             row, col = element.Key
@@ -65,6 +71,13 @@ def get_event(event, timer):
             while True:
                 ev, val = window_available_numbers.read()
 
+                # Mouse
+                if ev in nums:
+                    is_ele_clicked[ev] = True
+                    window_available_numbers[ev].update(button_color=color_yellow)
+                # Mouse
+
+                # Keyboard
                 focus_ele = window_available_numbers.find_element_with_focus()
                 if focus_ele:
                     prev_focus_ele = focus_ele.get_previous_focus()
@@ -85,6 +98,7 @@ def get_event(event, timer):
 
                     if is_ele_clicked[prev_focus_ele.Key]:
                         change_button_color(prev_focus_ele, color2=color_yellow)
+                # Keyboard
 
                 if type(ev) is str and ev[0].isdigit():
                     if ev[0] == "0":
@@ -109,15 +123,11 @@ def get_event(event, timer):
                     else:
                         hp_player += 1
                         window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
-                    #     sg.popup_auto_close(
-                    #         "Not the right number.",
-                    #         auto_close_duration=1,
-                    #         no_titlebar=True,
-                    #         background_color=color_red,
-                    #     )
+
             window_available_numbers.close()
 
     if event in ("Easy", "Medium", "Hard"):
+        window_main.finalize()
         window_main[event].block_focus()
         window_main["-FRAME-BUTTONS-"].update(event)
 
@@ -150,6 +160,22 @@ def get_event(event, timer):
                 sudoku.board[row][col], button_color=("white", "black")
             )
 
+    if event == "-INSTRUCTIONS-":
+        while True:
+            ev, val = window_instructions.read()
+
+            if ev in (sg.WIN_CLOSED, "Exit"):
+                break
+
+            if ev == "Go":
+                with open(instructions, "r") as lines:
+                    for line in lines.readlines():
+                        window_instructions["-ML1-" + sg.WRITE_ONLY_KEY].print(
+                            line.strip(), text_color="red"
+                        )
+
+        window_instructions.close()
+
     if event == "-RATE-":
         window_main.set_alpha(0.5)
 
@@ -172,14 +198,6 @@ def get_event(event, timer):
         window_main.set_alpha(1)
 
         window_rating.close()
-
-        sg.SystemTray.notify(
-            f"{'@'*5}{' '*5}{'@'*5}",
-            f"{' '*5}{'#'*5}" * 3,
-            display_duration_in_ms=750,
-            fade_in_duration=500,
-            location=(800, 500),
-        )
 
     if event == "-HIGH-SCORES-":
         window_main.set_alpha(0.5)
