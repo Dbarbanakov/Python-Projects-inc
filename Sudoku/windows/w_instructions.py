@@ -16,6 +16,8 @@ def get_window_instructions():
         button_color=(color_red, "black"),
         return_keyboard_events=True,
         finalize=True,
+        disable_close=True,
+        keep_on_top=True,
     )
 
 
@@ -24,7 +26,7 @@ def get_layout_instructions():
         [
             sg.MLine(
                 key="-ML1-" + sg.WRITE_ONLY_KEY,
-                size=(100, 20),
+                size=(65, 25),
                 background_color="black",
                 disabled=True,
             )
@@ -32,10 +34,13 @@ def get_layout_instructions():
     ]
 
 
-def str_print(window, s, pause, finish=""):
+def str_print(window, s, pause, color=color_red):
     for i in range(len(s)):
-        window["-ML1-" + sg.WRITE_ONLY_KEY].print(
-            f"{s[i]}", text_color="red", end=finish
-        )
+        window["-ML1-" + sg.WRITE_ONLY_KEY].print(f"{s[i]}", text_color=color, end="")
         window.refresh()
         sleep(pause)
+
+
+def print_file(file, window, pause):
+    for x in file:
+        str_print(window, x, pause, color=color_green)

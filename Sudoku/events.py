@@ -161,26 +161,25 @@ def get_event(event, timer):
 
         window_instructions = get_window_instructions()
 
-        str_print(window_instructions, "." * 3, 1)
-        str_print(window_instructions, "." * 20, 0.04)
-        str_print(window_instructions, "Press Space to continue ..", 0.1)
-        str_print(window_instructions, ".", 0.1, "\n")
+        str_print(window_instructions, " " * 7, 0.1)
+        str_print(
+            window_instructions,
+            "Use Q to exit or Press Space to continue ... " + "\n\n\n",
+            0.05,
+        )
 
         was_space_pressed = False
 
         while True:
             ev, val = window_instructions.read()
 
-            if ev == sg.WIN_CLOSED:
+            if ev in (sg.WIN_CLOSED, "q:24"):
                 break
 
             if ev == "space:65" and not was_space_pressed:
-                for x in instructions:
-                    window_instructions["-ML1-" + sg.WRITE_ONLY_KEY].print(
-                        x, text_color="red"
-                    )
-                    window_instructions.refresh()
-                    sleep(1)
+                window_instructions.DisableClose = False
+                print_file(instructions, window_instructions, 0.025)
+
                 was_space_pressed = True
 
         window_instructions.close()

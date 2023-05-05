@@ -1,4 +1,26 @@
-that is the instructions file
-with which i am going 
-to be working in the next couple of hours 
- :)
+    @ This is a walkthrough @ 
+      for the intended way 
+       to play the game
+     @ with the keyboard @
+ 
+ ------ 
+ -- Use TAB to cycle.
+ ------
+ -- Use the ARROW KEYS while on the board.
+ ------
+ -- Use ENTER to select.
+ ------
+ -- Or keyboard numbers 1 to 9,
+ --    while on the numbers menu,
+ --        after clicking the board.
+ ------
+ -- Or you can TAB through numbers,
+ --     and select with ENTER.
+ ------
+ -- Red means focus and Green means
+ --    it's done.
+ ------
+
+      The game evolved into 
+        arcade-like sudoku,
+      have fun while playing! 
