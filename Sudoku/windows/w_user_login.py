@@ -1,4 +1,3 @@
-import PySimpleGUI as sg
 from .utils import *
 
 
@@ -13,5 +12,5 @@ def get_window_user_login():
         keep_on_top=True,
         no_titlebar=True,
         grab_anywhere=True,
-        image=f"{os.path.dirname(__file__)}/../files/images/log.png",
+        image=f"{path.dirname(__file__)}/../files/images/log.png",
     )

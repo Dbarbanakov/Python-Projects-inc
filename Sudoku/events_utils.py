@@ -1,3 +1,7 @@
+hp_sudoku = 81
+hp_player = 0
+
+
 # Helper functions for the events
 
 

@@ -1,5 +1,3 @@
-import PySimpleGUI as sg
-
 from events import *
 
 
@@ -7,14 +5,14 @@ get_loading_screen()
 
 
 current_time = 0
-start_time = int(round(time.time() * 100))
+start_time = int(round(time() * 100))
 
 while True:
     event, values = window_main.read(timeout=1000)
 
     # Timer
 
-    current_time = int(round(time.time() * 100)) - start_time
+    current_time = int(round(time() * 100)) - start_time
     timer = current_time / 100
 
     window_main["-TIMER-"].update(

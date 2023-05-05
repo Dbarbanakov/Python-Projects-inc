@@ -1,5 +1,3 @@
-import PySimpleGUI as sg
-import os
 from .utils import *
 
 
@@ -21,7 +19,7 @@ layout_main = [
         sg.vbottom(
             [
                 sg.Image(
-                    f"{os.path.dirname(__file__)}/../files/images/avatar_player.png",
+                    f"{path.dirname(__file__)}/../files/images/avatar_player.png",
                     key="-AVATAR-PLAYER-",
                     visible=False,
                 ),
@@ -41,7 +39,7 @@ layout_main = [
                     ]
                 ),
                 sg.Image(
-                    f"{os.path.dirname(__file__)}/../files/images/avatar_board.png",
+                    f"{path.dirname(__file__)}/../files/images/avatar_board.png",
                     key="-AVATAR-SUDOKU-",
                     visible=False,
                 ),
@@ -99,7 +97,7 @@ layout_main = [
                 [
                     [
                         sg.Image(
-                            f"{os.path.dirname(__file__)}/../files/images/star.png",
+                            f"{path.dirname(__file__)}/../files/images/star.png",
                             key=f"star{x}",
                             visible=False,
                         )

@@ -1,7 +1,6 @@
-import PySimpleGUI as sg
-import sys
-
 from .utils import *
+
+from sys import exit
 
 
 def get_loading_screen():
@@ -9,7 +8,7 @@ def get_loading_screen():
         ev, val = window_loading.read(timeout=10)
 
         if ev == sg.WIN_CLOSED:
-            sys.exit()
+            exit()
 
         if i in (50, 100, 150):
             window_loading["-LOADING-BAR-"].update(bar_color=(color_red, "black"))
@@ -17,7 +16,7 @@ def get_loading_screen():
             if i == 50:
                 sudoku.generate_board()
                 if 0 in sudoku.board:
-                    sys.exit()
+                    exit()
 
             i += 50
 

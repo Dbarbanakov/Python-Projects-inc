@@ -1,11 +1,5 @@
-import PySimpleGUI as sg
-
 from windows import *
 from events_utils import *
-from scores import *
-
-hp_sudoku = 81
-hp_player = 0
 
 
 def get_event(event, timer):
@@ -161,6 +155,8 @@ def get_event(event, timer):
             )
 
     if event == "-INSTRUCTIONS-":
+        window_main.set_alpha(0.5)
+
         while True:
             ev, val = window_instructions.read()
 
@@ -175,6 +171,7 @@ def get_event(event, timer):
                         )
 
         window_instructions.close()
+        window_main.set_alpha(1)
 
     if event == "-RATE-":
         window_main.set_alpha(0.5)
@@ -203,7 +200,6 @@ def get_event(event, timer):
         window_main.set_alpha(0.5)
 
         format_score()
-
         get_window_high_scores()
 
         window_main.set_alpha(1)

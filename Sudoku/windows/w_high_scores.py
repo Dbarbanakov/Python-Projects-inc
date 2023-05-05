@@ -1,6 +1,6 @@
-import PySimpleGUI as sg
-from scores import *
 from .utils import *
+
+from scores import *
 
 
 def get_layout_window_high_scores():
@@ -37,7 +37,13 @@ def get_layout_window_high_scores():
                 title_color=color_red,
             )
         ],
-        [sg.B("Agreed", bind_return_key=True)],
+        [
+            sg.B(
+                "Agreed",
+                bind_return_key=True,
+                button_color=(color_red, "black"),
+            )
+        ],
     ]
 
 

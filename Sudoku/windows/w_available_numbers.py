@@ -1,6 +1,4 @@
-import PySimpleGUI as sg
 from .utils import *
-from solution import *
 
 
 def get_window_available_numbers(nums):
@@ -15,7 +13,7 @@ def get_window_available_numbers(nums):
                             sg.B(
                                 " ",
                                 key=nums[i],
-                                image_source=f"{os.path.dirname(__file__)}/../files/images/{nums[i]}.png",
+                                image_source=f"{path.dirname(__file__)}/../files/images/{nums[i]}.png",
                                 button_color=(color_orange, color_blue),
                             )
                             for i in range(len(nums))

@@ -1,7 +1,7 @@
-import os
+from os import path
 from datetime import date
 
-high_scores = f"{os.path.dirname(__file__)}/files/high_scores.txt"
+high_scores = f"{path.dirname(__file__)}/files/high_scores.txt"
 
 
 def print_file():

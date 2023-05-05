@@ -1,10 +1,12 @@
-import random, copy, time
+from random import choice
+from copy import deepcopy
+from time import time
 
 
 class Board:
     def __init__(self):
         self.board = [[0 for x in range(9)] for j in range(9)]
-        self.progress_board = copy.deepcopy(self.board)
+        self.progress_board = deepcopy(self.board)
         self.opened_positions = list()
 
     def print_board(self):
@@ -72,7 +74,7 @@ class Board:
         coords = []
 
         for i in range(n):
-            num = random.choice(choices)
+            num = choice(choices)
             choices.remove(num)
 
             row = num // 9
@@ -102,7 +104,7 @@ class Board:
                 print(n, "fail")
                 print(row, col)
 
-            num = random.choice(choices)
+            num = choice(choices)
             self.board[row][col] = num
 
     def create_progress_board(self, n):
@@ -122,9 +124,9 @@ class Board:
         endtime is the amount of time the recursion process should run before resetting itself with new RNG.
         """
 
-        if time.time() > endtime:
+        if time() > endtime:
             print("Timeout")
-            self.board = copy.deepcopy(self.progress_board)
+            self.board = deepcopy(self.progress_board)
             self.generate_board()
 
         if self.get_free_position() == False:
@@ -145,7 +147,7 @@ class Board:
         """Generates random numbers then goes for a solution with a timeout of 5 seconds on it."""
 
         self.generate_random_numbers()
-        self.solution(time.time() + 5)
+        self.solution(time() + 5)
 
     def apply_difficulty(self, difficulty):
         """Takes difficulty as an input and reveals a random number of positions on the board,

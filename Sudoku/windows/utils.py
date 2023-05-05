@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-import os
+from os import path
 from solution import *
 
 
