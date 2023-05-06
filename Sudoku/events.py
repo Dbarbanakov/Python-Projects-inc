@@ -67,14 +67,10 @@ def get_event(event):
             while True:
                 ev, val = window_available_numbers.read()
 
-                # Mouse
-                if ev in nums:
-                    is_ele_clicked[ev] = True
-                    window_available_numbers[ev].update(button_color=color_yellow)
-                # Mouse
+                # Keyboard Focus
 
-                # Keyboard
                 focus_ele = window_available_numbers.find_element_with_focus()
+
                 if focus_ele:
                     prev_focus_ele = focus_ele.get_previous_focus()
 
@@ -82,32 +78,34 @@ def get_event(event):
                     break
 
                 if ev == "Return:36":
-                    is_ele_clicked[focus_ele.Key] = True
                     focus_ele.click()
 
                 if ev == ("Tab:23"):
                     change_button_color(focus_ele, color2=color_red)
 
-                    if tabs != 0:
-                        change_button_color(prev_focus_ele, color2=color_blue)
-                    tabs += 1
+                    if tabs == 0:
+                        tabs += 1
+                        continue
 
-                    if is_ele_clicked[prev_focus_ele.Key]:
-                        change_button_color(prev_focus_ele, color2=color_yellow)
-                # Keyboard
+                    color = (
+                        color_yellow
+                        if is_ele_clicked[prev_focus_ele.Key]
+                        else color_blue
+                    )
 
-                if type(ev) is str and ev[0].isdigit():
-                    if ev[0] == "0":
-                        sg.popup_notify("Do not press the zero please!")
-                    if int(ev[0]) in nums:
+                    change_button_color(prev_focus_ele, color2=color)
+
+                # Keyboard Focus
+
+                if type(ev) is str and ev[0].isdecimal() or type(ev) is int:
+                    if type(ev) is str and int(ev[0]) in nums:
                         ev = int(ev[0])
 
-                if type(ev) == int:
                     if ev == solution_number:
                         sudoku.opened_positions.append(event)
 
                         hp_sudoku -= 1
-                        window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
+                        window_main["-HEALTH-BOARD-"].update(hp_sudoku)
 
                         window_main[event].update(
                             solution_number, button_color=("white", "black")
@@ -117,6 +115,9 @@ def get_event(event):
                         break
 
                     else:
+                        window_available_numbers[ev].update(button_color=color_yellow)
+                        is_ele_clicked[ev] = True
+
                         hp_player += 1
                         window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
 
@@ -131,7 +132,7 @@ def get_event(event):
 
         sudoku.apply_difficulty(event)
         hp_sudoku -= len(sudoku.opened_positions)
-        window_main["-HEALTH-SUDOKU-"].update(hp_sudoku)
+        window_main["-HEALTH-BOARD-"].update(hp_sudoku)
 
         user = get_window_user_login()
         window_main["-USER-"].update(user)
@@ -142,10 +143,10 @@ def get_event(event):
         toggle_element_visibility(
             True,
             window_main,
-            "-AVATAR-SUDOKU-",
+            "-AVATAR-BOARD-",
             "-HEALTH-PLAYER-",
             "-TIMER-",
-            "-HEALTH-SUDOKU-",
+            "-HEALTH-BOARD-",
             "-AVATAR-PLAYER-",
             "-FRAME-BUTTONS-",
         )
@@ -187,8 +188,9 @@ def get_event(event):
     if event == "-RATE-":
         window_main.set_alpha(0.5)
 
-        ev, val = window_rating.read()
-
+        window_rating = get_window_rating()
+        ev, val = window_rating.read(close=True)
+        print(ev, val)
         if ev in (0, 1, 2, 3, 4):
             toggle_element_visibility(False, window_main, "-RATE-")
             toggle_element_visibility(
@@ -198,14 +200,12 @@ def get_event(event):
                 "-FRAME-STARS-",
             )
 
-            stars = get_number_of_stars(val)
+            stars = ev + 1
 
             for i in range(stars):
                 toggle_element_visibility(True, window_main, f"star{i}")
 
         window_main.set_alpha(1)
-
-        window_rating.close()
 
     if event == "-HIGH-SCORES-":
         window_main.set_alpha(0.5)

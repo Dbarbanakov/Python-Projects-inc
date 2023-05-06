@@ -35,12 +35,12 @@ layout_main = [
                 sg.Column(
                     [
                         [sg.Push(), sg.T("Board")],
-                        [get_health_bar("SUDOKU", 81, (color_green, color_red))],
+                        [get_health_bar("BOARD", 81, (color_green, color_red))],
                     ]
                 ),
                 sg.Image(
                     f"{path.dirname(__file__)}/../files/images/avatar_board.png",
-                    key="-AVATAR-SUDOKU-",
+                    key="-AVATAR-BOARD-",
                     visible=False,
                 ),
             ]

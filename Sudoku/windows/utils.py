@@ -4,7 +4,9 @@ from solution import *
 
 
 # sudoku init
+
 sudoku = Board()
+
 # sudoku init
 
 

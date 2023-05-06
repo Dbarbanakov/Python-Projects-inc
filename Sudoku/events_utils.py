@@ -1,7 +1,12 @@
 from time import time
+from os import path
+from datetime import date
+
 
 hp_sudoku = 81
 hp_player = 0
+
+# Time
 
 start_time = int(round(time() * 100))
 
@@ -21,15 +26,52 @@ def get_chronometer():
     )
 
 
+# Time
+
+# Scores
+
+high_scores = f"{path.dirname(__file__)}/files/high_scores.txt"
+
+
+def get_score(time, hp):
+    score = int((hp**2 + 100) / (time - time // 5) * 1000)
+    return score
+
+
+def read_score():
+    with open(high_scores, "r") as scores:
+        return scores.readlines()
+
+
+def append_score(score, user):
+    formatted_score = f"{user} {score} {date.today()}\n"
+    with open(high_scores, "a") as scores:
+        scores.write(formatted_score)
+
+
+def format_score():
+    scores = read_score()
+
+    scores_unsorted = {int(line.split()[1].strip()): line for line in scores}
+
+    keys_list = list(scores_unsorted.keys())
+    keys_list.sort(reverse=True)
+
+    return {key: scores_unsorted[key] for key in keys_list[:10]}
+
+
+def write_score():
+    score = format_score()
+    with open(high_scores, "w") as scores:
+        scores.writelines(list(score.values()))
+
+
+# Scores
+
+
 def toggle_element_visibility(boolean, window, *keys):
     for key in keys:
         window[key].update(visible=boolean)
-
-
-def get_number_of_stars(values):
-    for k, v in values.items():
-        if v == True:
-            return k + 1
 
 
 def change_button_color(element, color1="purple", color2="purple"):
