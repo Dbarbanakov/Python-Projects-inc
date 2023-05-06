@@ -1,8 +1,24 @@
+from time import time
+
 hp_sudoku = 81
 hp_player = 0
 
+start_time = int(round(time() * 100))
 
-# Helper functions for the events
+
+def get_time():
+    return int(round(time() * 100)) - start_time
+
+
+def get_timer():
+    return get_time() / 100
+
+
+def get_chronometer():
+    current_time = get_time()
+    return "{:0d}:{:02d}".format(
+        (current_time // 100) // 60, (current_time // 100) % 60
+    )
 
 
 def toggle_element_visibility(boolean, window, *keys):
@@ -17,7 +33,8 @@ def get_number_of_stars(values):
 
 
 def change_button_color(element, color1="purple", color2="purple"):
-    if element.get_text() in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
-        element.update(button_color=color1)
-    else:
-        element.update(button_color=color2)
+    element.update(
+        button_color=(
+            color1 if element.get_text() in [x for x in range(1, 10)] else color2
+        )
+    )

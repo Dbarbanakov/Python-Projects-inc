@@ -36,11 +36,13 @@ def get_layout_instructions():
 
 def str_print(window, s, pause, color=color_red):
     for i in range(len(s)):
-        window["-ML1-" + sg.WRITE_ONLY_KEY].print(f"{s[i]}", text_color=color, end="")
+        window["-ML1-" + sg.WRITE_ONLY_KEY].print(
+            f"{s[i]}", text_color=(color if s[i] != "-" else color_red), end=""
+        )
         window.refresh()
         sleep(pause)
 
 
-def print_file(file, window, pause):
+def print_instructions(window, pause=0.025, file=instructions):
     for x in file:
         str_print(window, x, pause, color=color_green)

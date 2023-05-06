@@ -1,11 +1,11 @@
 from windows import *
 from events_utils import *
 
-from time import sleep
 
-
-def get_event(event, timer):
+def get_event(event):
     global hp_player, hp_sudoku
+
+    timer = get_timer()
 
     # Focus Logic starts
 
@@ -161,10 +161,9 @@ def get_event(event, timer):
 
         window_instructions = get_window_instructions()
 
-        str_print(window_instructions, " " * 7, 0.1)
         str_print(
             window_instructions,
-            "Use Q to exit or Press Space to continue ... " + "\n\n\n",
+            " " * 7 + "Use Q to exit or Press Space to continue ... \n\n\n",
             0.05,
         )
 
@@ -178,7 +177,7 @@ def get_event(event, timer):
 
             if ev == "space:65" and not was_space_pressed:
                 window_instructions.DisableClose = False
-                print_file(instructions, window_instructions, 0.025)
+                print_instructions(window_instructions)
 
                 was_space_pressed = True
 
@@ -211,13 +210,18 @@ def get_event(event, timer):
     if event == "-HIGH-SCORES-":
         window_main.set_alpha(0.5)
 
-        format_score()
         get_window_high_scores()
 
         window_main.set_alpha(1)
 
     if hp_sudoku == 0:
         username = window_main["-USER-"].get()
+
         score = get_score(timer, hp_player)
-        write_score(score, username)
+        append_score(score, username)
+        write_score()
+
         hp_sudoku -= 1
+
+    if event:
+        window_main["-TIMER-"].update(get_chronometer())

@@ -20,7 +20,10 @@
  -- Red means focus and Green means
  --    it's done.
  ------
+ -- Use Q to exit the number's menu.
+ ------
 
+ 
       The game evolved into 
         arcade-like sudoku,
       have fun while playing! 
