@@ -1,5 +1,22 @@
 from .utils import *
 
+bar_colors = {
+    0: (color_green, color_red),
+    1: (color_yellow, color_green),
+    2: (color_blue, color_yellow),
+    3: (color_orange, color_blue),
+    4: (color_yellow, color_orange),
+    5: (color_green, color_yellow),
+    6: (color_red, color_green),
+    7: (color_blue, color_red),
+}
+
+
+def update_health_bar(window, hp):
+    count = hp % 10
+    colors = bar_colors[hp // 10]
+    return window["-HEALTH-PLAYER-"].update(count, bar_color=colors)
+
 
 def get_health_bar(name, max, colors):
     """Used for both Player's and Board's health bars."""
@@ -26,7 +43,7 @@ layout_main = [
                 sg.Column(
                     [
                         [sg.T("Player", key="-USER-")],
-                        [get_health_bar("PLAYER", 10, (color_red, color_green))],
+                        [get_health_bar("PLAYER", 10, (color_green, color_red))],
                     ]
                 ),
                 sg.Text(

@@ -4,7 +4,7 @@ from datetime import date
 
 
 hp_sudoku = 81
-hp_player = 0
+hp_player = 10
 
 # Time
 
@@ -74,9 +74,11 @@ def toggle_element_visibility(boolean, window, *keys):
         window[key].update(visible=boolean)
 
 
-def change_button_color(element, color1="purple", color2="purple"):
+def change_button_color(element, color1="black", color2="white"):
     element.update(
         button_color=(
             color1 if element.get_text() in [x for x in range(1, 10)] else color2
         )
     )
+
+

@@ -18,10 +18,10 @@ def get_event(event):
         if event == "Tab:23":
             prev_element = element.get_previous_focus()
 
-            change_button_color(prev_element, "black", "white")
+            change_button_color(prev_element)
 
             if prev_element.Key == "-INSTRUCTIONS-":
-                change_button_color(prev_element, "black", color_yellow)
+                change_button_color(prev_element, color2=color_yellow)
 
         if type(element.Key) == tuple:
             row, col = element.Key
@@ -35,7 +35,7 @@ def get_event(event):
             elif event == "Up:111":
                 row -= 1 * (row > 0)
 
-            change_button_color(element, "black", "white")
+            change_button_color(element)
 
             coords = (row, col)
             window_main[coords].set_focus()
@@ -61,8 +61,9 @@ def get_event(event):
 
             window_available_numbers = get_window_available_numbers(nums)
 
-            tabs = 0
             is_ele_clicked = {num: False for num in nums}
+
+            tabs = 0
 
             while True:
                 ev, val = window_available_numbers.read()
@@ -97,9 +98,14 @@ def get_event(event):
 
                 # Keyboard Focus
 
-                if type(ev) is str and ev[0].isdecimal() or type(ev) is int:
-                    if type(ev) is str and int(ev[0]) in nums:
-                        ev = int(ev[0])
+                if (
+                    type(ev) is str
+                    and ev[0].isdecimal()
+                    and int(ev[0]) in nums
+                    or type(ev) is int
+                    and ev in nums
+                ):
+                    ev = int(ev[0]) if type(ev) is str else ev
 
                     if ev == solution_number:
                         sudoku.opened_positions.append(event)
@@ -112,14 +118,17 @@ def get_event(event):
                         )
 
                         sudoku.progress_board[row][col] = solution_number
+
+                        hp_player += 1
+                        update_health_bar(window_main, hp_player)
                         break
 
                     else:
                         window_available_numbers[ev].update(button_color=color_yellow)
                         is_ele_clicked[ev] = True
 
-                        hp_player += 1
-                        window_main["-HEALTH-PLAYER-"].update(f"{hp_player}")
+                        hp_player -= 1
+                        update_health_bar(window_main, hp_player)
 
             window_available_numbers.close()
 
@@ -127,6 +136,7 @@ def get_event(event):
         window_main.finalize()
         window_main[event].block_focus()
         window_main["-FRAME-BUTTONS-"].update(event)
+        window_main["-HEALTH-PLAYER-"].update(hp_player)
 
         window_main.set_alpha(0.5)
 
@@ -190,7 +200,7 @@ def get_event(event):
 
         window_rating = get_window_rating()
         ev, val = window_rating.read(close=True)
-        print(ev, val)
+
         if ev in (0, 1, 2, 3, 4):
             toggle_element_visibility(False, window_main, "-RATE-")
             toggle_element_visibility(
@@ -222,6 +232,3 @@ def get_event(event):
         write_score()
 
         hp_sudoku -= 1
-
-    if event:
-        window_main["-TIMER-"].update(get_chronometer())
