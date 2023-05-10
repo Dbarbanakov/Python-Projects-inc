@@ -10,48 +10,33 @@ class Board:
         self.init_positions = set()
         self.opened_coords = list()
 
-    def check_row(self, board, row, n):
-        """Returns True if n is not present in the current row."""
-
-        for x in board[row]:
-            if n == x:
-                return False
-        return True
-
-    def check_column(self, board, col, n):
-        """Returns True if n is not present in the current column."""
-
-        for i in range(9):
-            if n == board[i][col]:
-                return False
-        return True
-
-    def check_square(self, board, row, col, n):
-        """Returns True if n is not present in the current 3x3 square."""
-
-        row_range = row - row % 3
-        col_range = col - col % 3
-
-        for i in range(3):
-            for j in range(3):
-                if n == board[i + row_range][j + col_range]:
-                    return False
-        return True
-
     def check_position(self, board, row, col, n):
         """
         Returns True if the current position on the board is suitable for n.
         n is not in the current - row, column and square.
         """
 
-        return (
-            self.check_column(board, col, n)
-            and self.check_row(board, row, n)
-            and self.check_square(board, row, col, n)
-        )
+        def check_row():
+            return False if n in board[row] else True
+
+        def check_column():
+            return False if n in [board[i][col] for i in range(9)] else True
+
+        def check_square():
+            return (
+                False
+                if n
+                in [
+                    [board[row // 3 * 3 + i][col // 3 * 3 + j] for j in range(3)]
+                    for i in range(3)
+                ]
+                else True
+            )
+
+        return check_row() and check_column() and check_square()
 
     def get_free_position(self):
-        """Checks for a free position, return tuple(row,col) or False.."""
+        """Checks for a free position, return tuple(row,col) or False."""
 
         for i in range(9):
             for j in range(9):
@@ -63,7 +48,7 @@ class Board:
         while len(self.init_positions) < n:
             self.init_positions.add(choice(range(81)))
 
-    def update_coords(self):
+    def get_coords(self):
         self.opened_coords = [(x // 9, x % 9) for x in self.init_positions]
 
     def fill_coords(self):
@@ -103,7 +88,7 @@ class Board:
 
     def generate_board(self):
         self.generate_random_positions(15)
-        self.update_coords()
+        self.get_coords()
         self.fill_coords()
         self.solution(time() + 5)
 
@@ -127,6 +112,6 @@ class Board:
         }
 
         self.generate_random_positions(difficulties[difficulty])
-        self.update_coords()
+        self.get_coords()
 
         self.update_progress_board()
