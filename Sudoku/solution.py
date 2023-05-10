@@ -7,7 +7,8 @@ class Board:
     def __init__(self):
         self.board = [[0 for x in range(9)] for j in range(9)]
         self.progress_board = deepcopy(self.board)
-        self.opened_positions = list()
+        self.init_positions = set()
+        self.opened_coords = list()
 
     def check_row(self, board, row, n):
         """Returns True if n is not present in the current row."""
@@ -58,47 +59,23 @@ class Board:
                     return (i, j)
         return False
 
-    def get_random_coords(self, n):
-        """Returns a list with n tuples with random coords(0-8, 0-8)."""
-        coords = list()
-        numbers = set()
+    def generate_random_positions(self, n):
+        while len(self.init_positions) < n:
+            self.init_positions.add(choice(range(81)))
 
-        while len(numbers) < n:
-            numbers.add(choice(range(81)))
+    def update_coords(self):
+        self.opened_coords = [(x // 9, x % 9) for x in self.init_positions]
 
-        for num in numbers:
-            coords.append((num // 9, num % 9))
-
-        return coords
-
-    def generate_random_numbers(self, n=15):
-        """Generates n random numbers on the empty board applying the rules."""
-
-        coords = self.get_random_coords(n)
-
-        for coord in coords:
-            choices = list()
-
+    def fill_coords(self):
+        for coord in self.opened_coords:
             row, col = coord
 
-            for i in range(1, 10):
-                if self.check_position(self.board, row, col, i):
-                    choices.append(i)
+            num = choice(range(1, 10))
 
-            num = choice(choices)
+            while not self.check_position(self.board, row, col, num):
+                num = choice(range(1, 10))
+
             self.board[row][col] = num
-
-    def create_progress_board(self, n):
-        """Opens n positions on the board, after the difficulty is selected."""
-
-        coords = self.get_random_coords(n)
-
-        for coord in coords:
-            self.opened_positions.append(coord)
-
-            row, col = coord
-
-            self.progress_board[row][col] = self.board[row][col]
 
     def solution(self, endtime):
         """Checks for a solution of the current board and return True if there is such.
@@ -125,10 +102,18 @@ class Board:
         return False
 
     def generate_board(self):
-        """Generates random numbers then goes for a solution with a timeout of 5 seconds on it."""
-
-        self.generate_random_numbers()
+        self.generate_random_positions(15)
+        self.update_coords()
+        self.fill_coords()
         self.solution(time() + 5)
+
+    def update_progress_board(self):
+        """Opens n positions on the board, after the difficulty is selected."""
+
+        for coord in self.opened_coords:
+            row, col = coord
+
+            self.progress_board[row][col] = self.board[row][col]
 
     def apply_difficulty(self, difficulty):
         """Takes difficulty as an input and reveals a random number of positions on the board,
@@ -141,4 +126,7 @@ class Board:
             "Hard": 20,
         }
 
-        self.create_progress_board(difficulties[difficulty])
+        self.generate_random_positions(difficulties[difficulty])
+        self.update_coords()
+
+        self.update_progress_board()

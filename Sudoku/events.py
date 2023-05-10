@@ -52,7 +52,7 @@ def get_event(event):
 
         solution_number = sudoku.board[row][col]
 
-        if event not in sudoku.opened_positions:
+        if event not in sudoku.opened_coords:
             nums = [
                 x
                 for x in range(1, 10)
@@ -108,7 +108,7 @@ def get_event(event):
                     ev = int(ev[0]) if type(ev) is str else ev
 
                     if ev == solution_number:
-                        sudoku.opened_positions.append(event)
+                        sudoku.opened_coords.append(event)
 
                         window_main[event].update(
                             solution_number, button_color=("white", "black")
@@ -154,13 +154,13 @@ def get_event(event):
         window_main.set_alpha(0.5)
 
         sudoku.apply_difficulty(event)
-        hp_sudoku -= len(sudoku.opened_positions)
+        hp_sudoku -= len(sudoku.opened_coords)
         window_main["-HEALTH-BOARD-"].update(hp_sudoku)
 
         user = get_window_user_login()
         window_main["-USER-"].update(user)
 
-        for coords in sudoku.opened_positions:
+        for coords in sudoku.opened_coords:
             row, col = coords
             window_main[coords].update(
                 sudoku.board[row][col], button_color=("white", "black")
