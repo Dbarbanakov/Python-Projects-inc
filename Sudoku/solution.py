@@ -23,15 +23,12 @@ class Board:
             return False if n in [board[i][col] for i in range(9)] else True
 
         def check_square():
-            return (
-                False
-                if n
-                in [
-                    [board[row // 3 * 3 + i][col // 3 * 3 + j] for j in range(3)]
-                    for i in range(3)
-                ]
-                else True
-            )
+            square = [
+                [board[row // 3 * 3 + i][col // 3 * 3 + j] for j in range(3)]
+                for i in range(3)
+            ]
+
+            return False if n in square else True
 
         return check_row() and check_column() and check_square()
 
@@ -44,11 +41,10 @@ class Board:
                     return (i, j)
         return False
 
-    def generate_random_positions(self, n):
+    def generate_random_coords(self, n):
         while len(self.init_positions) < n:
             self.init_positions.add(choice(range(81)))
 
-    def get_coords(self):
         self.opened_coords = [(x // 9, x % 9) for x in self.init_positions]
 
     def fill_coords(self):
@@ -87,18 +83,9 @@ class Board:
         return False
 
     def generate_board(self):
-        self.generate_random_positions(15)
-        self.get_coords()
+        self.generate_random_coords(15)
         self.fill_coords()
         self.solution(time() + 5)
-
-    def update_progress_board(self):
-        """Opens n positions on the board, after the difficulty is selected."""
-
-        for coord in self.opened_coords:
-            row, col = coord
-
-            self.progress_board[row][col] = self.board[row][col]
 
     def apply_difficulty(self, difficulty):
         """Takes difficulty as an input and reveals a random number of positions on the board,
@@ -111,7 +98,9 @@ class Board:
             "Hard": 20,
         }
 
-        self.generate_random_positions(difficulties[difficulty])
-        self.get_coords()
+        self.generate_random_coords(difficulties[difficulty])
 
-        self.update_progress_board()
+        for coord in self.opened_coords:
+            row, col = coord
+
+            self.progress_board[row][col] = self.board[row][col]

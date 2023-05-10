@@ -37,8 +37,7 @@ def get_event(event):
 
             change_button_color(element)
 
-            coords = (row, col)
-            window_main[coords].set_focus()
+            window_main[(row, col)].set_focus()
 
         change_button_color(
             window_main.find_element_with_focus(), color_green, color_red
@@ -68,20 +67,19 @@ def get_event(event):
             while True:
                 ev, val = window_available_numbers.read()
 
+                if ev in ("q:24", sg.WIN_CLOSED):
+                    break
+
                 # Keyboard Focus
 
                 focus_ele = window_available_numbers.find_element_with_focus()
 
-                if focus_ele:
-                    prev_focus_ele = focus_ele.get_previous_focus()
-
-                    if ev == "Return:36":
-                        focus_ele.click()
-
-                if ev in ("q:24", sg.WIN_CLOSED):
-                    break
+                if focus_ele and ev == "Return:36":
+                    focus_ele.click()
 
                 if ev == ("Tab:23"):
+                    prev_focus_ele = focus_ele.get_previous_focus()
+
                     change_button_color(focus_ele, color2=color_red)
 
                     if tabs == 0:
@@ -98,16 +96,10 @@ def get_event(event):
 
                 # Keyboard Focus
 
-                if (
-                    type(ev) is str
-                    and ev[0].isdecimal()
-                    and int(ev[0]) in nums
-                    or type(ev) is int
-                    and ev in nums
-                ):
-                    ev = int(ev[0]) if type(ev) is str else ev
+                if ev in nums or ev[0].isdecimal() and int(ev[0]) in nums:
+                    num = int(ev[0]) if type(ev) is str else ev
 
-                    if ev == solution_number:
+                    if num == solution_number:
                         sudoku.opened_coords.append(event)
 
                         window_main[event].update(
@@ -132,8 +124,9 @@ def get_event(event):
                         break
 
                     else:
-                        window_available_numbers[ev].update(button_color=color_yellow)
-                        is_ele_clicked[ev] = True
+                        window_available_numbers[num].update(button_color=color_yellow)
+
+                        is_ele_clicked[num] = True
 
                         hp_player -= 1
                         update_health_bar(window_main, hp_player)
@@ -160,9 +153,9 @@ def get_event(event):
         user = get_window_user_login()
         window_main["-USER-"].update(user)
 
-        for coords in sudoku.opened_coords:
-            row, col = coords
-            window_main[coords].update(
+        for coord in sudoku.opened_coords:
+            row, col = coord
+            window_main[coord].update(
                 sudoku.board[row][col], button_color=("white", "black")
             )
 
@@ -203,10 +196,10 @@ def get_event(event):
                 break
 
             if ev == "space:65" and not was_space_pressed:
-                window_instructions.DisableClose = False
-                print_instructions(window_instructions)
-
                 was_space_pressed = True
+                window_instructions.DisableClose = False
+
+                print_instructions(window_instructions)
 
         window_instructions.close()
         window_main.set_alpha(1)
@@ -226,9 +219,7 @@ def get_event(event):
                 "-FRAME-STARS-",
             )
 
-            stars = ev + 1
-
-            for i in range(stars):
+            for i in range(ev + 1):
                 toggle_element_visibility(True, window_main, f"star{i}")
 
         window_main.set_alpha(1)
