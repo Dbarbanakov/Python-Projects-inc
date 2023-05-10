@@ -12,9 +12,16 @@ bar_colors = {
 }
 
 
+def update_score(conseq):
+    update_value = 10 + conseq
+    prev_score = int(window_main["-SCORE-"].get().split()[-1])
+    current_score = prev_score + update_value
+    window_main["-SCORE-"].update(f"Score - {current_score}")
+
+
 def update_health_bar(window, hp):
     count = hp % 10
-    colors = bar_colors[hp // 10]
+    colors = bar_colors[(hp // 10) % (len(bar_colors) - 1)]
     return window["-HEALTH-PLAYER-"].update(count, bar_color=colors)
 
 
@@ -31,7 +38,6 @@ def get_health_bar(name, max, colors):
 
 
 layout_main = [
-    [sg.B("Instructions", key="-INSTRUCTIONS-", button_color=color_yellow)],
     [
         sg.vbottom(
             [
@@ -62,6 +68,18 @@ layout_main = [
                 ),
             ]
         ),
+    ],
+    [
+        sg.pin(
+            sg.T(
+                "Consequence - 0",
+                key="-CONSEQUENCES-",
+                text_color=color_red,
+                visible=False,
+            )
+        ),
+        sg.Push(),
+        sg.T("Score - 0", key="-SCORE-", text_color=color_yellow, visible=False),
     ],
     [
         sg.Frame(
@@ -128,6 +146,7 @@ layout_main = [
         sg.Push(),
         sg.B("High Scores", key="-HIGH-SCORES-"),
     ],
+    [sg.B("Instructions", key="-INSTRUCTIONS-", button_color=color_yellow)],
 ]
 
 window_main = sg.Window(

@@ -3,23 +3,20 @@ from .utils import *
 from events_utils import read_score
 
 
-scores = read_score()
-
-
 def get_layout_window_high_scores():
-    headings = ("User", " -- Score -- ", "Date")
+    headings = (" ", "User", "  -- Score -- ", "Date")
 
     return [
         [
             sg.Frame(
                 "@ High Scores @",
                 [
-                    [sg.T(f"{x}", size=12, text_color=color_green) for x in headings],
+                    [sg.T(f"{x}", size=14, text_color=color_green) for x in headings],
                     [
                         sg.Column(
                             [
-                                [sg.T(col.strip(), size=12) for col in row.split()]
-                                for row in scores
+                                [sg.T(col.strip(), size=14) for col in row.split()]
+                                for row in read_score()
                             ],
                         )
                     ],
@@ -31,10 +28,11 @@ def get_layout_window_high_scores():
         ],
         [
             sg.B(
-                "Agreed",
+                "Confirm",
                 bind_return_key=True,
                 button_color=(color_red, "black"),
-            )
+                key="-ENDGAME-",
+            ),
         ],
     ]
 
@@ -48,4 +46,5 @@ def get_window_high_scores():
         text_justification="center",
         no_titlebar=True,
         margins=(1, 1),
-    ).read(close=True)
+        grab_anywhere=True,
+    )

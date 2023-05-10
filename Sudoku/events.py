@@ -1,11 +1,11 @@
 from windows import *
 from events_utils import *
 
+import sys
+
 
 def get_event(event):
-    global hp_player, hp_sudoku
-
-    timer = get_timer()
+    global hp_player, hp_sudoku, consequences
 
     # Focus Logic starts
 
@@ -75,11 +75,11 @@ def get_event(event):
                 if focus_ele:
                     prev_focus_ele = focus_ele.get_previous_focus()
 
+                    if ev == "Return:36":
+                        focus_ele.click()
+
                 if ev in ("q:24", sg.WIN_CLOSED):
                     break
-
-                if ev == "Return:36":
-                    focus_ele.click()
 
                 if ev == ("Tab:23"):
                     change_button_color(focus_ele, color2=color_red)
@@ -110,17 +110,25 @@ def get_event(event):
                     if ev == solution_number:
                         sudoku.opened_positions.append(event)
 
-                        hp_sudoku -= 1
-                        window_main["-HEALTH-BOARD-"].update(hp_sudoku)
-
                         window_main[event].update(
                             solution_number, button_color=("white", "black")
                         )
 
                         sudoku.progress_board[row][col] = solution_number
 
-                        hp_player += 1
+                        hp_sudoku -= 1
+                        window_main["-HEALTH-BOARD-"].update(hp_sudoku)
+
+                        consequences += 1
+                        window_main["-CONSEQUENCES-"].update(
+                            f"Consequence - {consequences}"
+                        )
+
+                        update_score(consequences)
+
+                        hp_player += consequences
                         update_health_bar(window_main, hp_player)
+
                         break
 
                     else:
@@ -129,6 +137,11 @@ def get_event(event):
 
                         hp_player -= 1
                         update_health_bar(window_main, hp_player)
+
+                        consequences = 0
+                        window_main["-CONSEQUENCES-"].update(
+                            f"Consequence - {consequences}"
+                        )
 
             window_available_numbers.close()
 
@@ -146,6 +159,13 @@ def get_event(event):
 
         user = get_window_user_login()
         window_main["-USER-"].update(user)
+
+        for coords in sudoku.opened_positions:
+            row, col = coords
+            window_main[coords].update(
+                sudoku.board[row][col], button_color=("white", "black")
+            )
+
         window_main.set_alpha(1)
 
         toggle_element_visibility(False, window_main, "-FRAME-DIFFICULTY-")
@@ -159,13 +179,9 @@ def get_event(event):
             "-HEALTH-BOARD-",
             "-AVATAR-PLAYER-",
             "-FRAME-BUTTONS-",
+            "-CONSEQUENCES-",
+            "-SCORE-",
         )
-
-        for coords in sudoku.opened_positions:
-            row, col = coords
-            window_main[coords].update(
-                sudoku.board[row][col], button_color=("white", "black")
-            )
 
     if event == "-INSTRUCTIONS-":
         window_main.set_alpha(0.5)
@@ -220,15 +236,24 @@ def get_event(event):
     if event == "-HIGH-SCORES-":
         window_main.set_alpha(0.5)
 
-        get_window_high_scores()
+        get_window_high_scores().read(close=True)
 
         window_main.set_alpha(1)
 
     if hp_sudoku == 0:
+        window_main.set_alpha(0.5)
+
         username = window_main["-USER-"].get()
 
-        score = get_score(timer, hp_player)
+        score = int(window_main["-SCORE-"].get().split()[-1])
         append_score(score, username)
         write_score()
 
         hp_sudoku -= 1
+
+        window_high_scores = get_window_high_scores()
+        ev, val = window_high_scores.read(close=True)
+
+        if ev == "-ENDGAME-":
+            window_high_scores.close()
+            sys.exit()

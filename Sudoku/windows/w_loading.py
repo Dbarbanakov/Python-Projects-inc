@@ -1,6 +1,6 @@
 from .utils import *
 
-from sys import exit
+import sys
 
 
 def get_loading_screen():
@@ -8,15 +8,17 @@ def get_loading_screen():
         ev, val = window_loading.read(timeout=10)
 
         if ev == sg.WIN_CLOSED:
-            exit()
+            sys.exit()
 
         if i in (50, 100, 150):
             window_loading["-LOADING-BAR-"].update(bar_color=(color_red, "black"))
 
             if i == 50:
                 sudoku.generate_board()
-                if 0 in sudoku.board:
-                    exit()
+                for row in sudoku.board:
+                    if 0 in row:
+                        print("0 in board")
+                        sys.exit()
 
             i += 50
 

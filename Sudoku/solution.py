@@ -9,15 +9,6 @@ class Board:
         self.progress_board = deepcopy(self.board)
         self.opened_positions = list()
 
-    def print_board(self):
-        """Prints the Sudoku board."""
-
-        for i in range(9):
-            for j in range(9):
-                print(self.board[i][j], end=" ")
-            print()
-        print()
-
     def check_row(self, board, row, n):
         """Returns True if n is not present in the current row."""
 
@@ -69,40 +60,30 @@ class Board:
 
     def get_random_coords(self, n):
         """Returns a list with n tuples with random coords(0-8, 0-8)."""
+        coords = list()
+        numbers = set()
 
-        choices = [x for x in range(81)]
-        coords = []
+        while len(numbers) < n:
+            numbers.add(choice(range(81)))
 
-        for i in range(n):
-            num = choice(choices)
-            choices.remove(num)
-
-            row = num // 9
-            col = num % 9
-
-            coords.append((row, col))
+        for num in numbers:
+            coords.append((num // 9, num % 9))
 
         return coords
 
     def generate_random_numbers(self, n=15):
         """Generates n random numbers on the empty board applying the rules."""
 
-        numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
         coords = self.get_random_coords(n)
 
-        for i in range(n):
-            choices = []
+        for coord in coords:
+            choices = list()
 
-            row, col = coords[i]
+            row, col = coord
 
-            for x in numbers:
-                if self.check_position(self.board, row, col, x):
-                    choices.append(x)
-
-            if len(choices) == 0:
-                print(n, "fail")
-                print(row, col)
+            for i in range(1, 10):
+                if self.check_position(self.board, row, col, i):
+                    choices.append(i)
 
             num = choice(choices)
             self.board[row][col] = num
@@ -112,12 +93,12 @@ class Board:
 
         coords = self.get_random_coords(n)
 
-        for x in coords:
-            row, col = x
+        for coord in coords:
+            self.opened_positions.append(coord)
+
+            row, col = coord
 
             self.progress_board[row][col] = self.board[row][col]
-
-            self.opened_positions.append((row, col))
 
     def solution(self, endtime):
         """Checks for a solution of the current board and return True if there is such.
@@ -132,14 +113,14 @@ class Board:
         if self.get_free_position() == False:
             return True
 
-        current_row, current_col = self.get_free_position()
+        row, col = self.get_free_position()
 
         for i in range(1, 10):
-            if self.check_position(self.board, current_row, current_col, i) == True:
-                self.board[current_row][current_col] = i
+            if self.check_position(self.board, row, col, i) == True:
+                self.board[row][col] = i
                 if self.solution(endtime):
                     return True
-                self.board[current_row][current_col] = 0
+                self.board[row][col] = 0
 
         return False
 
@@ -154,13 +135,10 @@ class Board:
         easy - 30, medium-25, hard - 20.
         """
 
-        if difficulty == "Easy":
-            n = 30
-        elif difficulty == "Medium":
-            n = 25
-        elif difficulty == "Hard":
-            n = 20
-        else:
-            raise IOError("Choose between - easy, medium or hard difficulties please.")
+        difficulties = {
+            "Easy": 30,
+            "Medium": 25,
+            "Hard": 20,
+        }
 
-        self.create_progress_board(n)
+        self.create_progress_board(difficulties[difficulty])
