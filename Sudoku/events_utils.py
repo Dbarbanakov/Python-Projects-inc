@@ -8,12 +8,6 @@ HP_PLAYER = 10
 COMBO = 0
 
 
-def change_button_color(element, color1="black", color2="white"):
-    element.update(
-        button_color=(color1 if element.get_text() in range(1, 10) else color2)
-    )
-
-
 # Time
 
 start_time = time()

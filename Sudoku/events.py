@@ -9,22 +9,23 @@ def get_event(event):
 
     # Focus Logic starts
 
-    element = w_main.find_element_with_focus()
+    focus = w_main.find_element_with_focus()
 
-    if element:
+    if focus:
         if event == "Return:36":
-            element.click()
+            focus.click()
 
         if event == "Tab:23":
-            prev_element = element.get_previous_focus()
+            prev_focus = focus.get_previous_focus()
 
-            change_button_color(prev_element)
+            prev_focus.update(
+                button_color="black"
+                if prev_focus.get_text() in range(1, 10)
+                else "white"
+            )
 
-            if prev_element.Key == "-INSTRUCTIONS-":
-                change_button_color(prev_element, color2=COLOR_YELLOW)
-
-        if type(element.Key) == tuple:
-            row, col = element.Key
+        if type(focus.Key) == tuple:
+            row, col = focus.Key
 
             if event == "Right:114":
                 col += 1 * (col < 8)
@@ -35,11 +36,16 @@ def get_event(event):
             elif event == "Up:111":
                 row -= 1 * (row > 0)
 
-            change_button_color(element)
+            focus.update(
+                button_color="black" if focus.get_text() in range(1, 10) else "white"
+            )
 
             w_main[(row, col)].set_focus()
 
-        change_button_color(w_main.find_element_with_focus(), COLOR_GREEN, COLOR_RED)
+        focus = w_main.find_element_with_focus()
+        focus.update(
+            button_color=COLOR_GREEN if focus.get_text() in range(1, 10) else COLOR_RED
+        )
         w_main.refresh()
 
     # Focus Logic ends
@@ -58,7 +64,7 @@ def get_event(event):
 
             w_choices = get_w_choices(nums)
 
-            el_clicks = {num: False for num in nums}
+            clicked = {num: False for num in nums}
 
             tabs = 0
 
@@ -70,27 +76,29 @@ def get_event(event):
                 if ev in ("q:24", sg.WIN_CLOSED):
                     break
 
-                # Keyboard Focus
+                # Focus - w_choices
 
-                focus_el = w_choices.find_element_with_focus()
+                focus = w_choices.find_element_with_focus()
 
-                if focus_el and ev == "Return:36":
-                    focus_el.click()
+                if focus and ev == "Return:36":
+                    focus.click()
 
                 if ev == ("Tab:23"):
-                    prev_focus_el = focus_el.get_previous_focus()
+                    focus.update(button_color=COLOR_RED)
 
-                    change_button_color(focus_el, color2=COLOR_RED)
+                    prev_focus = focus.get_previous_focus()
 
                     if tabs == 0:
                         tabs += 1
                         continue
 
-                    color = COLOR_YELLOW if el_clicks[prev_focus_el.Key] else COLOR_BLUE
+                    prev_focus.update(
+                        button_color=COLOR_YELLOW
+                        if clicked[prev_focus.Key]
+                        else COLOR_BLUE
+                    )
 
-                    change_button_color(prev_focus_el, color2=color)
-
-                # Keyboard Focus
+                # Focus - w_choices
 
                 if ev in nums or ev[0].isdecimal() and int(ev[0]) in nums:
                     num = int(ev[0]) if type(ev) is str else ev
@@ -120,7 +128,7 @@ def get_event(event):
                     else:
                         w_choices[num].update(button_color=COLOR_YELLOW)
 
-                        el_clicks[num] = True
+                        clicked[num] = True
 
                         HP_PLAYER -= 1
                         update_hp_bar(HP_PLAYER)
