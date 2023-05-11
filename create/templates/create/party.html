@@ -1,0 +1,35 @@
+{% extends 'create/layout.html' %} {% block body %}
+<div class="container_party">
+    <form class="party__form" action="{% url 'create:party' %}" method="post">
+        {% csrf_token %} {{ form }}
+        <input class="button" type="submit" value="Join Party" />
+    </form>
+    <div class="container_party__parties">
+        <div class="container_party__party">
+            {% for party in parties %}
+            <div class="coontainer_party__navigation">
+                <h4 id="party_name">{{ party.name }}{{ party.id }}</h4>
+                <form action="{% url 'create:party' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="delete" value="{{ party.id }}" />
+                    <input class="button" type="submit" value="Delete Party" />
+                </form>
+            </div>
+            <div class="container_party__heroes">
+                {% for hero in party.hero_set.all %}
+                <div class="container_party__hero">
+                    <p class="hero_name">{{ hero.name }}</p>
+                    <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
+                </div>
+                {% empty %}
+                <h3>Empty Party</h3>
+                {% endfor %}
+            </div>
+            {% empty %}
+            <h1>Add a party</h1>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
