@@ -1,43 +1,48 @@
 from .utils import *
 
-bar_colors = {
-    0: (color_green, color_red),
-    1: (color_yellow, color_green),
-    2: (color_blue, color_yellow),
-    3: (color_orange, color_blue),
-    4: (color_yellow, color_orange),
-    5: (color_green, color_yellow),
-    6: (color_red, color_green),
-    7: (color_blue, color_red),
-}
+
+def toggle_element_visibility(*captions):
+    for capt in captions:
+        element = w_main[capt]
+        element.update(visible=not element.visible)
 
 
-def update_score(conseq):
-    update_value = 10 + conseq
-    prev_score = int(window_main["-SCORE-"].get().split()[-1])
-    current_score = prev_score + update_value
-    window_main["-SCORE-"].update(f"Score - {current_score}")
+def update_hp_bar(hp):
+    bar_colors = {
+        0: (COLOR_GREEN, COLOR_RED),
+        1: (COLOR_YELLOW, COLOR_GREEN),
+        2: (COLOR_BLUE, COLOR_YELLOW),
+        3: (COLOR_ORANGE, COLOR_BLUE),
+        4: (COLOR_YELLOW, COLOR_ORANGE),
+        5: (COLOR_GREEN, COLOR_YELLOW),
+        6: (COLOR_RED, COLOR_GREEN),
+        7: (COLOR_BLUE, COLOR_RED),
+    }
 
-
-def update_health_bar(window, hp):
     count = hp % 10
     colors = bar_colors[(hp // 10) % (len(bar_colors) - 1)]
-    return window["-HEALTH-PLAYER-"].update(count, bar_color=colors)
+    return w_main["-HP-PLAYER-"].update(count, bar_color=colors)
 
 
-def get_health_bar(name, max, colors):
-    """Used for both Player's and Board's health bars."""
+def get_hp_bar(name, max, colors):
     return sg.ProgressBar(
         max,
         orientation="h",
-        key=f"-HEALTH-{name}-",
+        key=f"-HP-{name}-",
         bar_color=colors,
         visible=False,
         size=(15, 20),
     )
 
 
-layout_main = [
+def update_score(combo):
+    update_value = 10 + combo
+    prev_score = int(w_main["-SCORE-"].get().split()[-1])
+    current_score = prev_score + update_value
+    w_main["-SCORE-"].update(f"Score - {current_score}")
+
+
+layout_w_main = [
     [
         sg.vbottom(
             [
@@ -49,7 +54,7 @@ layout_main = [
                 sg.Column(
                     [
                         [sg.T("Player", key="-USER-")],
-                        [get_health_bar("PLAYER", 10, (color_green, color_red))],
+                        [get_hp_bar("PLAYER", 10, (COLOR_GREEN, COLOR_RED))],
                     ]
                 ),
                 sg.Text(
@@ -58,7 +63,7 @@ layout_main = [
                 sg.Column(
                     [
                         [sg.Push(), sg.T("Board")],
-                        [get_health_bar("BOARD", 81, (color_green, color_red))],
+                        [get_hp_bar("BOARD", 81, (COLOR_GREEN, COLOR_RED))],
                     ]
                 ),
                 sg.Image(
@@ -72,14 +77,14 @@ layout_main = [
     [
         sg.pin(
             sg.T(
-                "Consequence - 0",
-                key="-CONSEQUENCES-",
-                text_color=color_red,
+                "Combo - 0",
+                key="-COMBO-",
+                text_color=COLOR_RED,
                 visible=False,
             )
         ),
         sg.Push(),
-        sg.T("Score - 0", key="-SCORE-", text_color=color_yellow, visible=False),
+        sg.T("Score - 0", key="-SCORE-", text_color=COLOR_YELLOW, visible=False),
     ],
     [
         sg.Frame(
@@ -104,7 +109,7 @@ layout_main = [
                         key=(i, j),
                         pad=(0, 0),
                         border_width=2,
-                        font=font_window_high_scores,
+                        font=FONT_WINDOW_HIGH_SCORES,
                     )
                     for j in range(9)
                 ]
@@ -118,7 +123,7 @@ layout_main = [
     [
         sg.T(
             "Thanks for the appreciation!",
-            text_color=color_red,
+            text_color=COLOR_RED,
             key="-THANKS-",
             visible=False,
         )
@@ -146,14 +151,14 @@ layout_main = [
         sg.Push(),
         sg.B("High Scores", key="-HIGH-SCORES-"),
     ],
-    [sg.B("Instructions", key="-INSTRUCTIONS-", button_color=color_yellow)],
+    [sg.B("Instructions", key="-INSTRUCTIONS-", button_color=COLOR_YELLOW)],
 ]
 
-window_main = sg.Window(
+w_main = sg.Window(
     "Sudoku",
-    layout_main,
+    layout_w_main,
     element_justification="c",
-    font=font_window_main,
+    font=FONT_WINDOW_MAIN,
     return_keyboard_events=True,
     use_default_focus=False,
 )

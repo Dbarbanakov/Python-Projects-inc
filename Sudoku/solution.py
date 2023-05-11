@@ -5,17 +5,12 @@ from time import time
 
 class Board:
     def __init__(self):
-        self.board = [[0 for x in range(9)] for j in range(9)]
+        self.board = [[0 for col in range(9)] for row in range(9)]
         self.progress_board = deepcopy(self.board)
         self.init_positions = set()
         self.opened_coords = list()
 
     def check_position(self, board, row, col, n):
-        """
-        Returns True if the current position on the board is suitable for n.
-        n is not in the current - row, column and square.
-        """
-
         def check_row():
             return False if n in board[row] else True
 
@@ -33,12 +28,10 @@ class Board:
         return check_row() and check_column() and check_square()
 
     def get_free_position(self):
-        """Checks for a free position, return tuple(row,col) or False."""
-
-        for i in range(9):
-            for j in range(9):
-                if self.board[i][j] == 0:
-                    return (i, j)
+        for row in range(9):
+            for col in range(9):
+                if self.board[row][col] == 0:
+                    return (row, col)
         return False
 
     def generate_random_coords(self, n):
@@ -59,10 +52,6 @@ class Board:
             self.board[row][col] = num
 
     def solution(self, endtime):
-        """Checks for a solution of the current board and return True if there is such.
-        endtime is the amount of time the recursion process should run before resetting itself with new RNG.
-        """
-
         if time() > endtime:
             print("Timeout")
             self.board = deepcopy(self.progress_board)
@@ -88,10 +77,6 @@ class Board:
         self.solution(time() + 5)
 
     def apply_difficulty(self, difficulty):
-        """Takes difficulty as an input and reveals a random number of positions on the board,
-        easy - 30, medium-25, hard - 20.
-        """
-
         difficulties = {
             "Easy": 30,
             "Medium": 25,

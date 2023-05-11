@@ -8,12 +8,12 @@ with open(instructions_file, "r") as lines:
     instructions = lines.readlines()
 
 
-def get_window_instructions():
+def get_w_instructions():
     return sg.Window(
         "Window Title",
-        get_layout_instructions(),
-        font=font_window_high_scores,
-        button_color=(color_red, "black"),
+        get_layout_w_instructions(),
+        font=FONT_WINDOW_HIGH_SCORES,
+        button_color=(COLOR_RED, "black"),
         return_keyboard_events=True,
         finalize=True,
         disable_close=True,
@@ -21,11 +21,11 @@ def get_window_instructions():
     )
 
 
-def get_layout_instructions():
+def get_layout_w_instructions():
     return [
         [
-            sg.MLine(
-                key="-ML1-" + sg.WRITE_ONLY_KEY,
+            sg.Multiline(
+                key="-MULTILINE-" + sg.WRITE_ONLY_KEY,
                 size=(65, 25),
                 background_color="black",
                 disabled=True,
@@ -34,10 +34,12 @@ def get_layout_instructions():
     ]
 
 
-def str_print(window, s, pause, color=color_red):
-    for i in range(len(s)):
-        window["-ML1-" + sg.WRITE_ONLY_KEY].print(
-            f"{s[i]}", text_color=(color if s[i] != "-" else color_red), end=""
+def print_intro(window, string, pause, color=COLOR_RED):
+    for i in range(len(string)):
+        window["-MULTILINE-" + sg.WRITE_ONLY_KEY].print(
+            f"{string[i]}",
+            text_color=(color if string[i] != "-" else COLOR_RED),
+            end="",
         )
         window.refresh()
         sleep(pause)
@@ -45,4 +47,4 @@ def str_print(window, s, pause, color=color_red):
 
 def print_instructions(window, pause=0.025, file=instructions):
     for x in file:
-        str_print(window, x, pause, color=color_green)
+        print_intro(window, x, pause, color=COLOR_GREEN)

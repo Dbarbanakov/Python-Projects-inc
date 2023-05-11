@@ -4,10 +4,10 @@ get_loading_screen()
 
 
 while True:
-    event, values = window_main.read(timeout=1000)
+    event, values = w_main.read(timeout=1000)
 
     if event:
-        window_main["-TIMER-"].update(get_chronometer())
+        w_main["-TIMER-"].update(get_chronometer())
 
     if event == sg.WIN_CLOSED:
         break
@@ -15,4 +15,4 @@ while True:
     else:
         get_event(event)
 
-window_main.close()
+w_main.close()

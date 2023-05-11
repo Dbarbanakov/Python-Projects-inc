@@ -3,9 +3,16 @@ from os import path
 from datetime import date
 
 
-hp_sudoku = 81
-hp_player = 10
-consequences = 0
+HP_BOARD = 81
+HP_PLAYER = 10
+COMBO = 0
+
+
+def change_button_color(element, color1="black", color2="white"):
+    element.update(
+        button_color=(color1 if element.get_text() in range(1, 10) else color2)
+    )
+
 
 # Time
 
@@ -25,32 +32,29 @@ def get_chronometer():
 
 # Scores
 
-high_scores_txt = f"{path.dirname(__file__)}/files/high_scores.txt"
+high_scores_file = f"{path.dirname(__file__)}/files/high_scores.txt"
 
 
 def read_score():
-    with open(high_scores_txt, "r") as scores:
+    with open(high_scores_file, "r") as scores:
         return scores.readlines()
 
 
 def append_score(score, user):
     score_line = f"{0} {user}({get_time()}) {score} {date.today()}\n"
-    with open(high_scores_txt, "a") as scores:
+    with open(high_scores_file, "a") as scores:
         scores.write(score_line)
 
 
 def format_score():
     scores = read_score()
 
-    scores_unsorted_dict = {int(line.split()[2].strip()): line for line in scores}
+    box = {int(line.split()[2].strip()): line for line in scores}
 
-    keys_list = list(sorted(scores_unsorted_dict.keys(), reverse=True))
-
-    scores_sorted_dict = {key: scores_unsorted_dict[key] for key in keys_list[:10]}
-    scores_sorted_list = list(scores_sorted_dict.values())
+    box_sorted = {key: box[key] for key in sorted(box, reverse=True)[:10]}
 
     formatted_score = [
-        (f"{x+1} " + scores_sorted_list[x][1:]) for x in range(len(scores_sorted_list))
+        f"{x+1} {list(box_sorted.values())[x][1:]}" for x in range(len(box_sorted))
     ]
 
     return formatted_score
@@ -59,19 +63,8 @@ def format_score():
 def write_score():
     score_list = format_score()
 
-    with open(high_scores_txt, "w") as scores:
+    with open(high_scores_file, "w") as scores:
         scores.writelines(score_list)
 
 
 # Scores
-
-
-def toggle_element_visibility(boolean, window, *elements):
-    for element in elements:
-        window[element].update(visible=boolean)
-
-
-def change_button_color(element, color1="black", color2="white"):
-    element.update(
-        button_color=(color1 if element.get_text() in range(1, 10) else color2)
-    )

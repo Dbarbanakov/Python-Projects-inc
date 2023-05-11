@@ -1,7 +1,7 @@
 from .utils import *
 
 
-def get_layout_window_rating():
+def get_layout_w_rating():
     return (
         [
             sg.Frame(
@@ -11,8 +11,8 @@ def get_layout_window_rating():
                         sg.Radio(
                             f"{i+1}",
                             "-RADIO-STARS-",
-                            font=font_window_loading,
-                            text_color=color_green,
+                            font=FONT_WINDOW_LOADING,
+                            text_color=COLOR_GREEN,
                             enable_events=True,
                         )
                         for i in range(5)
@@ -25,10 +25,10 @@ def get_layout_window_rating():
     )
 
 
-def get_window_rating():
+def get_w_rating():
     return sg.Window(
         " ",
-        get_layout_window_rating(),
+        get_layout_w_rating(),
         element_justification="c",
         modal=True,
         keep_on_top=True,

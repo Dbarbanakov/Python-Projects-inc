@@ -3,7 +3,7 @@ from .utils import *
 from events_utils import read_score
 
 
-def get_layout_window_high_scores():
+def get_layout_w_high_scores():
     headings = (" ", "User", "  -- Score -- ", "Date")
 
     return [
@@ -11,7 +11,7 @@ def get_layout_window_high_scores():
             sg.Frame(
                 "@ High Scores @",
                 [
-                    [sg.T(f"{x}", size=14, text_color=color_green) for x in headings],
+                    [sg.T(f"{x}", size=14, text_color=COLOR_GREEN) for x in headings],
                     [
                         sg.Column(
                             [
@@ -22,26 +22,25 @@ def get_layout_window_high_scores():
                     ],
                 ],
                 title_location="n",
-                pad=20,
-                title_color=color_red,
+                title_color=COLOR_RED,
             )
         ],
         [
             sg.B(
                 "Confirm",
                 bind_return_key=True,
-                button_color=(color_red, "black"),
+                button_color=(COLOR_RED, "black"),
                 key="-ENDGAME-",
             ),
         ],
     ]
 
 
-def get_window_high_scores():
+def get_w_high_scores():
     return sg.Window(
         "High Scores",
-        get_layout_window_high_scores(),
-        font=font_window_high_scores,
+        get_layout_w_high_scores(),
+        font=FONT_WINDOW_HIGH_SCORES,
         element_justification="c",
         text_justification="center",
         no_titlebar=True,

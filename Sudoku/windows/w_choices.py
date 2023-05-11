@@ -1,7 +1,7 @@
 from .utils import *
 
 
-def get_window_available_numbers(nums):
+def get_w_choices(nums):
     return sg.Window(
         "",
         [
@@ -14,7 +14,7 @@ def get_window_available_numbers(nums):
                                 " ",
                                 key=nums[i],
                                 image_source=f"{path.dirname(__file__)}/../files/images/{nums[i]}.png",
-                                button_color=(color_orange, color_blue),
+                                button_color=(COLOR_ORANGE, COLOR_BLUE),
                             )
                             for i in range(len(nums))
                         ]
@@ -28,5 +28,5 @@ def get_window_available_numbers(nums):
         grab_anywhere=True,
         keep_on_top=True,
         use_custom_titlebar=True,
-        titlebar_background_color=color_orange,
+        titlebar_background_color=COLOR_ORANGE,
     )

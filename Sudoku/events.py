@@ -5,11 +5,11 @@ import sys
 
 
 def get_event(event):
-    global hp_player, hp_sudoku, consequences
+    global HP_PLAYER, HP_BOARD, COMBO
 
     # Focus Logic starts
 
-    element = window_main.find_element_with_focus()
+    element = w_main.find_element_with_focus()
 
     if element:
         if event == "Return:36":
@@ -21,7 +21,7 @@ def get_event(event):
             change_button_color(prev_element)
 
             if prev_element.Key == "-INSTRUCTIONS-":
-                change_button_color(prev_element, color2=color_yellow)
+                change_button_color(prev_element, color2=COLOR_YELLOW)
 
         if type(element.Key) == tuple:
             row, col = element.Key
@@ -37,12 +37,10 @@ def get_event(event):
 
             change_button_color(element)
 
-            window_main[(row, col)].set_focus()
+            w_main[(row, col)].set_focus()
 
-        change_button_color(
-            window_main.find_element_with_focus(), color_green, color_red
-        )
-        window_main.refresh()
+        change_button_color(w_main.find_element_with_focus(), COLOR_GREEN, COLOR_RED)
+        w_main.refresh()
 
     # Focus Logic ends
 
@@ -58,41 +56,39 @@ def get_event(event):
                 if sudoku.check_position(sudoku.progress_board, row, col, x)
             ]
 
-            window_available_numbers = get_window_available_numbers(nums)
+            w_choices = get_w_choices(nums)
 
-            is_ele_clicked = {num: False for num in nums}
+            el_clicks = {num: False for num in nums}
 
             tabs = 0
 
+            # w_choices - open
+
             while True:
-                ev, val = window_available_numbers.read()
+                ev, val = w_choices.read()
 
                 if ev in ("q:24", sg.WIN_CLOSED):
                     break
 
                 # Keyboard Focus
 
-                focus_ele = window_available_numbers.find_element_with_focus()
+                focus_el = w_choices.find_element_with_focus()
 
-                if focus_ele and ev == "Return:36":
-                    focus_ele.click()
+                if focus_el and ev == "Return:36":
+                    focus_el.click()
 
                 if ev == ("Tab:23"):
-                    prev_focus_ele = focus_ele.get_previous_focus()
+                    prev_focus_el = focus_el.get_previous_focus()
 
-                    change_button_color(focus_ele, color2=color_red)
+                    change_button_color(focus_el, color2=COLOR_RED)
 
                     if tabs == 0:
                         tabs += 1
                         continue
 
-                    color = (
-                        color_yellow
-                        if is_ele_clicked[prev_focus_ele.Key]
-                        else color_blue
-                    )
+                    color = COLOR_YELLOW if el_clicks[prev_focus_el.Key] else COLOR_BLUE
 
-                    change_button_color(prev_focus_ele, color2=color)
+                    change_button_color(prev_focus_el, color2=color)
 
                 # Keyboard Focus
 
@@ -102,87 +98,81 @@ def get_event(event):
                     if num == solution_number:
                         sudoku.opened_coords.append(event)
 
-                        window_main[event].update(
+                        w_main[event].update(
                             solution_number, button_color=("white", "black")
                         )
 
                         sudoku.progress_board[row][col] = solution_number
 
-                        hp_sudoku -= 1
-                        window_main["-HEALTH-BOARD-"].update(hp_sudoku)
+                        HP_BOARD -= 1
+                        w_main["-HP-BOARD-"].update(HP_BOARD)
 
-                        consequences += 1
-                        window_main["-CONSEQUENCES-"].update(
-                            f"Consequence - {consequences}"
-                        )
+                        COMBO += 1
+                        w_main["-COMBO-"].update(f"Combo - {COMBO}")
 
-                        update_score(consequences)
+                        update_score(COMBO)
 
-                        hp_player += consequences
-                        update_health_bar(window_main, hp_player)
+                        HP_PLAYER += COMBO
+                        update_hp_bar(HP_PLAYER)
 
                         break
 
                     else:
-                        window_available_numbers[num].update(button_color=color_yellow)
+                        w_choices[num].update(button_color=COLOR_YELLOW)
 
-                        is_ele_clicked[num] = True
+                        el_clicks[num] = True
 
-                        hp_player -= 1
-                        update_health_bar(window_main, hp_player)
+                        HP_PLAYER -= 1
+                        update_hp_bar(HP_PLAYER)
 
-                        consequences = 0
-                        window_main["-CONSEQUENCES-"].update(
-                            f"Consequence - {consequences}"
-                        )
+                        COMBO = 0
+                        w_main["-COMBO-"].update(f"Combo - {COMBO}")
 
-            window_available_numbers.close()
+            w_choices.close()
 
     if event in ("Easy", "Medium", "Hard"):
-        window_main.finalize()
-        window_main[event].block_focus()
-        window_main["-FRAME-BUTTONS-"].update(event)
-        window_main["-HEALTH-PLAYER-"].update(hp_player)
+        w_main.finalize()
+        w_main[event].block_focus()
+        w_main["-FRAME-BUTTONS-"].update(event)
+        w_main["-HP-PLAYER-"].update(HP_PLAYER)
 
-        window_main.set_alpha(0.5)
+        w_main.set_alpha(0.5)
 
         sudoku.apply_difficulty(event)
-        hp_sudoku -= len(sudoku.opened_coords)
-        window_main["-HEALTH-BOARD-"].update(hp_sudoku)
+        HP_BOARD -= len(sudoku.opened_coords)
+        w_main["-HP-BOARD-"].update(HP_BOARD)
 
-        user = get_window_user_login()
-        window_main["-USER-"].update(user)
+        user = get_w_user_login()
+        w_main["-USER-"].update(user)
 
         for coord in sudoku.opened_coords:
             row, col = coord
-            window_main[coord].update(
+            w_main[coord].update(
                 sudoku.board[row][col], button_color=("white", "black")
             )
 
-        window_main.set_alpha(1)
+        w_main.set_alpha(1)
 
-        toggle_element_visibility(False, window_main, "-FRAME-DIFFICULTY-")
-
+        # Hides -FRAME-DIFFICULTY-, shows rest.
         toggle_element_visibility(
-            True,
-            window_main,
+            "-FRAME-DIFFICULTY-",
             "-AVATAR-BOARD-",
-            "-HEALTH-PLAYER-",
+            "-HP-PLAYER-",
             "-TIMER-",
-            "-HEALTH-BOARD-",
+            "-HP-BOARD-",
             "-AVATAR-PLAYER-",
             "-FRAME-BUTTONS-",
-            "-CONSEQUENCES-",
+            "-COMBO-",
             "-SCORE-",
         )
 
     if event == "-INSTRUCTIONS-":
-        window_main.set_alpha(0.5)
+        w_main.set_alpha(0.5)
 
-        window_instructions = get_window_instructions()
+        w_instructions = get_w_instructions()
 
-        str_print(
-            window_instructions,
+        print_intro(
+            w_instructions,
             " " * 7 + "Use Q to exit or Press Space to continue ... \n\n\n",
             0.05,
         )
@@ -190,61 +180,61 @@ def get_event(event):
         was_space_pressed = False
 
         while True:
-            ev, val = window_instructions.read()
+            ev, val = w_instructions.read()
 
             if ev in (sg.WIN_CLOSED, "q:24"):
                 break
 
             if ev == "space:65" and not was_space_pressed:
                 was_space_pressed = True
-                window_instructions.DisableClose = False
+                w_instructions.DisableClose = False
 
-                print_instructions(window_instructions)
+                print_instructions(w_instructions)
 
-        window_instructions.close()
-        window_main.set_alpha(1)
+        w_instructions.close()
+        w_main.set_alpha(1)
 
     if event == "-RATE-":
-        window_main.set_alpha(0.5)
+        w_main.set_alpha(0.5)
 
-        window_rating = get_window_rating()
-        ev, val = window_rating.read(close=True)
+        w_rating = get_w_rating()
+        ev, val = w_rating.read(close=True)
 
-        if ev in (0, 1, 2, 3, 4):
-            toggle_element_visibility(False, window_main, "-RATE-")
+        if ev in range(5):
+            # Hides -RATE-, shows rest.
             toggle_element_visibility(
-                True,
-                window_main,
+                "-RATE-",
                 "-THANKS-",
                 "-FRAME-STARS-",
             )
 
             for i in range(ev + 1):
-                toggle_element_visibility(True, window_main, f"star{i}")
+                # Shows a star for each iteration.
+                toggle_element_visibility(f"star{i}")
 
-        window_main.set_alpha(1)
+        w_main.set_alpha(1)
 
     if event == "-HIGH-SCORES-":
-        window_main.set_alpha(0.5)
+        w_main.set_alpha(0.5)
 
-        get_window_high_scores().read(close=True)
+        get_w_high_scores().read(close=True)
 
-        window_main.set_alpha(1)
+        w_main.set_alpha(1)
 
-    if hp_sudoku == 0:
-        window_main.set_alpha(0.5)
+    if HP_BOARD == 0:
+        w_main.set_alpha(0.5)
 
-        username = window_main["-USER-"].get()
+        username = w_main["-USER-"].get()
 
-        score = int(window_main["-SCORE-"].get().split()[-1])
+        score = int(w_main["-SCORE-"].get().split()[-1])
         append_score(score, username)
         write_score()
 
-        hp_sudoku -= 1
+        HP_BOARD -= 1
 
-        window_high_scores = get_window_high_scores()
-        ev, val = window_high_scores.read(close=True)
+        w_high_scores = get_w_high_scores()
+        ev, val = w_high_scores.read(close=True)
 
         if ev == "-ENDGAME-":
-            window_high_scores.close()
+            w_high_scores.close()
             sys.exit()
