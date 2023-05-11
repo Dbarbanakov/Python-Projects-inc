@@ -12,13 +12,17 @@ sudoku = Board()
 
 sg.theme("DarkBlack")
 
-COLOR_RED = "#FF3300"
-COLOR_GREEN = "#00b300"
-COLOR_YELLOW = "#ffff66"
-COLOR_ORANGE = "#ff9900"
-COLOR_BLUE = "#99ccff"
+HP_BOARD = 81
+HP_PLAYER = 10
+COMBO = 0
 
-FONT_WINDOW_LOADING = ("Ani", 12, "bold")
-FONT_WINDOW_MAIN = ("Purisa", 12, "bold")
+RED = "#FF3300"
+GREEN = "#00b300"
+YELLOW = "#ffff66"
+ORANGE = "#ff9900"
+BLUE = "#99ccff"
+
+FONT_MAIN = ("Purisa", 12, "bold")
+FONT_LOAD = ("Ani", 12, "bold")
 FONT_BOARD = ("Helvetica", 10, "bold")
-FONT_WINDOW_HIGH_SCORES = ("FreeMono", 12, "bold")
+FONT_SCORES = ("FreeMono", 12, "bold")

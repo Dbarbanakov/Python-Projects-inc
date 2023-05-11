@@ -1,27 +1,28 @@
 from .utils import *
 
 
+def get_score():
+    return int(w_main["-SCORE-"].get().split()[-1])
+
+
 def toggle_element_visibility(*captions):
     for capt in captions:
         element = w_main[capt]
         element.update(visible=not element.visible)
 
 
-def update_hp_bar(hp):
+def get_hp_bar_colors(hp):
     bar_colors = {
-        0: (COLOR_GREEN, COLOR_RED),
-        1: (COLOR_YELLOW, COLOR_GREEN),
-        2: (COLOR_BLUE, COLOR_YELLOW),
-        3: (COLOR_ORANGE, COLOR_BLUE),
-        4: (COLOR_YELLOW, COLOR_ORANGE),
-        5: (COLOR_GREEN, COLOR_YELLOW),
-        6: (COLOR_RED, COLOR_GREEN),
-        7: (COLOR_BLUE, COLOR_RED),
+        0: (GREEN, RED),
+        1: (YELLOW, GREEN),
+        2: (BLUE, YELLOW),
+        3: (ORANGE, BLUE),
+        4: (YELLOW, ORANGE),
+        5: (GREEN, YELLOW),
+        6: (RED, GREEN),
+        7: (BLUE, RED),
     }
-
-    count = hp % 10
-    colors = bar_colors[(hp // 10) % (len(bar_colors) - 1)]
-    return w_main["-HP-PLAYER-"].update(count, bar_color=colors)
+    return bar_colors[(hp // 10) % (len(bar_colors) - 1)]
 
 
 def get_hp_bar(name, max, colors):
@@ -35,13 +36,6 @@ def get_hp_bar(name, max, colors):
     )
 
 
-def update_score(combo):
-    update_value = 10 + combo
-    prev_score = int(w_main["-SCORE-"].get().split()[-1])
-    current_score = prev_score + update_value
-    w_main["-SCORE-"].update(f"Score - {current_score}")
-
-
 layout_w_main = [
     [
         sg.vbottom(
@@ -53,8 +47,8 @@ layout_w_main = [
                 ),
                 sg.Column(
                     [
-                        [sg.T("Player", key="-USER-")],
-                        [get_hp_bar("PLAYER", 10, (COLOR_GREEN, COLOR_RED))],
+                        [sg.Text("Player", key="-USER-")],
+                        [get_hp_bar("PLAYER", 10, (GREEN, RED))],
                     ]
                 ),
                 sg.Text(
@@ -62,8 +56,8 @@ layout_w_main = [
                 ),
                 sg.Column(
                     [
-                        [sg.Push(), sg.T("Board")],
-                        [get_hp_bar("BOARD", 81, (COLOR_GREEN, COLOR_RED))],
+                        [sg.Push(), sg.Text("Board")],
+                        [get_hp_bar("BOARD", 81, (GREEN, RED))],
                     ]
                 ),
                 sg.Image(
@@ -76,26 +70,20 @@ layout_w_main = [
     ],
     [
         sg.pin(
-            sg.T(
+            sg.Text(
                 "Combo - 0",
                 key="-COMBO-",
-                text_color=COLOR_RED,
+                text_color=RED,
                 visible=False,
             )
         ),
         sg.Push(),
-        sg.T("Score - 0", key="-SCORE-", text_color=COLOR_YELLOW, visible=False),
+        sg.Text("Score - 0", key="-SCORE-", text_color=YELLOW, visible=False),
     ],
     [
         sg.Frame(
             "Choose a difficulty.",
-            [
-                [
-                    sg.B("Easy"),
-                    sg.B("Medium"),
-                    sg.B("Hard"),
-                ]
-            ],
+            [[sg.Button(f"{x}") for x in ("Easy", "Medium", "Hard")]],
             key="-FRAME-DIFFICULTY-",
             title_location="n",
         ),
@@ -103,17 +91,17 @@ layout_w_main = [
             "",
             [
                 [
-                    sg.B(
+                    sg.Button(
                         " ",
                         size=(4, 2),
-                        key=(i, j),
+                        key=(x, y),
                         pad=(0, 0),
                         border_width=2,
-                        font=FONT_WINDOW_HIGH_SCORES,
+                        font=FONT_SCORES,
                     )
-                    for j in range(9)
+                    for y in range(9)
                 ]
-                for i in range(9)
+                for x in range(9)
             ],
             key="-FRAME-BUTTONS-",
             title_location="n",
@@ -121,15 +109,15 @@ layout_w_main = [
         ),
     ],
     [
-        sg.T(
+        sg.Text(
             "Thanks for the appreciation!",
-            text_color=COLOR_RED,
+            text_color=RED,
             key="-THANKS-",
             visible=False,
         )
     ],
     [
-        sg.B("Rate me", key="-RATE-"),
+        sg.Button("Rate me", key="-RATE-"),
         sg.Push(),
         sg.pin(
             sg.Frame(
@@ -138,7 +126,7 @@ layout_w_main = [
                     [
                         sg.Image(
                             f"{path.dirname(__file__)}/../files/images/star.png",
-                            key=f"star{x}",
+                            key=f"{x}",
                             visible=False,
                         )
                         for x in range(5)
@@ -149,16 +137,16 @@ layout_w_main = [
             )
         ),
         sg.Push(),
-        sg.B("High Scores", key="-HIGH-SCORES-"),
+        sg.Button("High Scores", key="-HIGH-SCORES-"),
     ],
-    [sg.B("Instructions", key="-INSTRUCTIONS-", button_color=COLOR_YELLOW)],
+    [sg.Button("Instructions", key="-INSTRUCTIONS-")],
 ]
 
 w_main = sg.Window(
     "Sudoku",
     layout_w_main,
     element_justification="c",
-    font=FONT_WINDOW_MAIN,
+    font=FONT_MAIN,
     return_keyboard_events=True,
     use_default_focus=False,
 )

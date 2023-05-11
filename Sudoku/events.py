@@ -43,9 +43,7 @@ def get_event(event):
             w_main[(row, col)].set_focus()
 
         focus = w_main.find_element_with_focus()
-        focus.update(
-            button_color=COLOR_GREEN if focus.get_text() in range(1, 10) else COLOR_RED
-        )
+        focus.update(button_color=GREEN if focus.get_text() in range(1, 10) else RED)
         w_main.refresh()
 
     # Focus Logic ends
@@ -84,7 +82,7 @@ def get_event(event):
                     focus.click()
 
                 if ev == ("Tab:23"):
-                    focus.update(button_color=COLOR_RED)
+                    focus.update(button_color=RED)
 
                     prev_focus = focus.get_previous_focus()
 
@@ -93,9 +91,7 @@ def get_event(event):
                         continue
 
                     prev_focus.update(
-                        button_color=COLOR_YELLOW
-                        if clicked[prev_focus.Key]
-                        else COLOR_BLUE
+                        button_color=YELLOW if clicked[prev_focus.Key] else BLUE
                     )
 
                 # Focus - w_choices
@@ -105,36 +101,38 @@ def get_event(event):
 
                     if num == solution_number:
                         sudoku.opened_coords.append(event)
+                        sudoku.progress_board[row][col] = solution_number
 
                         w_main[event].update(
                             solution_number, button_color=("white", "black")
                         )
 
-                        sudoku.progress_board[row][col] = solution_number
-
                         HP_BOARD -= 1
-                        w_main["-HP-BOARD-"].update(HP_BOARD)
-
                         COMBO += 1
+                        HP_PLAYER += COMBO
+
                         w_main["-COMBO-"].update(f"Combo - {COMBO}")
 
-                        update_score(COMBO)
+                        colors = get_hp_bar_colors(HP_PLAYER)
+                        w_main["-HP-PLAYER-"].update(HP_PLAYER % 10, bar_color=colors)
 
-                        HP_PLAYER += COMBO
-                        update_hp_bar(HP_PLAYER)
+                        w_main["-HP-BOARD-"].update(HP_BOARD)
+
+                        w_main["-SCORE-"].update(f"Score - {get_score() + 10 + COMBO}")
 
                         break
 
                     else:
-                        w_choices[num].update(button_color=COLOR_YELLOW)
+                        COMBO = 0
+                        HP_PLAYER -= 1
 
+                        w_choices[num].update(button_color=YELLOW)
                         clicked[num] = True
 
-                        HP_PLAYER -= 1
-                        update_hp_bar(HP_PLAYER)
-
-                        COMBO = 0
                         w_main["-COMBO-"].update(f"Combo - {COMBO}")
+
+                        colors = get_hp_bar_colors(HP_PLAYER)
+                        w_main["-HP-PLAYER-"].update(HP_PLAYER % 10, bar_color=colors)
 
             w_choices.close()
 
@@ -207,7 +205,6 @@ def get_event(event):
 
         w_rating = get_w_rating()
         ev, val = w_rating.read(close=True)
-
         if ev in range(5):
             # Hides -RATE-, shows rest.
             toggle_element_visibility(
@@ -218,7 +215,7 @@ def get_event(event):
 
             for i in range(ev + 1):
                 # Shows a star for each iteration.
-                toggle_element_visibility(f"star{i}")
+                toggle_element_visibility(f"{i}")
 
         w_main.set_alpha(1)
 
@@ -232,13 +229,13 @@ def get_event(event):
     if HP_BOARD == 0:
         w_main.set_alpha(0.5)
 
-        username = w_main["-USER-"].get()
+        HP_BOARD -= 1
 
-        score = int(w_main["-SCORE-"].get().split()[-1])
+        username = w_main["-USER-"].get()
+        score = get_score()
+
         append_score(score, username)
         write_score()
-
-        HP_BOARD -= 1
 
         w_high_scores = get_w_high_scores()
         ev, val = w_high_scores.read(close=True)

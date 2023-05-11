@@ -9,13 +9,13 @@ def get_layout_w_rating():
                 [
                     [
                         sg.Radio(
-                            f"{i+1}",
+                            f"{i}",
                             "-RADIO-STARS-",
-                            font=FONT_WINDOW_LOADING,
-                            text_color=COLOR_GREEN,
+                            font=FONT_LOAD,
+                            text_color=GREEN,
                             enable_events=True,
                         )
-                        for i in range(5)
+                        for i in range(1, 6)
                     ]
                 ],
                 key="-FRAME-RADIO-",

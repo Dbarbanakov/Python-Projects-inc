@@ -10,11 +10,11 @@ def get_w_choices(nums):
                     " ----- ",
                     [
                         [
-                            sg.B(
+                            sg.Button(
                                 " ",
                                 key=nums[i],
                                 image_source=f"{path.dirname(__file__)}/../files/images/{nums[i]}.png",
-                                button_color=(COLOR_ORANGE, COLOR_BLUE),
+                                button_color=(ORANGE, BLUE),
                             )
                             for i in range(len(nums))
                         ]
@@ -28,5 +28,5 @@ def get_w_choices(nums):
         grab_anywhere=True,
         keep_on_top=True,
         use_custom_titlebar=True,
-        titlebar_background_color=COLOR_ORANGE,
+        titlebar_background_color=ORANGE,
     )
