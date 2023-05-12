@@ -32,6 +32,7 @@ def get_layout_w_instructions():
 
 
 def print_line(window, string, pause, color=RED):
+    """Prints a line(string) letter by letter with a delay(pause)."""
     for i in range(len(string)):
         window["-MULTILINE-" + sg.WRITE_ONLY_KEY].print(
             f"{string[i]}",
@@ -42,12 +43,14 @@ def print_line(window, string, pause, color=RED):
         sleep(pause)
 
 
-def print_intro(window, pause):
+def print_intro(window):
+    """Prints intro with print_line()."""
     intro = " " * 7 + "Use Q to exit or Press Space to continue ... \n\n\n"
-    print_line(window, intro, pause)
+    print_line(window, intro, 0.05)
 
 
 def print_instructions(window):
+    """Prints the instructions file with print_line()."""
     with open(instructions_file, "r") as file:
         lines = file.readlines()
 

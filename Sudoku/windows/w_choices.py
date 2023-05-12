@@ -2,6 +2,7 @@ from .utils import *
 
 
 def get_w_choices(nums):
+    """Returns a window with images, corresponding to the nums passed as an argument."""
     return sg.Window(
         "",
         [

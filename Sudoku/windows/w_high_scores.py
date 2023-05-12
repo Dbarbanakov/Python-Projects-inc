@@ -4,6 +4,7 @@ from events_utils import read_score
 
 
 def get_layout_w_high_scores():
+    """Returns a layout with lines from reading the high_scores file."""
     headings = (" ", "User", "  -- Score -- ", "Date")
 
     return [

@@ -8,10 +8,11 @@ def get_score():
 def toggle_element_visibility(*captions):
     for capt in captions:
         element = w_main[capt]
-        element.update(visible=not element.visible)
+        element.update(visible=(not element.visible))
 
 
 def cp_colors(cp):
+    """Returns a tuple of colors depending on the amount of CP."""
     bar_colors = {
         0: (GREEN, RED),
         1: (YELLOW, GREEN),
@@ -22,6 +23,7 @@ def cp_colors(cp):
         6: (RED, GREEN),
         7: (BLUE, RED),
     }
+
     return bar_colors[(cp // 10) % (len(bar_colors) - 1)]
 
 

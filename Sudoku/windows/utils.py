@@ -5,7 +5,7 @@ from solution import *
 
 # sudoku init
 
-sdk = Board()
+Sudoku = Board()
 
 # sudoku init
 

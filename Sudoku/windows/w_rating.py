@@ -2,6 +2,7 @@ from .utils import *
 
 
 def get_layout_w_rating():
+    """Returns layout with 5 radio buttons, keys from 1 to 5 included."""
     return (
         [
             sg.Frame(

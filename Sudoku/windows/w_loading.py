@@ -4,6 +4,7 @@ import sys
 
 
 def get_loading_screen():
+    """Returns the loading screen before the game starts."""
     for i in range(200):
         ev, val = w_loading.read(timeout=10)
 
@@ -14,8 +15,8 @@ def get_loading_screen():
             w_loading["-LOADING-BAR-"].update(bar_color=(RED, "black"))
 
             if i == 50:
-                sdk.generate_board()
-                for row in sdk.board:
+                Sudoku.generate_board()
+                for row in Sudoku.board:
                     if 0 in row:
                         sys.exit()
 

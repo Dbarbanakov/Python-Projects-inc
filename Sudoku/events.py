@@ -18,6 +18,8 @@ def get_event(event):
         if event == "Tab:23":
             prev_focus = focus.get_previous_focus()
 
+            # Changes color to the previous focused element to Black if it holds a number.
+            # If it's empty to White
             prev_focus.update(
                 button_color="black"
                 if prev_focus.get_text() in range(1, 10)
@@ -26,6 +28,9 @@ def get_event(event):
 
         if type(focus.Key) == tuple:
             row, col = focus.Key
+
+            # Takes the element coords and changes them according to the event.
+            # Used for moving focus with Arrow Keys.
 
             if event == "Right:114":
                 col += 1 * (col < 8)
@@ -36,44 +41,51 @@ def get_event(event):
             elif event == "Up:111":
                 row -= 1 * (row > 0)
 
+            # Returns color to the element with focus, as it is not focused.
             focus.update(
                 button_color="black" if focus.get_text() in range(1, 10) else "white"
             )
 
+            # Sets focus to the new coord.
             w_main[(row, col)].set_focus()
 
+        # Updates the focus and its color.
         focus = w_main.find_element_with_focus()
         focus.update(button_color=GREEN if focus.get_text() in range(1, 10) else RED)
+
         w_main.refresh()
 
     # Focus Logic ends
 
     if type(event) == tuple:
+        # Uses event as coords.
         row, col = event
 
-        s_num = sdk.board[row][col]
+        # Gets the number from the solution for those coords.
+        solution_num = Sudoku.board[row][col]
 
-        if event not in sdk.opened_coords:
+        if event not in Sudoku.progress_coords:
+            # Creates a list of numbers which are suitable for this coord.
             nums = [
                 x
                 for x in range(1, 10)
-                if sdk.check_position(sdk.progress_board, row, col, x)
+                if Sudoku.check_position(Sudoku.progress_board, row, col, x)
             ]
 
             w_choices = get_w_choices(nums)
 
+            # Dictionary used to keep track which element is clicked during the window.read().
             clicked = {num: False for num in nums}
             tabs = 0
 
-            # w_choices - open
-
+            # Reads the window with the suitable numbers for that coord.
             while True:
                 ev, val = w_choices.read()
 
                 if ev in ("q:24", sg.WIN_CLOSED):
                     break
 
-                # Focus - w_choices
+                # Focus logic starts for w_choices.
 
                 focus = w_choices.find_element_with_focus()
 
@@ -81,6 +93,7 @@ def get_event(event):
                     focus.click()
 
                 if ev == ("Tab:23"):
+                    # Changes color to Red of the element which has focus on it.
                     focus.update(button_color=RED)
 
                     if tabs == 0:
@@ -88,22 +101,31 @@ def get_event(event):
                         continue
 
                     prev_focus = focus.get_previous_focus()
+
+                    # Changes color to the previous element to Yellow if it was already clicked, if not to Blue.
                     prev_focus.update(
                         button_color=YELLOW if clicked[prev_focus.Key] else BLUE
                     )
 
                     w_choices.refresh()
 
-                # Focus - w_choices
+                # Focus logic ends for w_choices.
 
+                # Checks the event from the window pop-up.
+                # If it is a keyboard event (1-9) returned as a string,
+                # or it is selected with the mouse returned as an int.
                 if ev in nums or ev[0].isdecimal() and int(ev[0]) in nums:
                     num = int(ev[0]) if type(ev) is str else ev
 
-                    if num == s_num:
-                        sdk.opened_coords.append(event)
-                        sdk.progress_board[row][col] = s_num
+                    if num == solution_num:
+                        # If the number is same as the one from the solution,
+                        # updates the progress board and coords.
+                        Sudoku.progress_coords.append(event)
+                        Sudoku.progress_board[row][col] = solution_num
 
-                        w_main[event].update(s_num, button_color=("white", "black"))
+                        w_main[event].update(
+                            solution_num, button_color=("white", "black")
+                        )
 
                         HP_BOARD -= 1
                         COMBO += 1 if COMBO in range(5) else 2
@@ -114,9 +136,12 @@ def get_event(event):
                         w_main["-CP-BAR-"].update(CP % 10, bar_color=cp_colors(CP))
                         w_main["-SCORE-"].update(f"Score - {get_score() + 5 + COMBO}")
 
+                        # Breaks the window.read() loop after updating the GUI.
                         break
 
                     else:
+                        # If it's not the right number,
+                        # tags that number as clicked, changes it's color and updates the GUI.
                         COMBO = 0
                         CP -= 5
 
@@ -136,16 +161,20 @@ def get_event(event):
 
         w_main.set_alpha(0.5)
 
-        sdk.apply_difficulty(event)
-        HP_BOARD -= len(sdk.opened_coords)
+        Sudoku.apply_difficulty(event)
+        HP_BOARD -= len(Sudoku.progress_coords)
         w_main["-HP-BOARD-"].update(HP_BOARD)
 
         user = get_w_user_login()
         w_main["-USER-"].update(user)
 
-        for coord in sdk.opened_coords:
+        # Takes number from the solution for each coord and changes it's color.
+        for coord in Sudoku.progress_coords:
             row, col = coord
-            w_main[coord].update(sdk.board[row][col], button_color=("white", "black"))
+
+            w_main[coord].update(
+                Sudoku.board[row][col], button_color=("white", "black")
+            )
 
         w_main.set_alpha(1)
 
@@ -167,7 +196,7 @@ def get_event(event):
 
         w_instructions = get_w_instructions()
 
-        print_intro(w_instructions, 0.05)
+        print_intro(w_instructions)
 
         pressed_space = False
 
@@ -179,7 +208,6 @@ def get_event(event):
 
             if ev == "space:65" and not pressed_space:
                 pressed_space = True
-                w_instructions.DisableClose = False
 
                 print_instructions(w_instructions)
 
