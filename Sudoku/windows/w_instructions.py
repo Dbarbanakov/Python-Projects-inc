@@ -4,9 +4,6 @@ from time import sleep
 
 instructions_file = f"{path.dirname(__file__)}/../files/instructions.txt"
 
-# with open(instructions_file, "r") as lines:
-#     instructions = lines.readlines()
-
 
 def get_w_instructions():
     return sg.Window(
@@ -34,7 +31,7 @@ def get_layout_w_instructions():
     ]
 
 
-def print_intro(window, string, pause, color=RED):
+def print_line(window, string, pause, color=RED):
     for i in range(len(string)):
         window["-MULTILINE-" + sg.WRITE_ONLY_KEY].print(
             f"{string[i]}",
@@ -45,9 +42,14 @@ def print_intro(window, string, pause, color=RED):
         sleep(pause)
 
 
+def print_intro(window, pause):
+    intro = " " * 7 + "Use Q to exit or Press Space to continue ... \n\n\n"
+    print_line(window, intro, pause)
+
+
 def print_instructions(window):
     with open(instructions_file, "r") as file:
         lines = file.readlines()
 
     for x in lines:
-        print_intro(window, x, 0.025, color=GREEN)
+        print_line(window, x, 0.025, color=GREEN)

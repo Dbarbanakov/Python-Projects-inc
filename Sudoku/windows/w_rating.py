@@ -11,6 +11,7 @@ def get_layout_w_rating():
                         sg.Radio(
                             f"{i}",
                             "-RADIO-STARS-",
+                            key=i,
                             font=FONT_LOAD,
                             text_color=GREEN,
                             enable_events=True,

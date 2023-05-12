@@ -5,7 +5,7 @@ from solution import *
 
 # sudoku init
 
-sudoku = Board()
+sdk = Board()
 
 # sudoku init
 
@@ -13,7 +13,7 @@ sudoku = Board()
 sg.theme("DarkBlack")
 
 HP_BOARD = 81
-HP_PLAYER = 10
+CP = 10  # Combo Points
 COMBO = 0
 
 RED = "#FF3300"

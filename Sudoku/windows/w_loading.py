@@ -14,8 +14,8 @@ def get_loading_screen():
             w_loading["-LOADING-BAR-"].update(bar_color=(RED, "black"))
 
             if i == 50:
-                sudoku.generate_board()
-                for row in sudoku.board:
+                sdk.generate_board()
+                for row in sdk.board:
                     if 0 in row:
                         sys.exit()
 

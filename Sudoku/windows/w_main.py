@@ -11,7 +11,7 @@ def toggle_element_visibility(*captions):
         element.update(visible=not element.visible)
 
 
-def get_hp_bar_colors(hp):
+def cp_colors(cp):
     bar_colors = {
         0: (GREEN, RED),
         1: (YELLOW, GREEN),
@@ -22,14 +22,14 @@ def get_hp_bar_colors(hp):
         6: (RED, GREEN),
         7: (BLUE, RED),
     }
-    return bar_colors[(hp // 10) % (len(bar_colors) - 1)]
+    return bar_colors[(cp // 10) % (len(bar_colors) - 1)]
 
 
-def get_hp_bar(name, max, colors):
+def get_bar(name, max, colors):
     return sg.ProgressBar(
         max,
         orientation="h",
-        key=f"-HP-{name}-",
+        key=f"-{name}-",
         bar_color=colors,
         visible=False,
         size=(15, 20),
@@ -48,7 +48,7 @@ layout_w_main = [
                 sg.Column(
                     [
                         [sg.Text("Player", key="-USER-")],
-                        [get_hp_bar("PLAYER", 10, (GREEN, RED))],
+                        [get_bar("CP-BAR", 10, (GREEN, RED))],
                     ]
                 ),
                 sg.Text(
@@ -57,7 +57,7 @@ layout_w_main = [
                 sg.Column(
                     [
                         [sg.Push(), sg.Text("Board")],
-                        [get_hp_bar("BOARD", 81, (GREEN, RED))],
+                        [get_bar("HP-BOARD", 81, (GREEN, RED))],
                     ]
                 ),
                 sg.Image(
