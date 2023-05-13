@@ -237,6 +237,7 @@ def get_event(event):
     if event == "-HIGH-SCORES-":
         w_main.set_alpha(0.5)
 
+        write_score()
         get_w_high_scores().read(close=True)
 
         w_main.set_alpha(1)

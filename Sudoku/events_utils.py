@@ -41,17 +41,17 @@ def append_score(score, user):
 
 def format_score():
     """Takes the score file as a list of lines, returns sorted list by points."""
-    scores_list = read_score()
+    scores = read_score()
 
-    # key: value - points: line w/o number
-    box = {int(line.split()[2].strip()): line[1:] for line in scores_list}
+    # key - score as an int, value line(string) with the number of the position cut.
+    box = {int(line.split()[2]): " ".join(line.split()[1:]) for line in scores}
 
-    # sorts by key till 10th element, if there is 11th, it cuts it
+    # sorts the dict by key in decreasing order, if there is 11th line, it cuts it.
     box_sorted = {key: box[key] for key in sorted(box, reverse=True)[:10]}
 
-    # returns sorted list of lines with concatenated number in front of each line
+    # returns a list of sorted lines(strings) by score with added position in front(1-10).
     return [
-        f"{count} {value}" for count, value in enumerate(box_sorted.values(), start=1)
+        f"{count} {value}\n" for count, value in enumerate(box_sorted.values(), start=1)
     ]
 
 

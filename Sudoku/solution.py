@@ -7,7 +7,6 @@ class Board:
     def __init__(self):
         self.board = [[0 for col in range(9)] for row in range(9)]
         self.progress_board = deepcopy(self.board)
-        self.init_positions = set()
         self.progress_coords = list()
 
     def check_position(self, board, row, col, n):
@@ -20,12 +19,14 @@ class Board:
             return False if n in [board[i][col] for i in range(9)] else True
 
         def check_square():
-            square = [
-                [board[row // 3 * 3 + i][col // 3 * 3 + j] for j in range(3)]
-                for i in range(3)
-            ]
+            row_range = row - row % 3
+            col_range = col - col % 3
 
-            return False if n in square else True
+            for i in range(3):
+                for j in range(3):
+                    if n == board[i + row_range][j + col_range]:
+                        return False
+            return True
 
         return check_row() and check_column() and check_square()
 
@@ -37,16 +38,17 @@ class Board:
                     return (row, col)
         return False
 
-    def generate_random_coords(self, n):
-        """Generates random numbers(0-80), puts them in a set and turns them into coordinates."""
-        while len(self.init_positions) < n:
-            self.init_positions.add(choice(range(81)))
+    def generate_coords(self, n=15):
+        numbers = set()
 
-        self.progress_coords = [(x // 9, x % 9) for x in self.init_positions]
+        while len(numbers) < n:
+            numbers.add(choice(range(81)))
 
-    def fill_coords(self):
+        return [(x // 9, x % 9) for x in numbers]
+
+    def fill_coords(self, coords):
         """Fills coords with random numbers(1-9) with check_position() == True."""
-        for coord in self.progress_coords:
+        for coord in coords:
             row, col = coord
 
             num = choice(range(1, 10))
@@ -93,8 +95,9 @@ class Board:
         """Generates board with 15 random coords with numbers on them.
         Fires a solution on that board with a timeout of 5 seconds.
         """
-        self.generate_random_coords(15)
-        self.fill_coords()
+
+        coords = self.generate_coords()
+        self.fill_coords(coords)
         self.solution(time() + 5)
 
     def apply_difficulty(self, difficulty):
@@ -107,7 +110,7 @@ class Board:
             "Hard": 20,
         }
 
-        self.generate_random_coords(difficulties[difficulty])
+        self.progress_coords = self.generate_coords(difficulties[difficulty])
 
         for coord in self.progress_coords:
             row, col = coord
