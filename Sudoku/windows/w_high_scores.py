@@ -16,7 +16,7 @@ def get_layout_w_high_scores():
                     [
                         sg.Column(
                             [
-                                [sg.Text(col.strip(), size=14) for col in row.split()]
+                                [sg.Text(col, size=14) for col in row.split()]
                                 for row in read_score()
                             ],
                         )

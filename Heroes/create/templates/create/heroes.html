@@ -1,19 +1,13 @@
 {% extends 'create/layout.html' %} {% block body %}
-<div class="container_index">
-    <form
-        class="container_index__form"
-        action="{% url 'create:heroes' %}"
-        method="post"
-    >
+<div class="div_index">
+    <form class="div_index__form" action="{% url 'create:heroes' %}" method="post">
         {% csrf_token %} {{ form }}
         <input class="button" type="submit" value="Create Hero" />
     </form>
-    <div class="container_index__heroes">
+    <div class="div_index__heroes">
         {% for hero in heroes %}
-        <div class="container_index__hero">
-            <a class="hero_name" href="{% url 'create:hero' hero.id %}"
-                >{{ hero.name }}</a
-            >
+        <div class="div_index__hero">
+            <a class="hero_name" href="{% url 'create:hero' hero.id %}">{{ hero.name }}</a>
             <img src="{{ hero.avatar.avatar.url }}" alt="loading" />
         </div>
 

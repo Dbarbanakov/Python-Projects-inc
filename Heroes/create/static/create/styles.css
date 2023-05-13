@@ -66,48 +66,48 @@ input:focus {
 
 /* Index page styling */
 
-.container_index {
+.div_index {
     flex-direction: column;
     justify-content: center;
     margin-top: 2rem;
 }
 
-.container_index__form {
+.div_index__form {
     flex-direction: column;
     align-items: center;
 }
 
-.container_index__heroes {
+.div_index__heroes {
     flex-direction: row;
     justify-content: center;
 }
 
-.container_index__hero {
+.div_index__hero {
     flex-direction: column;
     margin: 1rem;
 }
 
 /* Hero page styling */
 
-.container_hero {
+.div_hero {
     justify-content: space-evenly;
     align-items: center;
     color: khaki;
     background: linear-gradient(to top left, #ffffff 0%, #663300 100%);
 }
 
-.container_hero img {
+.div_hero img {
     width: 10rem;
     height: 10rem;
     column-gap: 1rem;
 }
 
-.container_hero__details {
+.div_hero__details {
     flex-direction: column;
     justify-content: space-evenly;
 }
 
-.container_exp_bar {
+.div_exp_bar {
     border: 2px solid black;
     border-radius: 1rem;
     width: 20rem;
@@ -130,40 +130,41 @@ input:focus {
     0% {
         width: 0;
     }
+
     100% {
         width: var(--end-width);
     }
 }
 
-.container_hero__forms {
+.div_hero__forms {
     flex-direction: column;
     gap: 2rem;
 }
 
-.container_hero__forms_update {
+.div_hero__forms_update {
     flex-direction: column;
     align-items: center;
 }
 
-.container_hero__forms_delete {
+.div_hero__forms_delete {
     justify-content: center;
 }
 
-.container_hero__avatars {
+.div_hero__avatars {
     flex-direction: column;
     align-items: center;
 }
 
-.container_hero__avatars_form {
+.div_hero__avatars_form {
     flex-direction: column;
     align-items: center;
 }
 
-.container_hero__avatar {
+.div_hero__avatar {
     flex-direction: row;
 }
 
-.container_hero__avatar_details {
+.div_hero__avatar_details {
     flex-direction: column;
     margin: 0.25rem;
 }
@@ -177,7 +178,7 @@ input:focus {
 
 /* Party page styling */
 
-.container_party {
+.div_party {
     justify-content: space-evenly;
     margin-top: 5rem;
 }
@@ -187,16 +188,16 @@ input:focus {
     align-items: center;
 }
 
-.container_party__party {
+.div_party__party {
     flex-direction: column;
 }
 
-.coontainer_party__navigation {
+.div_party__navigation {
     align-items: center;
     justify-content: space-evenly;
 }
 
-.container_party__hero {
+.div_party__hero {
     flex-direction: column;
     margin: 0.25rem;
 }
