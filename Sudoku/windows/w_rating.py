@@ -13,8 +13,8 @@ def get_layout_w_rating():
                             f"{i}",
                             "-RADIO-STARS-",
                             key=i,
-                            font=FONT_LOAD,
-                            text_color=GREEN,
+                            font=singleton.font_load,
+                            text_color=singleton.green,
                             enable_events=True,
                         )
                         for i in range(1, 6)

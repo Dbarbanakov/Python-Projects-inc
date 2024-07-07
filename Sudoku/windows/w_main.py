@@ -14,14 +14,14 @@ def toggle_element_visibility(*captions):
 def cp_colors(cp):
     """Returns a tuple of colors depending on the amount of CP."""
     bar_colors = {
-        0: (GREEN, RED),
-        1: (YELLOW, GREEN),
-        2: (BLUE, YELLOW),
-        3: (ORANGE, BLUE),
-        4: (YELLOW, ORANGE),
-        5: (GREEN, YELLOW),
-        6: (RED, GREEN),
-        7: (BLUE, RED),
+        0: (singleton.green, singleton.red),
+        1: (singleton.yellow, singleton.green),
+        2: (singleton.blue, singleton.yellow),
+        3: (singleton.orange, singleton.blue),
+        4: (singleton.yellow, singleton.orange),
+        5: (singleton.green, singleton.yellow),
+        6: (singleton.red, singleton.green),
+        7: (singleton.blue, singleton.red),
     }
 
     return bar_colors[(cp // 10) % (len(bar_colors) - 1)]
@@ -50,7 +50,7 @@ layout_w_main = [
                 sg.Column(
                     [
                         [sg.Text("Player", key="-USER-")],
-                        [get_bar("CP-BAR", 10, (GREEN, RED))],
+                        [get_bar("CP-BAR", 10, (singleton.green, singleton.red))],
                     ]
                 ),
                 sg.Text(
@@ -59,7 +59,7 @@ layout_w_main = [
                 sg.Column(
                     [
                         [sg.Push(), sg.Text("Board")],
-                        [get_bar("HP-BOARD", 81, (GREEN, RED))],
+                        [get_bar("HP-BOARD", 81, (singleton.green, singleton.red))],
                     ]
                 ),
                 sg.Image(
@@ -75,12 +75,12 @@ layout_w_main = [
             sg.Text(
                 "Combo - 0",
                 key="-COMBO-",
-                text_color=RED,
+                text_color=singleton.red,
                 visible=False,
             )
         ),
         sg.Push(),
-        sg.Text("Score - 0", key="-SCORE-", text_color=YELLOW, visible=False),
+        sg.Text("Score - 0", key="-SCORE-", text_color=singleton.yellow, visible=False),
     ],
     [
         sg.Frame(
@@ -99,7 +99,7 @@ layout_w_main = [
                         key=(x, y),
                         pad=(0, 0),
                         border_width=2,
-                        font=FONT_SCORES,
+                        font=singleton.font_scores,
                     )
                     for y in range(9)
                 ]
@@ -113,7 +113,7 @@ layout_w_main = [
     [
         sg.Text(
             "Thanks for the appreciation!",
-            text_color=RED,
+            text_color=singleton.red,
             key="-THANKS-",
             visible=False,
         )
@@ -148,7 +148,7 @@ w_main = sg.Window(
     "Sudoku",
     layout_w_main,
     element_justification="c",
-    font=FONT_MAIN,
+    font=singleton.font_main,
     return_keyboard_events=True,
     use_default_focus=False,
 )

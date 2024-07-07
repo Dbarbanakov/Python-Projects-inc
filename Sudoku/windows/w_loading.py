@@ -12,7 +12,7 @@ def get_loading_screen():
             sys.exit()
 
         if i in (50, 100, 150):
-            w_loading["-LOADING-BAR-"].update(bar_color=(RED, "black"))
+            w_loading["-LOADING-BAR-"].update(bar_color=(singleton.red, "black"))
 
             if i == 50:
                 Sudoku.generate_board()
@@ -23,7 +23,7 @@ def get_loading_screen():
             i += 50
 
         if i in (75, 125):
-            w_loading["-LOADING-BAR-"].update(bar_color=(GREEN, "black"))
+            w_loading["-LOADING-BAR-"].update(bar_color=(singleton.green, "black"))
 
         w_loading["-LOADING-"].update(f"LOADING ...  {i/2:02.0f}%")
         w_loading["-LOADING-BAR-"].update(i + 1)
@@ -33,14 +33,14 @@ def get_loading_screen():
 
 
 layout_w_loading = [
-    [sg.Text("LOADING ... ", font=FONT_LOAD, key="-LOADING-")],
+    [sg.Text("LOADING ... ", font=singleton.font_load, key="-LOADING-")],
     [
         sg.ProgressBar(
             200,
             orientation="h",
             size=(30, 20),
             key="-LOADING-BAR-",
-            bar_color=(GREEN, "black"),
+            bar_color=(singleton.green, "black"),
         )
     ],
 ]

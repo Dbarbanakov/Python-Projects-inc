@@ -15,7 +15,7 @@ def get_w_choices(nums):
                                 " ",
                                 key=nums[i],
                                 image_source=f"{path.dirname(__file__)}/../files/images/{nums[i]}.png",
-                                button_color=(ORANGE, BLUE),
+                                button_color=(singleton.orange, singleton.blue),
                             )
                             for i in range(len(nums))
                         ]
@@ -29,5 +29,5 @@ def get_w_choices(nums):
         grab_anywhere=True,
         modal=True,
         use_custom_titlebar=True,
-        titlebar_background_color=ORANGE,
+        titlebar_background_color=singleton.orange,
     )

@@ -12,7 +12,10 @@ def get_layout_w_high_scores():
             sg.Frame(
                 "@ High Scores @",
                 [
-                    [sg.Text(f"{x}", size=14, text_color=GREEN) for x in headings],
+                    [
+                        sg.Text(f"{x}", size=14, text_color=singleton.green)
+                        for x in headings
+                    ],
                     [
                         sg.Column(
                             [
@@ -23,14 +26,14 @@ def get_layout_w_high_scores():
                     ],
                 ],
                 title_location="n",
-                title_color=RED,
+                title_color=singleton.red,
             )
         ],
         [
             sg.Button(
                 "Confirm",
                 bind_return_key=True,
-                button_color=(RED, "black"),
+                button_color=(singleton.red, "black"),
                 key="-ENDGAME-",
             ),
         ],
@@ -41,7 +44,7 @@ def get_w_high_scores():
     return sg.Window(
         "High Scores",
         get_layout_w_high_scores(),
-        font=FONT_SCORES,
+        font=singleton.font_scores,
         element_justification="c",
         text_justification="center",
         no_titlebar=True,

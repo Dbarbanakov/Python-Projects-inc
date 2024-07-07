@@ -9,8 +9,8 @@ def get_w_instructions():
     return sg.Window(
         "Window Title",
         get_layout_w_instructions(),
-        font=FONT_SCORES,
-        button_color=(RED, "black"),
+        font=singleton.font_scores,
+        button_color=(singleton.red, "black"),
         return_keyboard_events=True,
         finalize=True,
         disable_close=True,
@@ -31,12 +31,12 @@ def get_layout_w_instructions():
     ]
 
 
-def print_line(window, string, pause, color=RED):
+def print_line(window, string, pause, color=singleton.red):
     """Prints a line(string) letter by letter with a delay(pause)."""
     for i in range(len(string)):
         window["-MULTILINE-" + sg.WRITE_ONLY_KEY].print(
             f"{string[i]}",
-            text_color=(color if string[i] != "-" else RED),
+            text_color=(color if string[i] != "-" else singleton.red),
             end="",
         )
         window.refresh()
@@ -55,4 +55,4 @@ def print_instructions(window):
         lines = file.readlines()
 
     for x in lines:
-        print_line(window, x, 0.025, color=GREEN)
+        print_line(window, x, 0.025, color=singleton.green)

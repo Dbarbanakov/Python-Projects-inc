@@ -5,8 +5,6 @@ import sys
 
 
 def get_event(event):
-    global HP_BOARD, COMBO, CP
-
     # Focus Logic starts
 
     focus = w_main.find_element_with_focus()
@@ -21,9 +19,9 @@ def get_event(event):
             # Changes color to the previous focused element to Black if it holds a number.
             # If it's empty to White
             prev_focus.update(
-                button_color="black"
-                if prev_focus.get_text() in range(1, 10)
-                else "white"
+                button_color=(
+                    "black" if prev_focus.get_text() in range(1, 10) else "white"
+                )
             )
 
         if type(focus.Key) == tuple:
@@ -51,7 +49,11 @@ def get_event(event):
 
         # Updates the focus and its color.
         focus = w_main.find_element_with_focus()
-        focus.update(button_color=GREEN if focus.get_text() in range(1, 10) else RED)
+        focus.update(
+            button_color=(
+                singleton.green if focus.get_text() in range(1, 10) else singleton.red
+            )
+        )
 
         w_main.refresh()
 
@@ -94,7 +96,7 @@ def get_event(event):
 
                 if ev == ("Tab:23"):
                     # Changes color to Red of the element which has focus on it.
-                    focus.update(button_color=RED)
+                    focus.update(button_color=singleton.red)
 
                     if tabs == 0:
                         tabs += 1
@@ -104,7 +106,11 @@ def get_event(event):
 
                     # Changes color to the previous element to Yellow if it was already clicked, if not to Blue.
                     prev_focus.update(
-                        button_color=YELLOW if clicked[prev_focus.Key] else BLUE
+                        button_color=(
+                            singleton.yellow
+                            if clicked[prev_focus.Key]
+                            else singleton.blue
+                        )
                     )
 
                     w_choices.refresh()
@@ -127,14 +133,18 @@ def get_event(event):
                             solution_num, button_color=("white", "black")
                         )
 
-                        HP_BOARD -= 1
-                        COMBO += 1 if COMBO in range(5) else 2
-                        CP += COMBO
+                        singleton.hp_board -= 1
+                        singleton.combo += 1 if singleton.combo in range(5) else 2
+                        singleton.cp += singleton.combo
 
-                        w_main["-HP-BOARD-"].update(HP_BOARD)
-                        w_main["-COMBO-"].update(f"Combo - {COMBO}")
-                        w_main["-CP-BAR-"].update(CP % 10, bar_color=cp_colors(CP))
-                        w_main["-SCORE-"].update(f"Score - {get_score() + 5 + COMBO}")
+                        w_main["-HP-BOARD-"].update(singleton.hp_board)
+                        w_main["-COMBO-"].update(f"Combo - {singleton.combo}")
+                        w_main["-CP-BAR-"].update(
+                            singleton.cp % 10, bar_color=cp_colors(singleton.cp)
+                        )
+                        w_main["-SCORE-"].update(
+                            f"Score - {get_score() + 5 + singleton.combo}"
+                        )
 
                         # Breaks the window.read() loop after updating the GUI.
                         break
@@ -142,14 +152,16 @@ def get_event(event):
                     else:
                         # If it's not the right number,
                         # tags that number as clicked, changes it's color and updates the GUI.
-                        COMBO = 0
-                        CP -= 5
+                        singleton.combo = 0
+                        singleton.cp -= 5
 
-                        w_choices[num].update(button_color=YELLOW)
+                        w_choices[num].update(button_color=singleton.yellow)
                         clicked[num] = True
 
-                        w_main["-COMBO-"].update(f"Combo - {COMBO}")
-                        w_main["-CP-BAR-"].update(CP % 10, bar_color=cp_colors(CP))
+                        w_main["-COMBO-"].update(f"Combo - {singleton.combo}")
+                        w_main["-CP-BAR-"].update(
+                            singleton.cp % 10, bar_color=cp_colors(singleton.cp)
+                        )
 
             w_choices.close()
 
@@ -157,13 +169,13 @@ def get_event(event):
         w_main.finalize()
         w_main[event].block_focus()
         w_main["-FRAME-BUTTONS-"].update(event)
-        w_main["-CP-BAR-"].update(CP)
+        w_main["-CP-BAR-"].update(singleton.cp)
 
         w_main.set_alpha(0.5)
 
         Sudoku.apply_difficulty(event)
-        HP_BOARD -= len(Sudoku.progress_coords)
-        w_main["-HP-BOARD-"].update(HP_BOARD)
+        singleton.hp_board -= len(Sudoku.progress_coords)
+        w_main["-HP-BOARD-"].update(singleton.hp_board)
 
         user = get_w_user_login()
         w_main["-USER-"].update(user)
@@ -242,10 +254,10 @@ def get_event(event):
 
         w_main.set_alpha(1)
 
-    if HP_BOARD == 0:
+    if singleton.hp_board == 0:
         w_main.set_alpha(0.5)
 
-        HP_BOARD -= 1
+        singleton.hp_board -= 1
 
         username = w_main["-USER-"].get()
         score = get_score()
